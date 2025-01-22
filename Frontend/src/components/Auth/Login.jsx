@@ -124,7 +124,7 @@ const Login = () => {
         </form>
         <div className="extra-links">
           <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
-          <p><a href="/forgot-password">Forgot Password?</a></p>
+          <p><Link to="/forgot-password">Forgot Password?</Link></p>
         </div>
       </div>
     </div>
