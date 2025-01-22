@@ -1,0 +1,170 @@
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Dashboard.css"; // Import dashboard styles
+import Timeline from "./Timeline";
+import { toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
+import { AuthContext } from "../../main";
+const Dashboard = () => {
+  const [user, setUser] = useState(null); // Holds user's data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+  const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  // Sample medical history data (you can replace this with dynamic data from API)
+  const [medicalHistory,setMedicalHistory] = useState([]);
+
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      try {
+          const response = await axios.get("http://localhost:8000/dashboard", {
+            withCredentials: true,
+          });
+          setUser(response.data.patient);
+          setMedicalHistory(response.data.records);
+        }
+       catch (error) {
+        setError("Error fetching patient data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatientData();
+  }, []);
+
+  // Redirect to login if the user is not authenticated
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      navigate("/login");
+      toast.info("Please log in to continue.");
+    }
+  }, [navigate]);
+
+  // Handle rendering based on the loading, error, and user state
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  return (
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1>
+          Welcome{" "}
+          {user
+            ? user.isFirstTimeUser
+              ? "to PatientCare!"
+              : user.lastLogin==null?<>{user.name}</>:`back, ${user.name}`
+            : "Loading..."}
+        </h1>
+
+        {user && user.isFirstTimeUser && (
+          <p className="welcome-message">
+            We're excited to have you! Let's get started by adding your medical
+            records.
+          </p>
+        )}
+
+        {user && !user.isFirstTimeUser && (
+          <p className="last-login">
+            
+           {user.lastLogin && (
+  <>
+    Last Login:{" "}
+    {new Intl.DateTimeFormat("en-US", {
+      dateStyle: "full",
+      timeStyle: "short",
+    }).format(new Date(user.lastLogin))}
+  </>
+)}
+
+          </p>
+        )}
+      </header>
+
+      {user && user.isFirstTimeUser && (
+        <div className="welcome-cards">
+          <div className="dashboard-card">
+            <h2>Start Your Health Journey</h2>
+            <p>
+              To make the most of PatientCare, begin by adding your first
+              medical record.
+            </p>
+            <button
+              className="action-btn"
+              onClick={() => navigate("/add-record")}
+            >
+              Add Your First Record
+            </button>
+          </div>
+
+          <div className="dashboard-card">
+            <h2>Set Up Your Profile</h2>
+            <p>
+              Personalize your account by updating your profile and settings.
+            </p>
+            <button
+              className="action-btn"
+              onClick={() => navigate("/settings")}
+            >
+              Set Up Profile
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!user?.isFirstTimeUser && (
+        <>
+          <Timeline history={medicalHistory} itemsPerPage={3} />
+          <div className="dashboard-card">
+            <h2>Add Patient Record</h2>
+            <p>View and manage your health records in one place.</p>
+            <button
+              className="action-btn"
+              onClick={() => navigate("/add-record")}
+            >
+              Add Records
+            </button>
+          </div>
+        </>
+      )}
+
+      <div className="dashboard-content">
+        <div className="dashboard-card">
+          <h2>Your Patient Records</h2>
+          <p>View and manage your health records in one place.</p>
+          <button className="action-btn" onClick={() => navigate("/records")}>
+            View Records
+          </button>
+        </div>
+
+        <div className="dashboard-card">
+          <h2>Medication History</h2>
+          <p>Access and review your past medications anytime.</p>
+          <button
+            className="action-btn"
+            onClick={() => navigate("/medications")}
+          >
+            View Medications
+          </button>
+        </div>
+
+        <div className="dashboard-card">
+          <h2>Settings</h2>
+          <p>Update your account information and preferences.</p>
+          <button className="action-btn" onClick={() => navigate("/settings")}>
+            Go to Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

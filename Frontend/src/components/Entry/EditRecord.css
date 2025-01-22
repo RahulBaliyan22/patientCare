@@ -1,0 +1,153 @@
+/* General container styles */
+.edit-record-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.edit-record-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form group styles */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Textarea styles */
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+/* Uploaded images */
+.image-list {
+  padding: 0;
+  margin: 10px 0;
+  list-style-type: none;
+}
+
+.image-list div a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.image-list div a:hover {
+  text-decoration: underline;
+}
+
+/* Buttons */
+.submit-btn,
+.cancel-btn {
+  display: inline-block;
+  width: 48%;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px 1%;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background-color: #a71d2a;
+}
+
+/* Error message */
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Loading spinner */
+.edit-record-container div {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}
+
+
+.imageLink{
+  border: 2px solid thistle;
+  border-radius: 2px;
+  margin: 2px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.imageLink:hover{
+  transform: scale(1.03);
+}
+.image-list button{
+  background:none;
+  border: none;
+  outline: none;
+  width: 100px;
+  cursor: pointer;
+ 
+}
+.imageLink a{
+  padding: 20px;
+}
+.image-list button:hover{
+  animation: spin 0.5s linear;
+  
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  45%{ transform: rotate(45deg);}
+  75% {transform: rotate(-45deg);}
+  100% { transform: rotate(0deg); }
+}

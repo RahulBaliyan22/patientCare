@@ -1,0 +1,91 @@
+/* ProfilePage.css */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 2rem;
+  height: 100vh;
+}
+
+.profile-card {
+  width: 70%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.profile-header {
+  background-color: #004d4d;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.profile-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-header p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.profile-body {
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.profile-info,
+.profile-status,
+.profile-records,
+.profile-medications,
+.profile-contacts {
+  flex: 1;
+  min-width: 300px;
+}
+
+.profile-info h2,
+.profile-status h2,
+.profile-records h2,
+.profile-medications h2,
+.profile-contacts h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 0.5rem;
+}
+
+.profile-info p,
+.profile-status p,
+.profile-records p,
+.profile-medications p,
+.profile-contacts p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.profile-records ul,
+.profile-medications ul,
+.profile-contacts ul {
+  padding-left: 1rem;
+  list-style: square;
+}
+
+.profile-records li,
+.profile-medications li,
+.profile-contacts li {
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-body {
+    flex-direction: column;
+  }
+}

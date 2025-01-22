@@ -1,0 +1,86 @@
+/* Footer Styling */
+.footer {
+  background-color: #004d4d; /* Dark teal color */
+  color: #fff;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative; /* Change from sticky to relative */
+  bottom: 0;
+  margin-top: auto; /* Ensures footer stays at the bottom when the content is less */
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; /* Added margin to separate links from bottom text */
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.footer-links li {
+  display: inline-block;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #00b3b3; /* Lighter teal color */
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    padding: 10px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+    margin-top: 15px;
+  }
+}
+
+/* For larger screens */
+@media (min-width: 1024px) {
+  .footer-content {
+    padding: 40px 20px;
+  }
+
+  .footer-links {
+    gap: 40px;
+  }
+
+  .footer-bottom {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,119 @@
+/* General Layout */
+.contact-show-page {
+  padding: 30px 20px;
+  text-align: center;
+  background-color: #f4f7f6; /* Light background for a clean look */
+}
+
+.contact-show-page h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid Layout for Contacts */
+.contact-show-page .contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.contact-show-page .contact-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ddd;
+  max-width: 320px;
+  margin: auto;
+  text-align: left;
+  font-family: 'Roboto', sans-serif;
+}
+
+.contact-show-page .contact-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Special Styling for Primary Contact */
+.contact-show-page .contact-card.primary {
+  background-color: #e5f9ec; /* Soft green background */
+  border: 2px solid #08c020; /* Bold green border for primary contact */
+}
+
+.contact-show-page .contact-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 500;
+}
+
+.contact-show-page .contact-card p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.contact-show-page .status {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #08c020;
+  margin-bottom: 15px;
+}
+
+.contact-show-page .primary-status {
+  color: #08c020;
+}
+
+.contact-show-page button {
+  background-color: #08c020; /* Green button for primary */
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-show-page button:hover {
+  background-color: #067d0e;
+  transform: translateY(-3px);
+}
+
+.contact-show-page button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-show-page .contact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .contact-show-page .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-show-page .contact-card {
+    padding: 20px;
+  }
+}
+
+.btn-new00:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+

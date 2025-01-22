@@ -1,0 +1,103 @@
+/* General Page Styles */
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f9;
+  padding: 20px;
+  margin: 0;
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+/* Form Container */
+.medication-form {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.medication-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #004d4d;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Form Field Styles */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+  display: block;
+  color: #333333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: #007777;
+  outline: none;
+}
+
+/* Button Styling */
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #004d4d;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #003333;
+}
+
+/* Message Styles */
+.success-message,
+.error-message {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: #28a745;
+}
+
+.error-message {
+  color: #d93025;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .medication-form {
+    padding: 20px;
+  }
+
+  .submit-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

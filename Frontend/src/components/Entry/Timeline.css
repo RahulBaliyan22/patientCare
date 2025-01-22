@@ -1,0 +1,137 @@
+/* General Styles */
+.horizontal-timeline-container {
+  font-family: "Roboto", sans-serif;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-title {
+  font-size: 24px;
+  color: #004d4d;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.timeline-wrapper {
+  overflow-x: auto;
+  padding: 10px 0;
+  position: relative;
+}
+
+.timeline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.timeline-event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-width: 250px;
+  text-decoration: none;
+}
+
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  background-color: #004d4d;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.timeline-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 200px;
+  transition: transform 0.2s ease;
+}
+
+.timeline-card:hover {
+  transform: scale(1.05);
+}
+
+.timeline-date {
+  font-size: 14px;
+  color: #007a7a;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.timeline-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.timeline-description {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Pagination Styles */
+.timeline-pagination {
+  display: flex;
+  justify-content: space-between;  /* Place the buttons at both ends */
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+  position: relative;
+}
+
+.pagination-btn {
+  background-color: #004d4d;
+  width: 100px;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;  /* Adjusted for a more balanced button */
+  border-radius: 5px;  /* A smoother border radius */
+  cursor: pointer;
+  font-size: 14px;  /* Slightly reduced font size for compact look */
+  line-height: 1.4;
+  transition: background-color 0.3s ease;
+  min-width: 70px;  /* Minimum width for the button */
+}
+
+.pagination-btn:hover {
+  background-color: #007a7a;  /* Darker color for hover */
+}
+
+.pagination-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Pagination Info - Centered text */
+.pagination-info {
+  font-size: 16px;
+  color: #004d4d;
+  text-align: center;
+  flex-grow: 1;  /* Allows the info to be centered */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pagination-btn {
+    padding: 6px 12px;  /* Smaller padding for mobile */
+    font-size: 12px;  /* Smaller font size for mobile */
+  }
+
+  .pagination-info {
+    font-size: 14px;  /* Slightly smaller font for mobile */
+  }
+}
+
