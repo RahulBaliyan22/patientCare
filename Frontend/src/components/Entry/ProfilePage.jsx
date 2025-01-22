@@ -8,7 +8,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/patient", {
+        const response = await axios.get(`https://patientcare-2.onrender.com/patient`, {
           withCredentials: true,
         });
         setPatient(response.data.patient);

@@ -89,7 +89,7 @@ const ViewRecords = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/records", {
+        const response = await axios.get(`https://patientcare-2.onrender.com/records`, {
           withCredentials: true,
         });
         setContacts(response.data.contacts);

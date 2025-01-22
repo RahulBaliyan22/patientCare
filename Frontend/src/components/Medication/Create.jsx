@@ -42,7 +42,7 @@ const Create = () => {
       }
     }
     try {
-      const response = await axios.post('http://localhost:8000/med',formData,{withCredentials: true})
+      const response = await axios.post(`https://patientcare-2.onrender.com/med`,formData,{withCredentials: true})
 
       
         navigate('/medications')

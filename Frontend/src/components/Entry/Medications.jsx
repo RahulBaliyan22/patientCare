@@ -100,7 +100,7 @@ const Medications = () => {
 
     try {
       const response = await axios.patch(
-        `http://localhost:8000/med/end/${id}`,
+        `https://patientcare-2.onrender.com/med/end/${id}`,
         {},
         { withCredentials: true }
       );
@@ -115,7 +115,7 @@ const Medications = () => {
   useEffect(() => {
     const fetchMedications = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/med", {
+        const response = await axios.get(`https://patientcare-2.onrender.com/med`, {
           withCredentials: true,
         });
         setOrgMed(response.data.med);
@@ -145,7 +145,7 @@ const Medications = () => {
     setOrgMed(up)
     setMedications(up)
     try{
-      const response = await axios.delete(`http://localhost:8000/med/delete/${id}`,{withCredentials:true})
+      const response = await axios.delete(`https://patientcare-2.onrender.com/med/delete/${id}`,{withCredentials:true})
       toast.success("Deleted successfully");
     }catch(e){
       toast.error("error");

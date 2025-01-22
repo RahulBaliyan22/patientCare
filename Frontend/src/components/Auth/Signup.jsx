@@ -49,7 +49,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/signup", form);
+      const response = await axios.post(`https://patientcare-2.onrender.com/signup`, form);
       toast.success("Please check your email to verify your account.");
       navigate("/login");
     } catch (error) {

@@ -24,7 +24,7 @@ const ViewRecord = () => {
   const fetchRecordDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/records/${id}`,
+        `https://patientcare-2.onrender.com/records/${id}`,
         { withCredentials: true }
       );
 
@@ -48,7 +48,7 @@ const ViewRecord = () => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/delete/${id}`,
+        `https://patientcare-2.onrender.com/delete/${id}`,
         { withCredentials: true }
       );
       toast.success(response.data.message);
@@ -63,7 +63,7 @@ const ViewRecord = () => {
   const handleSend = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/record/send-email/${id}`,
+        `https://patientcare-2.onrender.com/record/send-email/${id}`,
         { contacts: sendList },
         { withCredentials: true }
       );
@@ -256,10 +256,10 @@ const ViewRecord = () => {
                   {record.image.map((img, index) => (
                     <PhotoView
                       key={index}
-                      src={`http://localhost:8000${img.filePath}`}
+                      src={`https://patientcare-2.onrender.com${img.filePath}`}
                     >
                       <img
-                        src={`http://localhost:8000${img.filePath}`}
+                        src={`https://patientcare-2.onrender.com${img.filePath}`}
                         alt={`Image ${index + 1}`}
                         className="thumbnail-image"
                       />

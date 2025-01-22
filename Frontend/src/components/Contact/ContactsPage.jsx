@@ -13,7 +13,7 @@ const ContactsPage = () => {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/contacts', {
+        const response = await axios.get(`https://patientcare-2.onrender.com/contacts`, {
           withCredentials: true,
         });
         setContacts(response.data.contacts);
@@ -34,7 +34,7 @@ const ContactsPage = () => {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/contact/delete/${id}`,
+        `${process.env.VITE_BACKEND_URL}/contact/delete/${id}`,
         { withCredentials: true }
       );
       setContacts((prevContacts) =>
@@ -51,7 +51,7 @@ const ContactsPage = () => {
   const handleTogglePrimary = async (contactId) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/contact/${contactId}/toggle-primary`,
+        `https://patientcare-2.onrender.com/contact/${contactId}/toggle-primary`,
         {},
         { withCredentials: true }
       );

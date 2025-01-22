@@ -28,7 +28,7 @@ const ContactForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/contact', contact, {withCredentials:true});
+      const response = await axios.post(`https://patientcare-2.onrender.com/contact`, contact, {withCredentials:true});
       toast.success(response.data.message);
       setContact({
         name: '',

@@ -16,7 +16,7 @@ const Navbar = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:8000/logout", {
+      await fetch(`https://patientcare-2.onrender.com/logout`, {
         method: "POST",
         credentials: "include",
       });

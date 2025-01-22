@@ -20,9 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS options
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow only your frontend's origin
-  credentials: true, // Allow credentials (cookies, etc.)
+  origin: process.env.REACT_APP_URL || "http://localhost:5173", // Frontend URL can be set via an environment variable
+  credentials: true,
 };
+
 
 app.use(cors(corsOptions));
 

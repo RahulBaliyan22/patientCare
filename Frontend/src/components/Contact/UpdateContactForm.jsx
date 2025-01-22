@@ -20,7 +20,7 @@ const UpdateContactForm = () => {
     const fetchContact = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/contact/${id}`,{withCredentials:true});
+        const response = await axios.get(`https://patientcare-2.onrender.com/contact/${id}`,{withCredentials:true});
         const cont = response.data.contact
         setContact({
           name: cont.name,
@@ -52,7 +52,7 @@ const UpdateContactForm = () => {
     setLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:8000/contact/update/${id}`,
+        `https://patientcare-2.onrender.com/contact/update/${id}`,
         contact,
         { withCredentials: true }
       );

@@ -33,7 +33,7 @@ function PickContacts({contacts,primary,setShowContactsSelect,filteredRecords}) 
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8000/records/send-email`,
+        `https://patientcare-2.onrender.com/records/send-email`,
         {filteredRecords,send}, 
         { withCredentials: true } // Configuration object for Axios
       );

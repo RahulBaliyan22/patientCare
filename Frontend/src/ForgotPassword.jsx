@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     }
 
     try{
-    const response = await axios.post("http://localhost:8000/forgot-password",{email})
+    const response = await axios.post(`https://patientcare-2.onrender.com/forgot-password`,{email})
     toast.info(response.data.message)
     }catch(e){
       toast.error("error in email verification")

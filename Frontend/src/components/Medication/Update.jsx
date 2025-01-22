@@ -23,7 +23,7 @@ const Update = () => {
     const fetchMedication = async () => {
       if (id) {
         try {
-          const response = await axios.get(`http://localhost:8000/med/${id}`, { withCredentials: true });
+          const response = await axios.get(`https://patientcare-2.onrender.com/med/${id}`, { withCredentials: true });
           const medication = response.data.medication;
           const formatDOB = medication.start
       ? new Date(medication.start).toISOString().split('T')[0]
@@ -73,7 +73,7 @@ const Update = () => {
     try {
       
         // Update existing medication
-        const response = await axios.patch(`http://localhost:8000/med/update/${id}`, formData, { withCredentials: true });
+        const response = await axios.patch(`https://patientcare-2.onrender.com/med/update/${id}`, formData, { withCredentials: true });
         toast.success(response.data.message);
      
 

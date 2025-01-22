@@ -58,7 +58,7 @@ const AddRecord = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:8000/add-record", data, {
+      const response = await axios.post(`https://patientcare-2.onrender.com/add-record`, data, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true
       });

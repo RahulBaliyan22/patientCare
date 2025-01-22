@@ -33,7 +33,7 @@ const EditRecord = () => {
   useEffect(() => {
     const fetchRecordDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/records/${id}`, {
+        const response = await axios.get(`https://patientcare-2.onrender.com/records/${id}`, {
           withCredentials: true,
         });
         setRecord({
@@ -57,7 +57,7 @@ const EditRecord = () => {
   const handleImageDelete = async (e, filePath) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(`http://localhost:8000/delete-image/${id}`, {
+      const response = await axios.delete(`https://patientcare-2.onrender.com/delete-image/${id}`, {
         data: { filePath },
         withCredentials: true,
       });
@@ -99,7 +99,7 @@ const EditRecord = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/records/${id}`,
+        `https://patientcare-2.onrender.com/records/${id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -177,7 +177,7 @@ const EditRecord = () => {
               {record.image.map((img, index) => (
                 <div key={index} className="imageLink">
                   <a
-                    href={`http://localhost:8000${img.filePath}`}
+                    href={`https://patientcare-2.onrender.com${img.filePath}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="ImL"

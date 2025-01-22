@@ -22,7 +22,7 @@ const ResetPassword = () => {
     try {
       // Make API request to reset the password
       const response = await axios.post(
-        `http://localhost:8000/reset-password/${token}`,
+        `https://patientcare-2.onrender.com/reset-password/${token}`,
         { password },
         { headers: { "Content-Type": "application/json" } }
       );

@@ -18,7 +18,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-          const response = await axios.get("http://localhost:8000/dashboard", {
+          const response = await axios.get(`https://patientcare-2.onrender.com/dashboard`, {
             withCredentials: true,
           });
           setUser(response.data.patient);

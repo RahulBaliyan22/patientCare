@@ -58,7 +58,7 @@ const Settings = () => {
     setLoading(true);
     try {
       // Save updated details to backend (example using axios)
-      const response = await axios.put("http://localhost:8000/update", userDetails, {
+      const response = await axios.put(`https://patientcare-2.onrender.com/update`, userDetails, {
         withCredentials: true,
       });
 
