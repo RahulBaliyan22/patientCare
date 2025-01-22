@@ -47,7 +47,7 @@ const App = () => {
   
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      <BrowserRouter>
+      <BrowserRouter basename="/myapp">
         <Navbar />
         <ToastContainer />
         <Routes>
