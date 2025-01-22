@@ -25,6 +25,7 @@ const corsOptions = {
 };
 
 
+
 app.use(cors(corsOptions));
 
 const url =
@@ -48,7 +49,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies only in production
+      secure: true, // Use secure cookies only in production
       sameSite: 'None', // This is needed for cross-origin requests
       expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
