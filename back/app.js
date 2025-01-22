@@ -48,10 +48,9 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     cookie: {
-      httpOnly: true, // Secure from client-side JavaScript
-      secure: process.env.NODE_ENV === "production", // Only secure cookies in production
-      sameSite: "None", // Required for cross-origin requests (e.g., different domains for frontend/backend)
-      maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expiration (7 days)
+      httpOnly: true,
+      secure: true, // Only for production
+      sameSite: 'None', // Required for cross-origin cookies
     },
   })
 );
