@@ -44,14 +44,14 @@ mongoose
 app.use(
   session({
     secret: process.env.SECRET_KEY,
-    resave: true,
-saveUninitialized: false,
-
+    resave: false,
+    saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     cookie: {
       httpOnly: true,
-      secure: true, // Only for production
-      sameSite: 'None', // Required for cross-origin cookies
+      secure: true, // Secure cookies in production
+      sameSite: 'None', // Crucial for cross-origin cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Session expiry (7 days)
     },
   })
 );
