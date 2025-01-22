@@ -14,7 +14,7 @@ const recordRoutes = require("./route/record");
 const patientRoutes = require("./route/patient");
 const medicationRoutes = require("./route/medication");
 const path = require("path");
-
+const MongoStore = require('connect-mongo');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -38,21 +38,23 @@ mongoose
     console.log(`error ${e}`);
   });
 
-  app.use(
-    session({
-      secret: process.env.SECRET_KEY,
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies only in production
-        sameSite: 'None', // This is needed for cross-origin requests
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      },
-    })
-  );
   
+
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure cookies only in production
+      sameSite: 'None', // This is needed for cross-origin requests
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    },
+  })
+);
 
 // Initialize passport
 app.use(passport.initialize());
