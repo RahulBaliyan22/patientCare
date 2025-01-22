@@ -30,12 +30,9 @@ app.use(cors(corsOptions));
 
 const url =
   process.env.MONGO_URL;
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+
 mongoose
-  .connect(url, options)
+  .connect(url)
   .then(() => {
     console.log(`connected to Db`);
   })
