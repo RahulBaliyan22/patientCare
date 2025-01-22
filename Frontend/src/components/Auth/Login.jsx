@@ -123,7 +123,7 @@ const Login = () => {
           <button type="submit" className="submit-button">Login</button>
         </form>
         <div className="extra-links">
-          <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
           <p><a href="/forgot-password">Forgot Password?</a></p>
         </div>
       </div>
