@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS options
 const corsOptions = {
-  origin: process.env.REACT_APP_URL || "http://localhost:5173", // Frontend URL can be set via an environment variable
+  origin: process.env.REACT_APP_URL || "https://patient-care-ten.vercel.app", // Frontend URL can be set via an environment variable
   credentials: true,
 };
 
@@ -48,14 +48,14 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     cookie: {
-      httpOnly: true,
-      secure: true, // Use secure cookies only in production
-      sameSite: 'None', // This is needed for cross-origin requests
-      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      httpOnly: true, // Secure from client-side JavaScript
+      secure: process.env.NODE_ENV === "production", // Only secure cookies in production
+      sameSite: "None", // Required for cross-origin requests (e.g., different domains for frontend/backend)
+      maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie expiration (7 days)
     },
   })
 );
+
 
 // Initialize passport
 app.use(passport.initialize());
