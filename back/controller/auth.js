@@ -85,7 +85,7 @@ const verifyemail = async (req, res) => {
 
     await user.save();
     res.redirect(
-      "http://localhost:5173/login?message=Email successfully verified! You can now log in."
+      `${process.env.REACT_APP_URL}/login?message=Email successfully verified! You can now log in.`
     );
   } catch (err) {
     res.status(500).json({ message: "Error verifying email", error: err });

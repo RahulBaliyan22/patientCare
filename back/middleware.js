@@ -73,7 +73,6 @@ const validateRecords = (req, res, next) => {
   const { error, value } = schemaRecords.validate({
     date,
     doctor,
-    image:req.files
   });
 
   if (error) {

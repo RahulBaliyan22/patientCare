@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS options
 const corsOptions = {
-  origin: "http://localhost:5173", // Allow only your frontend's origin
+  origin: "http://localhost:3000", // Allow only your frontend's origin
   credentials: true, // Allow credentials (cookies, etc.)
 };
 
@@ -69,7 +69,7 @@ app.use(patientRoutes);
 app.use(medicationRoutes);
 app.use(contactRoutes);
 // Start server
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`connected to server at ${PORT}`);
 });

@@ -46,7 +46,7 @@ const sendRecordEmail = (email, record, sender) => {
             (img) => `
     <div>
       <p><strong>${img.filename}</strong></p>
-      <a href="http://localhost:8000${img.filePath}" download>Click here to download the image</a>
+      <a href="${process.env.APP_URL}${img.filePath}" download>Click here to download the image</a>
     </div>`
           )
           .join("")

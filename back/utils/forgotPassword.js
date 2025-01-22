@@ -12,7 +12,7 @@ const forgotPassword = async (user, token) => {
   });
 
   // Send reset email
-  const resetLink = `http://localhost:5173/reset-password/${token}`;
+  const resetLink = `${process.env.REACT_APP_URL}/reset-password/${token}`;
   const mailOptions = {
     to: user.email,
     from: process.env.MAIL_USER,
