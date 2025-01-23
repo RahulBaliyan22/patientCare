@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS options
 const corsOptions = {
-  origin: process.env.REACT_APP_URL || "https://patient-care-ten.vercel.app", // Frontend URL can be set via an environment variable
+  origin: "https://patient-care-ten.vercel.app", // Frontend URL can be set via an environment variable
   credentials: true,
 };
 
