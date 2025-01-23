@@ -46,16 +46,17 @@ app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false, // Avoid creating empty sessions
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     cookie: {
       httpOnly: true,
-      secure: true, // Secure cookies in production
-      sameSite: 'None', // Crucial for cross-origin cookies
-      maxAge: 7 * 24 * 60 * 60 * 1000, // Session expiry (7 days)
+      secure: true, // Set `true` for production
+      sameSite: "None", // Allow cross-origin cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     },
   })
 );
+
 
 
 // Initialize passport
