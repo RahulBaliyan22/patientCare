@@ -63,8 +63,8 @@ app.use(passport.session()); // Ensure passport session is used after initializi
 
 // Passport strategy using 'passport-local-mongoose'
  // Using the strategy created by passport-local-mongoose
-// passport.use(Patient.createStrategy());
-passport.use(new LocalStrategy(Patient.authenticate()))
+passport.use(Patient.createStrategy());
+
 passport.serializeUser(Patient.serializeUser()); // Automatically handles serializing user
 passport.deserializeUser(Patient.deserializeUser()); // Automatically handles deserializing user
 
