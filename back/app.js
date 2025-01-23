@@ -52,7 +52,7 @@ app.use(session({
     httpOnly:true,
     expires:Date.now()+7*24*60*60*1000,
      secure: true, 
-    sameSite: "None,
+    sameSite: "None",
     maxAge: 7*24*60*60*1000
   }
 }));
