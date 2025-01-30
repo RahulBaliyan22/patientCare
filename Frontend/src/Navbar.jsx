@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./main";
 import "./Navbar.css";
-import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);

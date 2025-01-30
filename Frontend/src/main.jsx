@@ -16,7 +16,7 @@ import ViewRecords from "./components/Entry/ViewRecords";
 import Medications from "./components/Entry/Medications";
 import Settings from "./components/Entry/Settings";
 import AddRecord from "./components/Entry/AddRecord";
-import Error from "./error";
+import Error from "./Error";
 import ForgotPassword from "./ForgotPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
