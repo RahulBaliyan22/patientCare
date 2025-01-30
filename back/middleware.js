@@ -113,6 +113,7 @@ const isVerified = async (req, res, next) => {
 const isLoggedIn = (req, res, next) => {
   console.log('Session ID:', req.sessionID); // Log session ID
   console.log('Session:', req.session);
+  console.log("Session Cookie: ", req.cookies);
   console.log('Is Authenticated:', req.isAuthenticated())
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Please log in first" }); // 401 Unauthorized

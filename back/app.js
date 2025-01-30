@@ -18,6 +18,8 @@ const path = require("path");
 const MongoStore = require('connect-mongo');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 // CORS options
 const corsOptions = {
