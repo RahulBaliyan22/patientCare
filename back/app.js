@@ -23,10 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 const corsOptions = {
   origin: process.env.REACT_APP_URL || "https://patient-care-ten.vercel.app", 
   credentials: true,
-};
-
-
-
+}
 app.use(cors(corsOptions));
 
 const url =
@@ -44,17 +41,19 @@ mongoose
     session({
       secret: process.env.SECRET_KEY,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
       cookie: {
-        httpOnly: true,  
-        secure: true,  
-        sameSite: 'None',  
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === 'production', // True for production only
+        sameSite: 'None',  // Allow cross-origin cookies
+        path: '/',
+        domain: '.onrender.com',  // Make sure this matches your domain
+        maxAge: 604800000, // 7 days
       },
     })
   );
+  
   
   
 
@@ -64,8 +63,23 @@ app.use(passport.session());
 
 passport.use(Patient.createStrategy());
 
-passport.serializeUser(Patient.serializeUser()); 
-passport.deserializeUser(Patient.deserializeUser());
+passport.serializeUser((user, done) => {
+  console.log('Serializing user:', user);  // Log the user object
+  done(null, user._id);  // Store the user ID in the session
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    console.log('Deserializing user ID:', id);  // Log the ID being deserialized
+    const user = await Patient.findById(id);  // Retrieve the user from the database
+    done(null, user);
+  } catch (error) {
+    console.error('Error during deserialization:', error);
+    done(error, null);
+  }
+});
+
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Routes
