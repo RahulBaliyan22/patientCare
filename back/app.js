@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS options
 const corsOptions = {
-  origin: process.env.REACT_APP_URL || "http://localhost:5173", // Frontend URL can be set via an environment variable
+  origin: process.env.REACT_APP_URL || "http://localhost:5173", 
   credentials: true,
 };
 
@@ -38,29 +38,29 @@ mongoose
   .catch((e) => {
     console.log(`error ${e}`);
   });
-
+  app.use(
+    session({
+      secret: process.env.SECRET_KEY,
+      resave: false,
+      saveUninitialized: true,
+      store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+      cookie: {
+        httpOnly: true,  // This is correct for security
+        secure: true,  // Only secure in production
+        sameSite: 'None',  // Required for cross-origin requests in production
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      },
+    })
+  );
+  
   
 
-app.use(
-  session({
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
-    cookie: {
-      httpOnly: true,
-      secure: true, // Use secure cookies only in production
-      sameSite: 'None', // This is needed for cross-origin requests
-      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    },
-  })
-);
+
 
 // Initialize passport
 app.use(passport.initialize());
-app.use(passport.session()); // Ensure passport session is used after initializing
-
+app.use(passport.session()); 
 // Passport strategy using 'passport-local-mongoose'
 passport.use(Patient.createStrategy()); // Using the strategy created by passport-local-mongoose
 
