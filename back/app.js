@@ -47,9 +47,9 @@ mongoose
       saveUninitialized: true,
       store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
       cookie: {
-        httpOnly: true,  // This is correct for security
-        secure: true,  // Only secure in production
-        sameSite: 'None',  // Required for cross-origin requests in production
+        httpOnly: true,  
+        secure: true,  
+        sameSite: 'None',  
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       },
@@ -61,12 +61,11 @@ mongoose
 // Initialize passport
 app.use(passport.initialize());
 app.use(passport.session()); 
-// Passport strategy using 'passport-local-mongoose'
- // Using the strategy created by passport-local-mongoose
+
 passport.use(Patient.createStrategy());
 
-passport.serializeUser(Patient.serializeUser()); // Automatically handles serializing user
-passport.deserializeUser(Patient.deserializeUser()); // Automatically handles deserializing user
+passport.serializeUser(Patient.serializeUser()); 
+passport.deserializeUser(Patient.deserializeUser()); 
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Routes
