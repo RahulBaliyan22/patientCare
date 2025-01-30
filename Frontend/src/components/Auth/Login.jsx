@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,Link } from "react-router-dom";
 import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
 
@@ -123,8 +123,8 @@ const Login = () => {
           <button type="submit" className="submit-button">Login</button>
         </form>
         <div className="extra-links">
-          <p>Don't have an account? <a href="/signup">Sign Up</a></p>
-          <p><a href="/forgot-password">Forgot Password?</a></p>
+          <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+          <p><Link to="/forgot-password">Forgot Password?</Link></p>
         </div>
       </div>
     </div>

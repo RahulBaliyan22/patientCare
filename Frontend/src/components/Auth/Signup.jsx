@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -159,7 +159,7 @@ const Signup = () => {
           </button>
         </form>
         <div className="login-link">
-          <p>Already have an account? <a href="/login">Login</a></p>
+          <p>Already have an account? <Link to="/login">Login</Link></p>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ const dashboardRoutes = require("./route/dashboard");
 const passport = require("passport");
 const session = require("express-session");
 const Patient = require("./model/Patient");
+const LocalStrategy = require('passport-local')
 const contactRoutes = require("./route/contact");
 const recordRoutes = require("./route/record");
 const patientRoutes = require("./route/patient");
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS options
 const corsOptions = {
-  origin: process.env.REACT_APP_URL || "http://localhost:5173", 
+  origin: process.env.REACT_APP_URL || "https://patient-care-ten.vercel.app", 
   credentials: true,
 };
 
@@ -30,6 +31,7 @@ app.use(cors(corsOptions));
 
 const url =
   process.env.MONGO_URL;
+
 mongoose
   .connect(url)
   .then(() => {
@@ -56,13 +58,12 @@ mongoose
   
   
 
-
-
 // Initialize passport
 app.use(passport.initialize());
 app.use(passport.session()); 
 // Passport strategy using 'passport-local-mongoose'
-passport.use(Patient.createStrategy()); // Using the strategy created by passport-local-mongoose
+ // Using the strategy created by passport-local-mongoose
+passport.use(Patient.createStrategy());
 
 passport.serializeUser(Patient.serializeUser()); // Automatically handles serializing user
 passport.deserializeUser(Patient.deserializeUser()); // Automatically handles deserializing user
