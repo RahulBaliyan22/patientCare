@@ -65,7 +65,7 @@ app.use(passport.session());
 passport.use(Patient.createStrategy());
 
 passport.serializeUser(Patient.serializeUser()); 
-passport.deserializeUser(Patient.deserializeUser()); 
+passport.deserializeUser(Patient.deserializeUser());
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Routes
