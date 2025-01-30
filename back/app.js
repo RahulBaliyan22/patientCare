@@ -48,7 +48,7 @@ mongoose
         secure: process.env.NODE_ENV === 'production', // True for production only
         sameSite: 'None',  // Allow cross-origin cookies
         path: '/',
-        domain: '.onrender.com',  // Make sure this matches your domain
+        domain: '.vercel.app',  // Make sure this matches your domain
         maxAge: 604800000, // 7 days
       },
     })
