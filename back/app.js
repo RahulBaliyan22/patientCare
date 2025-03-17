@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 // CORS Configuration
 const corsOptions = {
-  origin: process.env.REACT_APP_URL || "https://patient-care-ten.vercel.app",
+  origin:"https://patient-care-ten.vercel.app",
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -54,7 +54,7 @@ app.use(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
       sameSite: "None", // Required for cross-origin requests
-      domain: ".vercel.app", // Ensure cookies work across subdomains
+      domain: "patient-care-ten.vercel.app", // Ensure cookies work across subdomains
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     },
   })
