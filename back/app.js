@@ -61,25 +61,12 @@ mongoose
 
 // Initialize passport
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session()); // Enables session-based authentication
 
+// Passport Configuration
 passport.use(Patient.createStrategy());
-
-passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user);  // Log the user object
-  done(null, user._id);  // Store the user ID in the session
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    console.log('Deserializing user ID:', id);  // Log the ID being deserialized
-    const user = await Patient.findById(id);  // Retrieve the user from the database
-    done(null, user);
-  } catch (error) {
-    console.error('Error during deserialization:', error);
-    done(error, null);
-  }
-});
+passport.serializeUser(Patient.serializeUser());
+passport.deserializeUser(Patient.deserializeUser());
 
 
 
