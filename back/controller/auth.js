@@ -39,6 +39,9 @@ const signup = async (req, res) => {
     res.status(500).json({ message: "Error registering user", error: err });
   }
 };
+const login = (req, res) => {
+  res.json({ message: "Login successful", user: req.user });
+};
 
 const logout = async (req, res) => {
   try {
@@ -193,4 +196,5 @@ module.exports = {
   logout,
   signup,
   verifyemail,
+  login,
 };
