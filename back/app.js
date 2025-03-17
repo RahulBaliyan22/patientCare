@@ -19,6 +19,9 @@ const patientRoutes = require("./route/patient");
 const medicationRoutes = require("./route/medication");
 const Patient = require("./model/Patient");
 
+// Enable trust proxy for reverse proxies (e.g., Vercel, Nginx)
+app.set("trust proxy", 1);
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,9 +36,12 @@ app.use(cors(corsOptions));
 
 // Database Connection
 mongoose
-  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connected to DB"))
-  .catch((err) => console.log("DB Connection Error:", err));
+  .catch((err) => console.error("DB Connection Error:", err));
 
 // Session Configuration
 app.use(
@@ -46,8 +52,9 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // True for production
-      sameSite: "None", // Allow cross-origin cookies
+      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      sameSite: "None", // Required for cross-origin requests
+      domain: ".vercel.app", // Ensure cookies work across subdomains
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     },
   })
@@ -75,7 +82,12 @@ app.use(medicationRoutes);
 
 // Debugging Route to Check Cookies and Session
 app.get("/check-session", (req, res) => {
-  res.json({ session: req.session, user: req.user, cookies: req.cookies });
+  res.json({
+    sessionID: req.sessionID,
+    session: req.session,
+    user: req.user || "Not logged in",
+    cookies: req.cookies,
+  });
 });
 
 // Start Server
