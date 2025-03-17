@@ -36,10 +36,7 @@ app.use(cors(corsOptions));
 
 // Database Connection
 mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("Connected to DB"))
   .catch((err) => console.error("DB Connection Error:", err));
 
@@ -49,14 +46,13 @@ app.use(
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
     cookie: {
+      secure: true,
+      sameSite: "none",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      sameSite: "None", // Required for cross-origin requests
-      domain: "patient-care-ten.vercel.app", // Ensure cookies work across subdomains
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    },
+      expires: 24 * 60*60*1000
+    }
   })
 );
 
