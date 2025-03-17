@@ -18,7 +18,7 @@ const signup = async (req, res) => {
     // Generate a verification token
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    // Create a new user using passport-local-mongoose's register method
+    // Create a new user instance (without saving)
     const user = new Patient({
       email,
       name,
@@ -26,24 +26,14 @@ const signup = async (req, res) => {
       verificationToken,
     });
 
-    // Use passport-local-mongoose's register method to hash the password and save the user
-    Patient.register(user, password, async (err, user) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ message: "Error registering user", error: err });
-      }
+    // Register user with passport-local-mongoose (returns a promise)
+    const registeredUser = await Patient.register(user, password);
 
-      // Send verification email
-      await sendVerificationEmail(email, verificationToken);
+    // Send verification email
+    await sendVerificationEmail(email, verificationToken);
 
-      // Save the user after registration
-      await user.save();
-
-      res.status(201).json({
-        message:
-          "User registered successfully. Please verify your email to log in.",
-      });
+    res.status(201).json({
+      message: "User registered successfully. Please verify your email to log in.",
     });
   } catch (err) {
     res.status(500).json({ message: "Error registering user", error: err });
