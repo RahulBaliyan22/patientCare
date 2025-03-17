@@ -39,13 +39,13 @@ const signup = async (req, res) => {
     res.status(500).json({ message: "Error registering user", error: err });
   }
 };
+
 const login = (req, res) => {
   res.json({ message: "Login successful", user: req.user });
 };
 
 const logout = async (req, res) => {
   try {
-    // If you are storing isFirstVisited in the session or database, update it accordingly
     if (req.user) {
       req.user.isFirstTimeUser = false;
       req.user.lastLogin = new Date();
@@ -71,6 +71,9 @@ const verifyemail = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
+
+    // Check token expiry (Optional enhancement)
+    // Example: if (new Date(user.tokenExpiry) < Date.now()) { return res.status(400).json({ message: "Token expired" }); }
 
     // Update the user's isVerified property to true
     user.isVerified = true;
@@ -101,9 +104,12 @@ const verifyContactemail = async (req, res) => {
       return res.status(404).json({ message: "Verifier (Patient) not found." });
     }
 
-    if(patient.hasPrimaryContact.isPrimary){
-      await Contact.findByIdAndUpdate(patient.hasPrimaryContact.primaryContact,{$set:{isPrimary:false}})
+    if (patient.hasPrimaryContact.isPrimary) {
+      await Contact.findByIdAndUpdate(patient.hasPrimaryContact.primaryContact, {
+        $set: { isPrimary: false },
+      });
     }
+
     // If `isPrimary` is true, reset primary contact and update patient's primary contact field
     if (isPrimary === "true") {
       patient.hasPrimaryContact = {
@@ -117,13 +123,11 @@ const verifyContactemail = async (req, res) => {
     contact.isVerified = true;
     contact.verificationToken = null;
 
-    
     await contact.save();
-
     await patient.save();
     await askContact(contact, verifier);
 
-    res.status(200).json({ message: "Verification successful." });
+    res.status(200).json({ message: "Contact email verification successful." });
   } catch (error) {
     res
       .status(500)
