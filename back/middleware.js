@@ -1,26 +1,16 @@
-// isVerified middleware
-const {
-  schemaMedication,
-  schemaContact,
-  schemaPatient,
-  schemaRecords,
-} = require("./ssv");
-
+const { schemaMedication, schemaContact, schemaPatient, schemaRecords } = require("./ssv");
 const Patient = require("./model/Patient");
 
 const validateMedication = (req, res, next) => {
   const { name, start, end, prescribedBy, dosage } = req.body;
-  const { error, value } = schemaMedication.validate({
-    name,
-    start
-  });
-
+  if (!name || !start) {
+    return res.status(400).json({ message: "Name and start date are required" });
+  }
+  
+  const { error } = schemaMedication.validate({ name, start });
   if (error) {
-    console.log(error.details)
-    return res.status(400).json({
-      message: "Validation Error",
-      details: error.details,
-    });
+    console.log(error.details);
+    return res.status(400).json({ message: "Validation Error", details: error.details });
   }
 
   next();
@@ -28,18 +18,14 @@ const validateMedication = (req, res, next) => {
 
 const validateContact = (req, res, next) => {
   const { name, phone, email, isPrimary } = req.body;
-  const { error, value } = schemaContact.validate({
-    name,
-    phone,
-    email
-  });
+  if (!name || !phone || !email) {
+    return res.status(400).json({ message: "Name, phone, and email are required" });
+  }
 
+  const { error } = schemaContact.validate({ name, phone, email });
   if (error) {
-    console.log(error.details[0].message)
-    return res.status(400).json({
-      message: "Validation Error",
-      details: error.details,
-    });
+    console.log(error.details[0].message);
+    return res.status(400).json({ message: "Validation Error", details: error.details });
   }
 
   next();
@@ -47,21 +33,14 @@ const validateContact = (req, res, next) => {
 
 const validatePatient = (req, res, next) => {
   const { name, email, phone, DOB, gender, bloodGroup, address } = req.body;
-  const { error, value } = schemaPatient.validate({
-    name,
-    email,
-    phone,
-    DOB,
-    gender,
-    bloodGroup,
-  });
+  if (!name || !email || !phone) {
+    return res.status(400).json({ message: "Name, email, and phone are required" });
+  }
 
+  const { error } = schemaPatient.validate({ name, email, phone, DOB, gender, bloodGroup });
   if (error) {
-    console.log(error.details[0].message)
-    return res.status(400).json({
-      message: "Validation Error",
-      details: error.details,
-    });
+    console.log(error.details[0].message);
+    return res.status(400).json({ message: "Validation Error", details: error.details });
   }
 
   next();
@@ -69,40 +48,31 @@ const validatePatient = (req, res, next) => {
 
 const validateRecords = (req, res, next) => {
   const { date, doctor, diagnosis, notes } = req.body;
- 
-  const { error, value } = schemaRecords.validate({
-    date,
-    doctor,
-  });
+  if (!date || !doctor) {
+    return res.status(400).json({ message: "Date and doctor are required" });
+  }
 
+  const { error } = schemaRecords.validate({ date, doctor });
   if (error) {
-    console.log(error.details[0].message)
-    return res.status(400).json({
-      message: "Validation Error",
-      details: error.details,
-    });
+    console.log(error.details[0].message);
+    return res.status(400).json({ message: "Validation Error", details: error.details });
   }
 
   next();
 };
 
 const isVerified = async (req, res, next) => {
-  const { email } = req.body; // Access email from the request body
-
+  const { email } = req.body;
   try {
-    const patient = await Patient.findOne({ email }); // Find the patient by email
-
+    const patient = await Patient.findOne({ email });
     if (!patient) {
-      return res.status(404).json({ message: "User not found" }); // User not found
+      return res.status(404).json({ message: "User not found" });
     }
 
     if (!patient.isVerified) {
-      return res
-        .status(400)
-        .json({ message: "Please verify your email to log in" }); // Email not verified
+      return res.status(400).json({ message: "Please verify your email to log in" });
     }
 
-    // Proceed to the next middleware if the email is verified
     next();
   } catch (error) {
     console.error("Error checking email verification:", error);
@@ -111,21 +81,19 @@ const isVerified = async (req, res, next) => {
 };
 
 const isLoggedIn = (req, res, next) => {
-  console.log('Session ID:', req.sessionID); // Log session ID
-  console.log('Session:', req.session);
-  console.log("Session Cookie: ", req.cookies);
-  console.log('Is Authenticated:', req.isAuthenticated())
   if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "Please log in first" }); // 401 Unauthorized
+    return res.status(401).json({ message: "Please log in first" });
   }
-  next(); // Proceed to the next middleware or route handler
+
+  next();
 };
 
 const isLoggedOut = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return res.status(401).json({ message: "Please log out first" }); // 401 Unauthorized
+    return res.status(401).json({ message: "Please log out first" });
   }
-  next(); // Proceed to the next middleware or route handler
+
+  next();
 };
 
 module.exports = {
