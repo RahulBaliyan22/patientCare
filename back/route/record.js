@@ -3,7 +3,7 @@ const router = express.Router();
 const { isLoggedIn, validateRecords } = require("../middleware");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
-const s3 = require("../config/s3Config"); // Import AWS S3 configuration
+const initializeS3 = require("../config/s3"); // Import AWS S3 initialization function
 
 const {
   sendRecords,
@@ -16,12 +16,15 @@ const {
   addRecord,
 } = require("../controller/record");
 
+// Initialize S3 instance
+const s3 = initializeS3();
+
 // Configure Multer-S3 storage
 const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.S3_BUCKET_NAME,
-    acl: "public-read", // Can be changed to "private" if needed
+    acl: "public-read", // Change to "private" if access should be restricted
     metadata: (req, file, cb) => {
       cb(null, { fieldName: file.fieldname });
     },
