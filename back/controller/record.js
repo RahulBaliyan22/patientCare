@@ -1,13 +1,11 @@
 const Record = require("../model/Record");
 const Patient = require("../model/Patient");
-const fs = require("fs").promises; // Use fs/promises for async/await operations
-const path = require("path");
 const sendRecordEmail = require("../utils/sendRecordEmail");
 const sendRecordsEmail = require("../utils/sendRecordsEmail");
 const initializeS3 = require("../config/s3");
 
 
-const s3 = initialize();
+const s3 = initializeS3();
 const addRecord = async (req, res) => {
   try {
     const { date, doctor, diagnosis, notes } = req.body;
