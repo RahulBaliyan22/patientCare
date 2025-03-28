@@ -21,13 +21,18 @@ const s3 = initializeS3();
 // Configure Multer-S3 storage
 const upload = multer({
   storage: multerS3({
-    s3,
+    s3: s3, // Pass the S3Client instance correctly
     bucket: process.env.S3_BUCKET_NAME,
-    acl: "public-read",
-    metadata: (req, file, cb) => cb(null, { fieldName: file.fieldname }),
-    key: (req, file, cb) => cb(null, `patient-records/${Date.now()}-${file.originalname}`),
+    contentType: multerS3.AUTO_CONTENT_TYPE, // Automatically detect MIME type
+    metadata: (req, file, cb) => {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: (req, file, cb) => {
+      cb(null, `patient-records/${Date.now()}-${file.originalname}`);
+    },
   }),
 });
+
 
 // Routes
 router.post("/add-record", isLoggedIn, upload.array("images"), validateRecords, addRecord);

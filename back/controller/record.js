@@ -11,23 +11,22 @@ const addRecord = async (req, res) => {
     const { date, doctor, diagnosis, notes } = req.body;
 
     if (!date || !doctor) {
-      return res
-        .status(400)
-        .json({ message: "Date and doctor are required fields." });
+      return res.status(400).json({ message: "Date and doctor are required fields." });
     }
 
-    // Store the S3 URLs instead of local paths
-    const images = req.files.map((file) => ({
-      filename: file.originalname, // Maintain original filename for reference
-      filePath: file.location,          // Store S3 URL instead of local file path
-    }));
+    // Ensure files were uploaded
+    const images = req.files ? req.files.map((file) => ({
+      filename: file.originalname, 
+      filePath: file.location, 
+    })) : [];
 
+    // Update first-time user flag
     if (req.user.isFirstTimeUser) {
       req.user.isFirstTimeUser = false;
       await req.user.save();
     }
 
-    // Create a new record
+    // Create a new medical record
     const newRecord = new Record({
       patient: req.user._id,
       date,
@@ -39,7 +38,7 @@ const addRecord = async (req, res) => {
 
     const savedRecord = await newRecord.save();
 
-    // Update the patient's list with the new record ID
+    // Link the record to the patient
     const patient = await Patient.findById(req.user._id);
     if (!patient) {
       return res.status(404).json({ message: "Patient not found." });
@@ -48,10 +47,7 @@ const addRecord = async (req, res) => {
     patient.list.push(savedRecord._id);
     await patient.save();
 
-    res.status(201).json({
-      message: "Record added successfully.",
-      record: savedRecord,
-    });
+    res.status(201).json({ message: "Record added successfully.", record: savedRecord });
   } catch (error) {
     console.error("Error saving record:", error);
     res.status(500).json({ message: "Server error" });
@@ -219,8 +215,8 @@ const deleteImage = async (req, res) => {
 };
 
 const updateRecord = async (req, res) => {
-  let { id } = req.params; // Extract the record ID from URL
-  let { date, doctor, diagnosis, notes } = req.body; // Extract the record data
+  let { id } = req.params;
+  let { date, doctor, diagnosis, notes } = req.body;
 
   try {
     // Step 1: Find the current record by ID
@@ -229,28 +225,18 @@ const updateRecord = async (req, res) => {
       return res.status(404).json({ message: "Record not found." });
     }
 
-    // Step 2: Handle file uploads (S3)
-    if (req.files) {
-      const uploadedImages = await Promise.all(
-        req.files.map(async (file) => {
-          const uploadParams = {
-            Bucket: process.env.AWS_S3_BUCKET_NAME, // Your S3 bucket
-            Key: `uploads/${Date.now()}_${file.originalname}`, // Unique key for each image
-            Body: file.buffer,
-            ContentType: file.mimetype,
-            ACL: "public-read", // Makes the file publicly accessible
-          };
-
-          const s3Upload = await s3.upload(uploadParams).promise();
-          return {
-            filename: file.originalname,
-            filePath: s3Upload.Location, // S3 URL
-          };
-        })
-      );
-
-      Curr_record.image.push(...uploadedImages); // Append new images
+    // Step 2: Ensure images are stored
+    if (req.files && req.files.length > 0) {
+      if (!Curr_record.image) Curr_record.image = [];
     }
+
+      const uploadedImages = req.files.map((file) => ({
+        filename: file.originalname,
+        filePath: file.location, // `file.location` is provided by multer-s3
+      }));
+
+      Curr_record.image.push(...uploadedImages);
+    
 
     // Step 3: Update fields with new data
     Curr_record.date = date || Curr_record.date;
@@ -261,17 +247,13 @@ const updateRecord = async (req, res) => {
     // Step 4: Save the updated record
     await Curr_record.save();
 
-    // Step 5: Send success response
-    res
-      .status(200)
-      .json({ message: "Record updated successfully", record: Curr_record });
+    res.status(200).json({ message: "Record updated successfully", record: Curr_record });
   } catch (err) {
     console.error("Error updating record:", err);
-    res
-      .status(500)
-      .json({ message: "Failed to update record", error: err.message });
+    res.status(500).json({ message: "Failed to update record", error: err.message });
   }
 };
+
 
 
 const sendRecords = async (req, res) => {
