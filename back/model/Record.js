@@ -1,45 +1,44 @@
 const mongoose = require("mongoose");
 
-const recordSchema = new mongoose.Schema({
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  doctor: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  diagnosis: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  notes: {
-    type: String,
-    required: false,
-  },
-  image: [
-    {
-      filename: {
-        type: String,
-        required: true,
-      },
-      filePath: {
-        type: String,
-        required: true,
-      },
+const recordSchema = new mongoose.Schema(
+  {
+    patient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
+      required: true, // Ensuring each record belongs to a patient
     },
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    date: {
+      type: Date,
+      required: true,
+    },
+    doctor: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    diagnosis: {
+      type: String,
+      trim: true, // Ensuring unnecessary spaces are removed
+    },
+    notes: {
+      type: String,
+      trim: true,
+    },
+    image: [
+      {
+        filename: {
+          type: String,
+          required: true,
+        },
+        filePath: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
-});
+  { timestamps: true } // Adds 'createdAt' and 'updatedAt' fields automatically
+);
 
 const Record = mongoose.model("Record", recordSchema);
 

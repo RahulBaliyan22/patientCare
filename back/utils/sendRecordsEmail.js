@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-const path = require("path");
 
 const sendRecordsEmail = (email, records, sender) => {
   const transporter = nodemailer.createTransport({
@@ -11,14 +10,6 @@ const sendRecordsEmail = (email, records, sender) => {
       pass: process.env.MAIL_PASS, // Email service password
     },
   });
-
-  // Generate attachments for images
-  const attachments = records.flatMap((record) =>
-    record.image.map((img) => ({
-      filename: img.filename,
-      path: path.join(__dirname, "../", img.filePath), // Adjust filePath based on your project structure
-    }))
-  );
 
   // Generate email HTML content
   const htmlContent = `
@@ -40,7 +31,7 @@ const sendRecordsEmail = (email, records, sender) => {
         ? records
             .map(
               (record, idx) => `
-        <div key="${record._id}">
+        <div>
           <p><strong><u>Record Information ${idx + 1}:</u></strong></p>
           <p><strong>Date:</strong> ${new Date(
             record.date
@@ -61,7 +52,8 @@ const sendRecordsEmail = (email, records, sender) => {
                     (img) => `
               <div>
                 <p><strong>${img.filename}</strong></p>
-                <a href="${process.env.APP_URL}${img.filePath}" download>Click here to download the image</a>
+                <a href="${img.filePath}" download>Click here to download the image</a><br>
+                <img src="${img.filePath}" alt="Medical Image" width="200px" style="margin-top: 10px;"/>
               </div>
             `
                   )
@@ -91,8 +83,7 @@ const sendRecordsEmail = (email, records, sender) => {
     from: sender.email,
     to: email,
     subject: "Patient Record",
-    html: htmlContent, // Use HTML for better formatting
-    attachments: attachments, // Attach image files
+    html: htmlContent, // HTML-formatted email
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
