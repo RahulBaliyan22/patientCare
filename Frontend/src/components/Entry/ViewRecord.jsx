@@ -256,10 +256,10 @@ const ViewRecord = () => {
                   {record.image.map((img, index) => (
                     <PhotoView
                       key={index}
-                      src={`https://patientcare-2.onrender.com${img.filePath}`}
+                      src={img.filePath}
                     >
                       <img
-                        src={`https://patientcare-2.onrender.com${img.filePath}`}
+                        src={img.filePath}
                         alt={`Image ${index + 1}`}
                         className="thumbnail-image"
                       />
