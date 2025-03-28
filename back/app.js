@@ -9,6 +9,9 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const initializeS3 = require("./config/s3");
+ // Now you call it as a function
+
 
 // Import routes
 const authRoutes = require("./route/auth");
@@ -26,7 +29,7 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+const s3 = initializeS3();
 // CORS Configuration
 const corsOptions = {
   origin:"https://patient-care-ten.vercel.app",
@@ -65,8 +68,7 @@ passport.use(Patient.createStrategy());
 passport.serializeUser(Patient.serializeUser());
 passport.deserializeUser(Patient.deserializeUser());
 
-// Serve Static Files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 // Routes
 app.use(authRoutes);
