@@ -201,7 +201,7 @@ const deleteImage = async (req, res) => {
 
     // Delete the image from S3
     const params = {
-      Bucket: process.env.AWS_S3_BUCKET_NAME, // Replace with your S3 bucket name
+      Bucket: process.env.S3_BUCKET_NAME, // Replace with your S3 bucket name
       Key: filePath, // Ensure filePath contains the S3 object key
     };
 
