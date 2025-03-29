@@ -80,7 +80,7 @@ const App = () => {
           <Route path="*" element={<Error />} />
           
         </Routes>
-        <ChatbotButton/>
+        {/* <ChatbotButton/> */}
         <Footer />
       </BrowserRouter>
     </AuthContext.Provider>
