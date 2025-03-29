@@ -143,7 +143,12 @@ const deleteRecord = async (req, res) => {
           Key: fileKey,
         };
         
-        await s3.send(new DeleteObjectCommand(deleteParams));
+        try {
+          const response = await s3.send(new DeleteObjectCommand(deleteParams));
+          console.log("S3 Delete Response:", response);
+        } catch (err) {
+          console.error("S3 Delete Error:", err);
+        }
         console.log(`Deleted file from S3: ${fileKey}`);
       } catch (err) {
         console.error(`Error deleting file from S3: ${fileKey}`, err.message);
