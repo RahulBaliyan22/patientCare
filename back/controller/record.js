@@ -3,7 +3,7 @@ const Patient = require("../model/Patient");
 const sendRecordEmail = require("../utils/sendRecordEmail");
 const sendRecordsEmail = require("../utils/sendRecordsEmail");
 const initializeS3 = require("../config/s3");
-
+const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
 const s3 = initializeS3();
 const addRecord = async (req, res) => {
@@ -138,12 +138,12 @@ const deleteRecord = async (req, res) => {
       console.log(`Deleting file from S3: ${fileKey}`);
       
       try {
-        await s3
-          .deleteObject({
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: fileKey,
-          })
-          .promise();
+        const deleteParams = {
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: fileKey,
+        };
+        
+        await s3.send(new DeleteObjectCommand(deleteParams));
         console.log(`Deleted file from S3: ${fileKey}`);
       } catch (err) {
         console.error(`Error deleting file from S3: ${fileKey}`, err.message);
