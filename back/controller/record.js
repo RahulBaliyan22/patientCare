@@ -128,13 +128,13 @@ const deleteRecord = async (req, res) => {
     const recordIndex = patient.list.indexOf(record._id);
     if (recordIndex > -1) {
       patient.list.splice(recordIndex, 1); // Remove the record ID from the list
-      await patient.save(); // Save the patient document
+      await patient.save();
       console.log(`Removed record ID ${id} from patient's list`);
     }
 
     // Delete images from S3
     for (let obj of record.image) {
-      const fileKey = obj.fileUrl.replace(`https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`, ''); // Extract the key from the S3 URL
+      const fileKey = obj.filePath.replace(`https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`, ''); // Extract the key from the S3 URL
       console.log(`Deleting file from S3: ${fileKey}`);
       
       try {
