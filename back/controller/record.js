@@ -134,7 +134,7 @@ const deleteRecord = async (req, res) => {
 
     // Delete images from S3
     for (let obj of record.image) {
-      const fileKey = obj.filePath.split(".amazonaws.com/")[1]; // Extract the key from the S3 URL
+      const fileKey = obj.fileUrl.replace(`https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`, ''); // Extract the key from the S3 URL
       console.log(`Deleting file from S3: ${fileKey}`);
       
       try {
