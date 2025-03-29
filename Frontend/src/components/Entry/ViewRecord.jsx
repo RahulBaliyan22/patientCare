@@ -36,6 +36,7 @@ const ViewRecord = () => {
         setPrimary(primary.primaryContact);
         setSendList([primary.primaryContact]);
       }
+      console.log(record);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching record details:", err);

@@ -177,7 +177,7 @@ const EditRecord = () => {
               {record.image.map((img, index) => (
                 <div key={index} className="imageLink">
                   <a
-                    href={`https://patientcare-2.onrender.com${img.filePath}`}
+                    href={img.filePath}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="ImL"

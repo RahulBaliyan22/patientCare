@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./AddRecord.css"; // Use the same CSS as the Create component
+import "./AddRecord.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// import "./Create.css"
+
 const AddRecord = () => {
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ const AddRecord = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
-
+    
     // Create previews for the selected images
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews(previews);
@@ -37,14 +37,11 @@ const AddRecord = () => {
     e.preventDefault();
 
     if (!formData.date || !formData.doctor) {
-      alert("Date and Doctor are required fields.");
+      toast.error("Date and Doctor are required fields.");
       return;
     }
 
-    // if (images.length === 0) {
-    //   alert("Please upload at least one image.");
-    //   return;
-    // }
+    setLoading(true);
 
     const data = new FormData();
     data.append("date", formData.date);
@@ -53,17 +50,20 @@ const AddRecord = () => {
     data.append("notes", formData.notes);
 
     images.forEach((image) => {
-      data.append("images", image);
+      data.append("images", image); // Send images directly
     });
 
     try {
-      setLoading(true);
-      const response = await axios.post(`https://patientcare-2.onrender.com/add-record`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true
-      });
+      const response = await axios.post(
+        "https://patientcare-2.onrender.com/add-record", 
+        data,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
 
-      alert("Record added successfully!");
+      toast.success(response.data.message);
       setLoading(false);
 
       // Clear the form
@@ -75,11 +75,10 @@ const AddRecord = () => {
       });
       setImages([]);
       setImagePreviews([]);
-      navigation('/records');
-      toast.success(response.data.message);
+      navigation("/records");
     } catch (error) {
       console.error("Error adding record:", error);
-      alert("Failed to add record.");
+      toast.error("Failed to add record.");
       setLoading(false);
     }
   };
