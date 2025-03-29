@@ -50,9 +50,10 @@ const App = () => {
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <BrowserRouter basename="/">
         <Navbar />
+
         <ToastContainer />
         <Routes>
-          <ChatbotButton/>
+          
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
@@ -79,6 +80,7 @@ const App = () => {
           <Route path="*" element={<Error />} />
           
         </Routes>
+        <ChatbotButton/>
         <Footer />
       </BrowserRouter>
     </AuthContext.Provider>
