@@ -197,6 +197,7 @@ const deleteImage = async (req, res) => {
     // Check if the image exists in the record
     const imageIndex = record.image.findIndex((img) => img.filePath === filePath);
     if (imageIndex === -1) {
+      console.log(filePath)
       return res.status(404).json({ message: "Image not found." });
     }
 
@@ -209,8 +210,7 @@ const deleteImage = async (req, res) => {
       Bucket: process.env.S3_BUCKET_NAME, // Replace with your S3 bucket name
       Key: filePath, // Ensure filePath contains the S3 object key
     };
-
-    await s3.deleteObject(params).promise();
+    await s3.send(new DeleteObjectCommand(params));
 
     res.status(200).json({ message: "Image deleted successfully from S3." });
   } catch (err) {
