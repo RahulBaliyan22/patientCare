@@ -30,6 +30,7 @@ import UpdateContactForm from "./components/Contact/UpdateContactForm";
 import ProfilePage from "./components/Entry/ProfilePage";
 import ContactsPage from "./components/Contact/ContactsPage";
 import ResetPassword from "./components/ResetPassword";
+import ChatbotButton from "./components/ChatBot/ChatbotButton";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -51,6 +52,7 @@ const App = () => {
         <Navbar />
         <ToastContainer />
         <Routes>
+          <ChatbotButton/>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
