@@ -30,7 +30,7 @@ import UpdateContactForm from "./components/Contact/UpdateContactForm";
 import ProfilePage from "./components/Entry/ProfilePage";
 import ContactsPage from "./components/Contact/ContactsPage";
 import ResetPassword from "./components/ResetPassword";
-// import ChatbotButton from "./components/ChatBot/ChatbotButton";
+import ChatbotButton from "./components/ChatBot/ChatbotButton";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -80,7 +80,7 @@ const App = () => {
           <Route path="*" element={<Error />} />
           
         </Routes>
-        {/* <ChatbotButton/> */}
+        <ChatbotButton/>
         <Footer />
       </BrowserRouter>
     </AuthContext.Provider>
