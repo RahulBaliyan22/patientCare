@@ -25,26 +25,27 @@ const ChatSidebar = ({ onClose }) => {
   };
 
   return (
-    <div className="chat-sidebar">
-      <div className="chat-header">
+    <div className="chat-wrapper__sidebar">
+      <div className="chat-wrapper__header">
         <h3>Chatbot</h3>
-        <button onClick={onClose}>X</button>
+        <button className="chat-wrapper__header__close-btn" onClick={onClose}>X</button>
       </div>
-      <div className="chat-messages">
+      <div className="chat-wrapper__messages">
         {messages.map((msg, i) => (
-          <div key={i} className={msg.sender}>
-            {msg.text}
+          <div key={i} className={`chat-wrapper__message ${msg.sender === "bot" ? "chat-wrapper__message--bot" : ""}`}>
+            <div className="chat-wrapper__message__content">{msg.text}</div>
           </div>
         ))}
       </div>
-      <div className="chat-input">
+      <div className="chat-wrapper__input">
         <input
+          className="chat-wrapper__input__field"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message..."
         />
-        <button onClick={sendMessage}>Send</button>
+        <button className="chat-wrapper__input__button" onClick={sendMessage}>Send</button>
       </div>
     </div>
   );

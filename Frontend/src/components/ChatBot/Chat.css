@@ -1,13 +1,13 @@
-/* Container for the whole chat system */
-.chat-container {
+/* Wrapper for the entire chat system */
+.chat-wrapper {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 9999; /* Ensure it's on top */
 }
 
-/* Chat button (floating button to open chat) */
-.chat-button {
+/* Floating button to open the chat */
+.chat-wrapper__button {
   background: #00bfae; /* Soft teal color (healthcare friendly) */
   color: white;
   border: none;
@@ -18,12 +18,12 @@
   transition: background 0.3s ease;
 }
 
-.chat-button:hover {
+.chat-wrapper__button:hover {
   background: #009e8c; /* Darker teal for hover effect */
 }
 
-/* Chat sidebar (container for the chat interface) */
-.chat-sidebar {
+/* Sidebar for the chat interface */
+.chat-wrapper__sidebar {
   position: fixed;
   bottom: 80px;
   right: 20px;
@@ -38,16 +38,16 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.chat-sidebar.open {
+.chat-wrapper__sidebar--open {
   transform: translateX(0); /* For animation when opening chat */
 }
 
-.chat-sidebar.closed {
+.chat-wrapper__sidebar--closed {
   transform: translateX(100%); /* Hide sidebar when not in use */
 }
 
-/* Chat header (title and close button) */
-.chat-header {
+/* Chat header with title and close button */
+.chat-wrapper__header {
   padding: 16px;
   background: #00bfae; /* Matches the chat button's color */
   color: white;
@@ -59,7 +59,7 @@
   border-top-right-radius: 8px;
 }
 
-.chat-header .close-btn {
+.chat-wrapper__header__close-btn {
   background: transparent;
   border: none;
   color: white;
@@ -68,12 +68,12 @@
   transition: color 0.2s;
 }
 
-.chat-header .close-btn:hover {
+.chat-wrapper__header__close-btn:hover {
   color: #ff4b5c; /* A red shade for a close button hover effect */
 }
 
 /* Chat message container */
-.chat-messages {
+.chat-wrapper__messages {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
@@ -84,12 +84,12 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Individual messages */
-.chat-message {
+/* Individual message bubbles */
+.chat-wrapper__message {
   margin-bottom: 15px;
 }
 
-.chat-message p {
+.chat-wrapper__message__content {
   margin: 0;
   padding: 8px 12px;
   background: #e0f7fa;
@@ -101,21 +101,21 @@
   line-height: 1.4;
 }
 
-.chat-message.bot p {
+.chat-wrapper__message--bot .chat-wrapper__message__content {
   background: #ffffff;
   border: 1px solid #ddd;
   color: #333;
 }
 
-/* Chat input area */
-.chat-input {
+/* Input area for typing messages */
+.chat-wrapper__input {
   display: flex;
   padding: 12px;
   background: #ffffff;
   border-top: 1px solid #ddd;
 }
 
-.chat-input input {
+.chat-wrapper__input__field {
   flex: 1;
   padding: 12px;
   border: 1px solid #ddd;
@@ -125,12 +125,12 @@
   margin-right: 10px;
 }
 
-.chat-input input:focus {
+.chat-wrapper__input__field:focus {
   outline: none;
   border-color: #00bfae;
 }
 
-.chat-input button {
+.chat-wrapper__input__button {
   background: #00bfae;
   color: white;
   border: none;
@@ -140,6 +140,6 @@
   transition: background 0.3s ease;
 }
 
-.chat-input button:hover {
+.chat-wrapper__input__button:hover {
   background: #009e8c;
 }
