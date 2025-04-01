@@ -110,20 +110,12 @@
 /* Input area for typing messages */
 .chat-wrapper__input {
   display: flex;
+  justify-content: space-between;
   padding: 12px;
   background: #ffffff;
   border-top: 1px solid #ddd;
 }
 
-/* .chat-wrapper__input__field {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  font-size: 14px;
-  color: #333;
-  margin-right: 10px;
-} */
 
 .chat-wrapper__input__field:focus {
   outline: none;
