@@ -7,9 +7,9 @@ const ChatbotButton = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="chat-container">
+    <div className="chat-wrapper">
       {isOpen && <ChatSidebar onClose={() => setIsOpen(false)} />}
-      <button className="chat-button" onClick={() => setIsOpen(!isOpen)}>
+      <button className="chat-wrapper__button" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
     </div>
