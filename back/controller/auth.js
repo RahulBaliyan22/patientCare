@@ -37,7 +37,7 @@ const signup = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: err.error.errorResponse.errmsg ? "Error registering user" : err.message, // Correct usage of optional chaining
+      message: err?.error?.errorResponse?.errmsg ? "Error registering user" : err.message, // Correct usage of optional chaining
       error: err
     });
   }
