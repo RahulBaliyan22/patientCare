@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import "./Chat.css";
 
-const socket = io("https://patientcare-2.onrender.com"); // Adjust URL to your backend
+const socket = io("wss://patientcare-2.onrender.com"); // Adjust URL to your backend
 
 const ChatSidebar = ({ onClose }) => {
   const [messages, setMessages] = useState([]);
