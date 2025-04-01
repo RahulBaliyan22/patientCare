@@ -28,7 +28,7 @@ const ChatSidebar = ({ onClose }) => {
     <div className="chat-wrapper__sidebar">
       <div className="chat-wrapper__header">
         <h3>Chatbot</h3>
-        <button className="chat-wrapper__header__close-btn" onClick={onClose}>X</button>
+        
       </div>
       <div className="chat-wrapper__messages">
         {messages.map((msg, i) => (
