@@ -36,7 +36,10 @@ const signup = async (req, res) => {
       message: "User registered successfully. Please verify your email to log in.",
     });
   } catch (err) {
-    res.status(500).json({ message: "Error registering user", error: err });
+    res.status(500).json({
+      message: err.errmsg ? "Error registering user" : err.message, // Correct usage of optional chaining
+      error: err
+    });
   }
 };
 
