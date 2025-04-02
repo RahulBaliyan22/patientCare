@@ -6,6 +6,8 @@ function NewComponents() {
     healthSectorNews: [],
   });
 
+  const [isPaused, setIsPaused] = useState(false);
+
   useEffect(() => {
     let data = {
       appUpdates: [
@@ -57,16 +59,25 @@ function NewComponents() {
     const scrollContainer = document.getElementById("scrollable-container");
     if (!scrollContainer) return;
 
-    let scrollInterval = setInterval(() => {
-      if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
-        scrollContainer.scrollTop = 0; // Reset to top when reaching the bottom
-      } else {
-        scrollContainer.scrollTop += 1; // Scroll down slowly
-      }
-    }, 50); // Adjust speed by changing this value
+    let scrollInterval;
+
+    const startScrolling = () => {
+      scrollInterval = setInterval(() => {
+        if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
+          scrollContainer.scrollTop = 0; // Reset to top when reaching the bottom
+        } else {
+          scrollContainer.scrollTop += 1; // Scroll down slowly
+        }
+      }, 50); // Adjust speed by changing this value
+    };
+
+    if (!isPaused) {
+      startScrolling();
+    }
 
     return () => clearInterval(scrollInterval); // Cleanup on unmount
-  }, []);
+  }, [isPaused]); // Re-run effect when `isPaused` changes
+
 
   return (
     <div
@@ -78,6 +89,8 @@ function NewComponents() {
     scrollbarWidth: "none", // Hide scrollbar in Firefox
     msOverflowStyle: "none" // Hide scrollbar in IE/Edge
       }}
+      onMouseEnter={() => setIsPaused(true)} // Pause when hovering
+      onMouseLeave={() => setIsPaused(false)} // Resume when leaving
     >
 
 <ul className="updates-list">
