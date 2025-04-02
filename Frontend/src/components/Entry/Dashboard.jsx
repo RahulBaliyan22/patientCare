@@ -7,6 +7,7 @@ import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
 import { AuthContext } from "../../main";
 import Data from "../HealthRecord/Data";
+import NewComponents from "../NewComponent/NewComponents";
 const Dashboard = () => {
   const [user, setUser] = useState(null); // Holds user's data
   const [loading, setLoading] = useState(true); // Loading state
@@ -125,15 +126,14 @@ const Dashboard = () => {
         <div className="add-Flex">
           <Data/>
           <div className="dashboard-card">
-              <h2>Add Patient Record</h2>
-              <p>View and manage your health records in one place.</p>
-              <button
-                className="action-btn"
-                onClick={() => navigate("/add-record")}
-              >
-                Add Records
-              </button>
-            </div>
+              
+  <h2>Check Your Vitals</h2>
+  <p>Monitor and manage your health records in one place.</p>
+  <button className="action-btn" onClick={() => navigate("/add-record")}>
+    Check Vitals
+  </button>
+</div>
+
           </div>
           <Timeline history={medicalHistory} itemsPerPage={3} />
           
@@ -162,16 +162,19 @@ const Dashboard = () => {
 
         
         <div className="dashboard-card">
-              <h2>Add Patient Record</h2>
-              <p>View and manage your health records in one place.</p>
+              <h2>View Your Contacts</h2>
+              <p>View and manage your contacts in one place.</p>
               <button
                 className="action-btn"
-                onClick={() => navigate("/add-record")}
+                onClick={() => navigate("/contact/show")}
               >
-                Add Records
+                My Contacts
               </button>
             </div>
             <div className="dashboard-card">
+              <h2> What's new !</h2>{
+                <NewComponents/>
+              }
         </div>
             <div className="dashboard-card">
               <h2>Add Patient Record</h2>
