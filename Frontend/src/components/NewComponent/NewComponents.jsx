@@ -72,19 +72,16 @@ function NewComponents() {
     <div
       id="scrollable-container"
       style={{
-        maxWidth: "400px",
-        height: "300px",
+        width: "100%", // Takes full width from parent
+        height: "100%", // Takes full height from parent
         overflowY: "auto",
-        border: "1px solid #ccc",
+        border: "none",
         padding: "10px",
         borderRadius: "5px",
-        scrollbarWidth: "thin", // For Firefox
-        scrollbarColor: "#888 #f1f1f1",
+        scrollbarWidth: "none", // For Firefox
       }}
     >
-      <h2>What's New</h2>
 
-      <h3>App Updates</h3>
       <ul>
         {newState.appUpdates.map((val, idx) => (
           <li key={idx} style={{ marginBottom: "10px" }}>
@@ -97,7 +94,6 @@ function NewComponents() {
         ))}
       </ul>
 
-      <h3>Health Sector News</h3>
       <ul>
         {newState.healthSectorNews.map((val, idx) => (
           <li key={idx} style={{ marginBottom: "10px" }}>
