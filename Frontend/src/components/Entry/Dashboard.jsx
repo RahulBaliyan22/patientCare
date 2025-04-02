@@ -160,7 +160,28 @@ const Dashboard = () => {
           </button>
         </div>
 
+        
         <div className="dashboard-card">
+              <h2>Add Patient Record</h2>
+              <p>View and manage your health records in one place.</p>
+              <button
+                className="action-btn"
+                onClick={() => navigate("/add-record")}
+              >
+                Add Records
+              </button>
+            </div>
+            <div className="dashboard-card">
+              <h2>Add Patient Record</h2>
+              <p>View and manage your health records in one place.</p>
+              <button
+                className="action-btn"
+                onClick={() => navigate("/add-record")}
+              >
+                Add Records
+              </button>
+            </div>
+            <div className="dashboard-card">
           <h2>Settings</h2>
           <p>Update your account information and preferences.</p>
           <button className="action-btn" onClick={() => navigate("/settings")}>
