@@ -17,7 +17,7 @@ const fetchContacts = async (req, res) => {
 const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
-    const contact = await Contact.findByIdAndDelete(id);
+    const contact = await Contact.findById(id);
     // Find the user and filter out the contact
     req.user.contacts = req.user.contacts.filter(
       (item) => item._id.toString() !== id

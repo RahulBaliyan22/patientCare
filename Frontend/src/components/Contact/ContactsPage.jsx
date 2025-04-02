@@ -34,7 +34,7 @@ const ContactsPage = () => {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `${process.env.VITE_BACKEND_URL}/contact/delete/${id}`,
+        `https://patientcare-2.onrender.com/contact/delete/${id}`,
         { withCredentials: true }
       );
       setContacts((prevContacts) =>
