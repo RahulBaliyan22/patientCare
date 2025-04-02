@@ -72,13 +72,11 @@ function NewComponents() {
     <div
       id="scrollable-container"
       style={{
-        width: "100%", // Takes full width from parent
-        height: "100%", // Takes full height from parent
-        overflowY: "auto",
-        border: "none",
-        padding: "10px",
-        borderRadius: "5px",
-        scrollbarWidth: "none", // For Firefox
+        flexGrow: 1, // Takes the remaining space inside .dashboard-card
+    overflowY: "auto", // Enables scrolling
+    padding: "10px",
+    scrollbarWidth: "none", // Hide scrollbar in Firefox
+    msOverflowStyle: "none" // Hide scrollbar in IE/Edge
       }}
     >
 

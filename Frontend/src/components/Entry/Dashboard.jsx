@@ -172,9 +172,13 @@ const Dashboard = () => {
               </button>
             </div>
             <div className="dashboard-card">
-              <h2> What's new !</h2>{
+              <h2> What's new !</h2>
+              <div className="what">
+              {
                 <NewComponents/>
               }
+              </div>
+              
         </div>
             <div className="dashboard-card">
               <h2>Add Patient Record</h2>
