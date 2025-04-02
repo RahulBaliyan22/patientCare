@@ -122,18 +122,21 @@ const Dashboard = () => {
 
       {!user?.isFirstTimeUser && (
         <>
-        <Data/>
-          <Timeline history={medicalHistory} itemsPerPage={3} />
+        <div className="add-Flex">
+          <Data/>
           <div className="dashboard-card">
-            <h2>Add Patient Record</h2>
-            <p>View and manage your health records in one place.</p>
-            <button
-              className="action-btn"
-              onClick={() => navigate("/add-record")}
-            >
-              Add Records
-            </button>
+              <h2>Add Patient Record</h2>
+              <p>View and manage your health records in one place.</p>
+              <button
+                className="action-btn"
+                onClick={() => navigate("/add-record")}
+              >
+                Add Records
+              </button>
+            </div>
           </div>
+          <Timeline history={medicalHistory} itemsPerPage={3} />
+          
         </>
       )}
 
