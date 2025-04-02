@@ -110,7 +110,7 @@ body {
   justify-content: space-between;
 }
 .what{
-  height:200px; 
+  height:160px; 
   display: flex;
   flex-direction: column;
   overflow: hidden;
