@@ -27,6 +27,7 @@ const deleteContact = async (req, res) => {
       req.user.hasPrimaryContact.isPrimary =false;
       req.user.hasPrimaryContact.primaryContact = null;
     }
+    await contact.save();
     await req.user.save();
 
     res.status(200).json({ message: "Deleted Contact Successfully" });
