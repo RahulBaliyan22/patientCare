@@ -75,7 +75,7 @@ function NewComponents() {
       startScrolling();
     }
 
-    return () => clearInterval(scrollInterval); // Cleanup on unmount
+    // return () => clearInterval(scrollInterval); // Cleanup on unmount
   }, [isPaused]); // Re-run effect when `isPaused` changes
 
 
