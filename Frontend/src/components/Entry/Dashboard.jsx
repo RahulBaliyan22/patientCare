@@ -129,7 +129,7 @@ const Dashboard = () => {
               
   <h2>Check Your Vitals</h2>
   <p>Monitor and manage your health records in one place.</p>
-  <button className="action-btn" onClick={() => navigate("/add-record")}>
+  <button className="action-btn" onClick={() => navigate("/vital-check")}>
     Check Vitals
   </button>
 </div>

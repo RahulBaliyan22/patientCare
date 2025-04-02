@@ -31,6 +31,7 @@ import ProfilePage from "./components/Entry/ProfilePage";
 import ContactsPage from "./components/Contact/ContactsPage";
 import ResetPassword from "./components/ResetPassword";
 import ChatbotButton from "./components/ChatBot/ChatbotButton";
+import Live from "./components/LiveMonitor/Live";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -77,6 +78,7 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage/>}/>
           <Route path="/contact/show" element={<ContactsPage/>}/>
           <Route path="/reset-password/:token" element={<ResetPassword/>} />
+          <Route path="/vital-check" element={<Live/>}/>
           <Route path="*" element={<Error />} />
           
         </Routes>
