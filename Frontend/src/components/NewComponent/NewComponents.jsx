@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import "./NewCSS.css";
 function NewComponents() {
   const [newState, setNewState] = useState({
     appUpdates: [],
@@ -80,29 +80,30 @@ function NewComponents() {
       }}
     >
 
-      <ul>
-        {newState.appUpdates.map((val, idx) => (
-          <li key={idx} style={{ marginBottom: "10px" }}>
-            <a href={val.link} target="_blank" rel="noopener noreferrer">
-              <strong>{val.title}</strong>
-            </a>
-            <p>{val.description}</p>
-            <small>{val.date}</small>
-          </li>
-        ))}
-      </ul>
+<ul className="updates-list">
+  {newState.appUpdates.map((val, idx) => (
+    <li key={idx} className="update-item">
+      <a href={val.link} target="_blank" rel="noopener noreferrer" className="update-title">
+        {val.title}
+      </a>
+      <p className="update-description">{val.description}</p>
+      <small className="update-date">{val.date}</small>
+    </li>
+  ))}
+</ul>
 
-      <ul>
-        {newState.healthSectorNews.map((val, idx) => (
-          <li key={idx} style={{ marginBottom: "10px" }}>
-            <a href={val.link} target="_blank" rel="noopener noreferrer">
-              <strong>{val.title}</strong>
-            </a>
-            <p>{val.description}</p>
-            <small>{val.date}</small>
-          </li>
-        ))}
-      </ul>
+<ul className="updates-list">
+  {newState.healthSectorNews.map((val, idx) => (
+    <li key={idx} className="update-item">
+      <a href={val.link} target="_blank" rel="noopener noreferrer" className="update-title">
+        {val.title}
+      </a>
+      <p className="update-description">{val.description}</p>
+      <small className="update-date">{val.date}</small>
+    </li>
+  ))}
+</ul>
+
     </div>
   );
 }
