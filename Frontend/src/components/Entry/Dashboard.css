@@ -107,4 +107,5 @@ body {
 .add-Flex{
   display: flex;
   padding: 20px;
+  justify-content: space-between;
 }
