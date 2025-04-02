@@ -6,6 +6,7 @@ import Timeline from "./Timeline";
 import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
 import { AuthContext } from "../../main";
+import Data from "../HealthRecord/Data";
 const Dashboard = () => {
   const [user, setUser] = useState(null); // Holds user's data
   const [loading, setLoading] = useState(true); // Loading state
@@ -121,6 +122,7 @@ const Dashboard = () => {
 
       {!user?.isFirstTimeUser && (
         <>
+        <Data/>
           <Timeline history={medicalHistory} itemsPerPage={3} />
           <div className="dashboard-card">
             <h2>Add Patient Record</h2>
