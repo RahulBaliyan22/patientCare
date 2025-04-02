@@ -42,7 +42,6 @@ body {
 
 /* Dashboard Card */
 .dashboard-card {
-  width:300px;
   margin: 10px;
   background-color: #ffffff;
   padding: 20px;
@@ -112,6 +111,7 @@ body {
 }
 .what{
   width:200px;
+  height:300px; 
   display: flex;
   flex-direction: column;
   overflow: hidden;
