@@ -7,9 +7,9 @@ import { BarPlot } from "@mui/x-charts/BarChart";
 export default function CurrentData() {
   const [selectedMetric, setSelectedMetric] = React.useState("heartRate");
   const metricsData = {
-    heartRate: 72, // Example BPM values
-    spo2: 98, // Example SpO2 %
-    temperature: 36.5, // Example Celsius values
+    heartRate: [72], // Example BPM values
+    spo2: [98], // Example SpO2 %
+    temperature: [36.5], // Example Celsius values
   };
   
   const xLabels = ["heartRate", "spo2", "temperature"];
