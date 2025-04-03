@@ -33,7 +33,9 @@ const validateMiddleware = (schema, requiredFields) => {
       }
     }
 
-    const { error } = schema.validate(req.body);
+    // Allow extra fields like "password" by setting `{ allowUnknown: true }`
+    const { error } = schema.validate(req.body, { allowUnknown: true });
+
     if (error) {
       console.error("Validation Error:", error.details[0].message);
       return res.status(400).json({ message: "Validation Error", details: error.details[0].message });
@@ -42,6 +44,7 @@ const validateMiddleware = (schema, requiredFields) => {
     next();
   };
 };
+
 const validateHospital = validateMiddleware(schemaHospital, ["name", "userName", "address"]);
 const validateMedication = validateMiddleware(schemaMedication, ["name", "start"]);
 const validateContact = validateMiddleware(schemaContact, ["name", "phone", "email"]);
