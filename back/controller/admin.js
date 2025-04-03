@@ -2,15 +2,18 @@ const Hospital = require("../model/Hospital");
 const Patient = require("../model/Patient");
 const Medication = require("../model/Medication");
 
-
 const signup = async (req, res) => {
-  const { name, password, userName, address } = req.body;
+  const { name, password, email, address } = req.body;
 
   try {
-    // Check if username already exists
-    const existingUser = await Hospital.findOne({ userName });
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+
+    // Check if email already exists
+    const existingUser = await Hospital.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "Username already in use. Choose another." });
+      return res.status(400).json({ message: "Email already in use. Choose another." });
     }
 
     // Check if address already exists
@@ -21,13 +24,13 @@ const signup = async (req, res) => {
 
     // Create new hospital entry
     const hospital = new Hospital({
-      role:"admin",
+      role: "admin",
       name,
-      userName,
-      address
+      email,
+      address,
     });
 
-    await Hospital.register(hospital, password);  // PLM handles password hashing & salting
+    await Hospital.register(hospital, password); // PLM handles password hashing & salting
 
     res.status(201).json({ message: "Hospital registered successfully." });
 
@@ -36,8 +39,8 @@ const signup = async (req, res) => {
 
     // Handling duplicate key errors from MongoDB
     if (err.code === 11000) {
-      if (err.keyPattern?.userName) {
-        return res.status(400).json({ message: "Username already in use. Choose another." });
+      if (err.keyPattern?.email) {
+        return res.status(400).json({ message: "Email already in use. Choose another." });
       }
       if (err.keyPattern?.address) {
         return res.status(400).json({ message: "Address already in use. Each hospital must have a unique address." });
@@ -47,7 +50,6 @@ const signup = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
-
 
 const login = (req, res) => {
   res.json({ message: "Login successful", user: req.user });
