@@ -82,7 +82,7 @@ function Live() {
         <h2 style={{textAlign:"center"}}>Vitals Monitoring</h2>
         <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around", margin:"50px"}}>
           <li style={{display:"flex",flexDirection:"column"}}>
-            <a href="#">Heart Rate</a>
+            <h3 title="A normal resting heart rate for adults ranges from 60 to 100 beats per minute.">Heart Rate</h3>
             {heartRate.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : (
@@ -96,7 +96,7 @@ function Live() {
             </div>
           </li>
           <li style={{display:"flex",flexDirection:"column"}}>
-            <a href="#">SpO2</a>
+            <h3 title="Oxygen saturation (SpO2) is a measurement of how much oxygen your blood is carrying as a percentage of the maximum it could carry. For a healthy individual, the normal SpO2 should be between 96% to 99%.">SpO2</h3>
             {spo2.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : (
@@ -110,7 +110,7 @@ function Live() {
             </div>
           </li>
           <li style={{display:"flex",flexDirection:"column"}}>
-            <a href="#">Body Temperature</a>
+            <h3 title="For a typical adult, body temperature ranges from 36.1°C to 37.2°C. Adults over the age of 60 tend to have a lower body temperature compared to younger adults. Babies and children have a wider range: 35.5°C to 37.5°C (if measured with an oral thermometer) or 36.6°C to 38°C (if measured with a rectal thermometer).">Body Temperature</h3>
             {temperature.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : (
