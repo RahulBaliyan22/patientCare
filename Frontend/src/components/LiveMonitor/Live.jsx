@@ -95,7 +95,7 @@ function Live() {
               </button>
             </div>
           </li>
-          <li>
+          <li style={{display:"flex",flexDirection:"column"}}>
             <a href="#">SpO2</a>
             {spo2.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
@@ -109,7 +109,7 @@ function Live() {
               </button>
             </div>
           </li>
-          <li>
+          <li style={{display:"flex",flexDirection:"column"}}>
             <a href="#">Body Temperature</a>
             {temperature.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
