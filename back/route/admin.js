@@ -33,12 +33,7 @@ const upload = multer({
 
 // Auth Routes
 router.post("/signup", isLoggedOut, validateHospital, signup);
-router.post(
-  "/login",
-  isLoggedOut,
-  passport.authenticate("local"), // Authenticate first
-  isAdmin, // Then check if the user is admin
-  login
+router.post("/login",isLoggedOut,passport.authenticate("local"),isAdmin,login
 );
 router.post("/logout", logout);
 
