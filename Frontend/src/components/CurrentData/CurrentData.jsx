@@ -1,6 +1,5 @@
 import * as React from "react";
-import { ChartContainer } from "@mui/x-charts/ChartContainer";
-import { BarPlot } from "@mui/x-charts/BarChart";
+import { BarChart } from "@mui/x-charts/BarChart";
 
 
 
@@ -25,7 +24,7 @@ export default function CurrentData() {
       </div>
 
       
-        <BarPlot width={500}
+        <BarChart width={500}
         height={300}
         series={[{ data: currentData, label: selectedMetric, type: "bar" }]}
         xAxis={[{ scaleType: "band", data: xLabels }]} 
