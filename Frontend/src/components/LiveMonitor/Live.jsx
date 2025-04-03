@@ -79,8 +79,8 @@ function Live() {
     <div className="ContainerGrid">
       <MessageBox messageIndex={messageIndex} />
       <div className="box2">
-        <h2>Vitals Monitoring</h2>
-        <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around" }}>
+        <h2 style={{textAlign:"center"}}>Vitals Monitoring</h2>
+        <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around", margin:"50px"}}>
           <li style={{display:"flex",flexDirection:"column"}}>
             <a href="#">Heart Rate</a>
             {heartRate.loading ? (
@@ -91,7 +91,7 @@ function Live() {
             <p>{heartRate.value !== null ? `${heartRate.value} BPM` : "-- BPM"}</p>
             <div className="buttons">
               <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)}>
-                {!heartRate.loading && "Start"}
+                {!heartRate.loading ?"Start":"Stop"}
               </button>
             </div>
           </li>
@@ -105,7 +105,7 @@ function Live() {
             <p>{spo2.value !== null ? `${spo2.value}%` : "--%"}</p>
             <div className="buttons">
               <button className="start-btn" onClick={() => handleVitalCheck("spo2", 4)}>
-                {!spo2.loading && "Start"}
+                {!spo2.loading ?"Start":"Stop"}
               </button>
             </div>
           </li>
@@ -119,7 +119,7 @@ function Live() {
             <p>{temperature.value !== null ? `${temperature.value}°C` : "--°C"}</p>
             <div className="buttons">
               <button className="start-btn" onClick={() => handleVitalCheck("temperature", 3)}>
-                {!temperature.loading && "Start"}
+                {!temperature.loading ?"Start":"Stop"}
               </button>
             </div>
           </li>
