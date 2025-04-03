@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./LiveCss.css";
 import Data from "../HealthRecord/Data";
 
 function Live() {
