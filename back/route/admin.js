@@ -33,7 +33,7 @@ const upload = multer({
 
 // Auth Routes
 router.post("/signup", isLoggedOut, validateHospital, signup);
-app.post("/login", passport.authenticate("local"), (req, res) => {
+router.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ message: "Login successful", user: req.user });
 });
 router.post("/logout", logout);
