@@ -1,19 +1,17 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 
-
-
 export default function CurrentData() {
   const [selectedMetric, setSelectedMetric] = React.useState("heartRate");
+
   const metricsData = {
-    heartRate: [72], // Example BPM values
-    spo2: [98], // Example SpO2 %
-    temperature: [36.5], // Example Celsius values
+    heartRate: { data: [72], label: "Heart Rate (BPM)" },
+    spo2: { data: [98], label: "SpO2 (%)" },
+    temperature: { data: [36.5], label: "Body Temp (°C)" },
   };
-  
-  const xLabels = ["heartRate", "spo2", "temperature"];
-  // Get the current data based on selected metric
-  const currentData = metricsData[selectedMetric];
+
+  // Get current data based on selection
+  const { data, label } = metricsData[selectedMetric];
 
   return (
     <div>
@@ -23,12 +21,12 @@ export default function CurrentData() {
         <button onClick={() => setSelectedMetric("temperature")}>Body Temp</button>
       </div>
 
-      
-        <BarChart width={500}
+      <BarChart
+        width={500}
         height={300}
-        series={[{ data: currentData, label: selectedMetric, type: "bar" }]}
-        xAxis={[{ scaleType: "band", data: xLabels }]} 
-        />
+        series={[{ data, label, type: "bar" }]}
+        xAxis={[{ scaleType: "band", data: [label] }]} // Show only the selected metric
+      />
     </div>
   );
 }
