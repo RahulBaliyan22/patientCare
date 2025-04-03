@@ -51,21 +51,21 @@ function Live() {
           <li>
             <a href="#">Heart Rate</a>
             <div className="buttons">
-              <button className="start-btn" onClick={nextMessage}>Start</button>
+              <button className="start-btn" onClick={()=>{setMessageIndex(2)}}>Start</button>
               <button className="stop-btn">Stop</button>
             </div>
           </li>
           <li>
             <a href="#">SpO2</a>
             <div className="buttons">
-              <button className="start-btn" onClick={nextMessage}>Start</button>
+              <button className="start-btn" onClick={()=>{setMessageIndex(4)}}>Start</button>
               <button className="stop-btn">Stop</button>
             </div>
           </li>
           <li>
             <a href="#">Body Temperature</a>
             <div className="buttons">
-              <button className="start-btn" onClick={nextMessage}>Start</button>
+              <button className="start-btn" onClick={()=>{setMessageIndex(3)}}>Start</button>
               <button className="stop-btn">Stop</button>
             </div>
           </li>

@@ -125,7 +125,7 @@ const Dashboard = () => {
         <>
         <div className="add-Flex">
           <Data/>
-          <div className="dashboard-card">
+          <div className="dashboard-card" style={{alignContent:"center"}}>
               
   <h2>Check Your Vitals</h2>
   <p>Monitor and manage your health records in one place.</p>
