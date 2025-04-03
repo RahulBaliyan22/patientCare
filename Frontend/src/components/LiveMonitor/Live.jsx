@@ -1,6 +1,7 @@
 import React from "react";
 import "./LiveCss.css";
 import Data from "../HealthRecord/Data";
+import CurrentData from "../CurrentData/CurrentData";
 
 function Live() {
   return (
@@ -26,7 +27,7 @@ function Live() {
         </ul>
         
       </div>
-      <div className="box3">Bar Graph Current</div>
+      <div className="box3"><CurrentData/></div>
       <div className="box4"><Data/> </div>
     </div>
 

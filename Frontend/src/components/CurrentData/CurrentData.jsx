@@ -13,7 +13,7 @@ const xLabels = [
   'Page G',
 ];
 
-export default function TinyBarChart() {
+export default function CurrentData() {
   return (
     <ChartContainer
       width={500}
