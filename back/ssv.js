@@ -32,7 +32,7 @@ const schemaContact = Joi.object({
 });
 const schemaHospital = Joi.object({
   name: Joi.string().min(3).max(50).trim().required(),
-  userName: Joi.string().min(3).max(50).trim().required(),
+  email: Joi.string().min(3).max(50).trim().required(),
   address: Joi.string().min(5).max(100).trim().required()
 });
 module.exports = {

@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const hospitalSchema = new mongoose.Schema({
-  role:String,
+  role: String,
   name: {
     type: String,
     required: true
   },
-  userName: {  // If this is meant to be an email, rename it to `email`
+  email: {  
     type: String,
     required: true,
     unique: true
@@ -18,15 +18,14 @@ const hospitalSchema = new mongoose.Schema({
       ref: "Patient"
     }
   ],
-  address:{
-    type:String,
-    unique:true
+  address: {
+    type: String,
+    unique: true
   }
 });
 
-// Use `userName` for authentication
 hospitalSchema.plugin(passportLocalMongoose, {
-  usernameField: "userName"
+  usernameField: "email" // Use email for authentication
 });
 
 const Hospital = mongoose.model("Hospital", hospitalSchema);

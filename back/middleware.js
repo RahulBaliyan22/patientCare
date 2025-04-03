@@ -45,7 +45,7 @@ const validateMiddleware = (schema, requiredFields) => {
   };
 };
 
-const validateHospital = validateMiddleware(schemaHospital, ["name", "userName", "address"]);
+const validateHospital = validateMiddleware(schemaHospital, ["name", "email", "address"]);
 const validateMedication = validateMiddleware(schemaMedication, ["name", "start"]);
 const validateContact = validateMiddleware(schemaContact, ["name", "phone", "email"]);
 const validatePatient = validateMiddleware(schemaPatient, ["name", "email", "phone"]);
