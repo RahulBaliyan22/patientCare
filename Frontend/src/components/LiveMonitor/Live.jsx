@@ -81,12 +81,12 @@ function Live() {
       <div className="box2">
         <h2>Vitals Monitoring</h2>
         <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around" }}>
-          <li>
+          <li style={{display:"flex",flexDirection:"column"}}>
             <a href="#">Heart Rate</a>
             {heartRate.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : (
-              <CircularProgressWithLabel value={heartRate.value} />
+              heartRate.value!==null &&<CircularProgressWithLabel value={heartRate.value} />
             )}
             <p>{heartRate.value !== null ? `${heartRate.value} BPM` : "-- BPM"}</p>
             <div className="buttons">
@@ -100,7 +100,7 @@ function Live() {
             {spo2.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : (
-              <CircularProgressWithLabel value={spo2.value} />
+              spo2.value!==null &&<CircularProgressWithLabel value={spo2.value} />
             )}
             <p>{spo2.value !== null ? `${spo2.value}%` : "--%"}</p>
             <div className="buttons">
@@ -114,7 +114,7 @@ function Live() {
             {temperature.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : (
-              <CircularProgressWithLabel value={temperature.value} />
+              temperature.value!==null&&<CircularProgressWithLabel value={temperature.value} />
             )}
             <p>{temperature.value !== null ? `${temperature.value}°C` : "--°C"}</p>
             <div className="buttons">
