@@ -25,7 +25,7 @@ const hospitalSchema = new mongoose.Schema({
 });
 
 hospitalSchema.plugin(passportLocalMongoose, {
-  usernameField: "email" // Use email for authentication
+  usernameField: "email" 
 });
 
 const Hospital = mongoose.model("Hospital", hospitalSchema);
