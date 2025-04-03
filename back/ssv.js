@@ -26,12 +26,19 @@ const schemaMedication = Joi.object({
 const schemaContact = Joi.object({
   name: Joi.string().min(3).max(100).required(),
   email: Joi.string().email().required().trim(),
-  phone: Joi.string().required()
+  phone: Joi.string()
+  .pattern(/^[0-9]{10}$/)
+  .required()
 });
-
+const schemaHospital = Joi.object({
+  name: Joi.string().min(3).max(50).trim().required(),
+  userName: Joi.string().min(3).max(50).trim().required(),
+  address: Joi.string().min(5).max(100).trim().required()
+});
 module.exports = {
   schemaMedication,
   schemaContact,
   schemaPatient,
   schemaRecords,
+  schemaHospital
 };

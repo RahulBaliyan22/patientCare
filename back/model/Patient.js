@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const patientSchema = new mongoose.Schema({
+  role:String,
   list: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -82,6 +83,8 @@ const patientSchema = new mongoose.Schema({
       ref: "Contact",
     },
   ],
+
+  uid:String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });

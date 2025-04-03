@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const recordSchema = new mongoose.Schema(
-  {
+  {hospital:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Hospital"
+    },
     patient: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient",

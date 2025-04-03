@@ -19,6 +19,7 @@ const recordRoutes = require("./route/record");
 const patientRoutes = require("./route/patient");
 const medicationRoutes = require("./route/medication");
 const Patient = require("./model/Patient");
+const adminRoutes = require('./route/admin');
 
 const app = express();
 const server = http.createServer(app);
@@ -93,6 +94,7 @@ app.use(contactRoutes);
 app.use(recordRoutes);
 app.use(patientRoutes);
 app.use(medicationRoutes);
+app.use("/admin",adminRoutes);
 
 // Debugging Route to Check Cookies and Session
 app.get("/check-session", (req, res) => {

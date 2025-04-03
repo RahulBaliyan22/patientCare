@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { getDashboard } = require("../controller/dashboard");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn,isPatient } = require("../middleware");
 
-router.get("/dashboard", isLoggedIn, getDashboard);
+router.get("/dashboard", isLoggedIn,isPatient, getDashboard);
 
 module.exports = router;

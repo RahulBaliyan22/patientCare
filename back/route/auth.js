@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const { isVerified, isLoggedOut, validatePatient } = require("../middleware");
+const { isVerified, isLoggedOut, validatePatient ,isPatient} = require("../middleware");
 
 const {
   resetPass,
@@ -42,7 +42,7 @@ router.post("/signup", isLoggedOut, validatePatient, signup);
 //   }
 // );
 
-router.post("/login",  isVerified,isLoggedOut,passport.authenticate("local"), login);
+router.post("/login",  isVerified,isLoggedOut,passport.authenticate("local"),isPatient,login);
 router.post("/logout", logout);
 
 router.get("/verify-email", verifyemail);

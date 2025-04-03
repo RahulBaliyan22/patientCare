@@ -4,7 +4,9 @@ const forgotPassword = require("../utils/forgotPassword");
 const Patient = require("../model/Patient");
 const crypto = require("crypto");
 const sendVerificationEmail = require("../utils/sendVerificationEmail");
-
+function generateUID() {
+  return (Date.now().toString(36) + Math.random().toString(36)).slice(2, 12);
+}
 const signup = async (req, res) => {
   const { email, password, name, phone } = req.body;
 
@@ -17,13 +19,15 @@ const signup = async (req, res) => {
 
     // Generate a verification token
     const verificationToken = crypto.randomBytes(32).toString("hex");
-
+    const uid = generateUID();
     // Create a new user instance (without saving)
     const user = new Patient({
+      role:"patient",
       email,
       name,
       phone,
       verificationToken,
+      uid
     });
 
     // Register user with passport-local-mongoose (returns a promise)

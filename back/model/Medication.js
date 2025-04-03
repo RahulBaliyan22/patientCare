@@ -20,6 +20,10 @@ const medicationSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  hospital:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Hospital"
+  },
   prescribedBy: {
     type: String,
     required: false,

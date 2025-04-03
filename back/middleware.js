@@ -1,102 +1,90 @@
-const { schemaMedication, schemaContact, schemaPatient, schemaRecords } = require("./ssv");
+const { schemaMedication, schemaContact, schemaPatient, schemaRecords,schemaHospital } = require("./ssv");
 const Patient = require("./model/Patient");
 
-const validateMedication = (req, res, next) => {
-  const { name, start, end, prescribedBy, dosage } = req.body;
-  if (!name || !start) {
-    return res.status(400).json({ message: "Name and start date are required" });
-  }
-  
-  const { error } = schemaMedication.validate({ name, start });
-  if (error) {
-    console.log(error.details);
-    return res.status(400).json({ message: "Validation Error", details: error.details });
+const isAdmin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized. Please log in." });
   }
 
-  next();
+  if (req.user.role === "admin") {
+    next();
+  } else {
+    return res.status(403).json({ message: "Access denied. Admin privileges required." });
+  }
 };
 
-const validateContact = (req, res, next) => {
-  const { name, phone, email, isPrimary } = req.body;
-  if (!name || !phone || !email) {
-    return res.status(400).json({ message: "Name, phone, and email are required" });
+const isPatient = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized. Please log in." });
   }
 
-  const { error } = schemaContact.validate({ name, phone, email });
-  if (error) {
-    console.log(error.details[0].message);
-    return res.status(400).json({ message: "Validation Error", details: error.details });
+  if (req.user.role === "patient") {
+    next();
+  } else {
+    return res.status(403).json({ message: "Access denied. Patient privileges required." });
   }
-
-  next();
 };
 
-const validatePatient = (req, res, next) => {
-  const { name, email, phone, DOB, gender, bloodGroup, address } = req.body;
-  if (!name || !email || !phone) {
-    return res.status(400).json({ message: "Name, email, and phone are required" });
-  }
+const validateMiddleware = (schema, requiredFields) => {
+  return (req, res, next) => {
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({ message: `${field} is required.` });
+      }
+    }
 
-  const { error } = schemaPatient.validate({ name, email, phone, DOB, gender, bloodGroup });
-  if (error) {
-    console.log(error.details[0].message);
-    return res.status(400).json({ message: "Validation Error", details: error.details });
-  }
+    const { error } = schema.validate(req.body);
+    if (error) {
+      console.error("Validation Error:", error.details[0].message);
+      return res.status(400).json({ message: "Validation Error", details: error.details[0].message });
+    }
 
-  next();
+    next();
+  };
 };
-
-const validateRecords = (req, res, next) => {
-  const { date, doctor, diagnosis, notes } = req.body;
-  if (!date || !doctor) {
-    return res.status(400).json({ message: "Date and doctor are required" });
-  }
-
-  const { error } = schemaRecords.validate({ date, doctor });
-  if (error) {
-    console.log(error.details[0].message);
-    return res.status(400).json({ message: "Validation Error", details: error.details });
-  }
-
-  next();
-};
+const validateHospital = validateMiddleware(schemaHospital, ["name", "userName", "address"]);
+const validateMedication = validateMiddleware(schemaMedication, ["name", "start"]);
+const validateContact = validateMiddleware(schemaContact, ["name", "phone", "email"]);
+const validatePatient = validateMiddleware(schemaPatient, ["name", "email", "phone"]);
+const validateRecords = validateMiddleware(schemaRecords, ["date", "doctor"]);
 
 const isVerified = async (req, res, next) => {
-  const { email } = req.body;
   try {
+    const { email } = req.body;
     const patient = await Patient.findOne({ email });
+
     if (!patient) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found." });
     }
 
     if (!patient.isVerified) {
-      return res.status(400).json({ message: "Please verify your email to log in" });
+      return res.status(403).json({ message: "Please verify your email before logging in." });
     }
 
     next();
   } catch (error) {
     console.error("Error checking email verification:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
 
 const isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "Please log in first" });
+    return res.status(401).json({ message: "Unauthorized. Please log in first." });
   }
-
   next();
 };
 
 const isLoggedOut = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return res.status(401).json({ message: "Please log out first" });
+    return res.status(400).json({ message: "You are already logged in. Please log out first." });
   }
-
   next();
 };
 
 module.exports = {
+  isAdmin,
+  isPatient,
   isVerified,
   isLoggedIn,
   isLoggedOut,
@@ -104,4 +92,5 @@ module.exports = {
   validateContact,
   validatePatient,
   validateRecords,
+  validateHospital
 };

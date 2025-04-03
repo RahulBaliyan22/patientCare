@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const initializeS3 = require("../config/s3");
-const { isLoggedIn, validateRecords } = require("../middleware");
+const { isLoggedIn, validateRecords,isPatient } = require("../middleware");
 const {
   addRecord,
   fetchRecord,
@@ -35,13 +35,13 @@ const upload = multer({
 
 
 // Routes
-router.post("/add-record", isLoggedIn, upload.array("images"), validateRecords, addRecord);
-router.get("/records", isLoggedIn, fetchRecord);
-router.get("/records/:id", isLoggedIn, fetchOneRecord);
-router.put("/records/:id", isLoggedIn, upload.array("images"), validateRecords, updateRecord);
-router.delete("/delete/:id", isLoggedIn, deleteRecord);
-router.post("/record/send-email/:id", isLoggedIn, sendOneRecord);
-router.post("/records/send-email", isLoggedIn, sendRecords);
-router.delete("/delete-image/:id", isLoggedIn, deleteImage);
+router.post("/add-record", isLoggedIn, upload.array("images"), validateRecords, isPatient,addRecord);
+router.get("/records", isLoggedIn,isPatient, fetchRecord);
+router.get("/records/:id", isLoggedIn, isPatient,fetchOneRecord);
+router.put("/records/:id", isLoggedIn, upload.array("images"), validateRecords, isPatient,updateRecord);
+router.delete("/delete/:id", isLoggedIn,isPatient, deleteRecord);
+router.post("/record/send-email/:id", isLoggedIn,isPatient, sendOneRecord);
+router.post("/records/send-email", isLoggedIn,isPatient, sendRecords);
+router.delete("/delete-image/:id", isLoggedIn,isPatient, deleteImage);
 
 module.exports = router;
