@@ -24,17 +24,12 @@ export default function CurrentData() {
         <button onClick={() => setSelectedMetric("temperature")}>Body Temp</button>
       </div>
 
-      <ChartContainer
-        width={500}
-        height={300}
-        series={[{ data: currentData, label: selectedMetric, type: "bar" }]}
-        xAxis={[{ scaleType: "band", data: xLabels }]}
-      >
+      
         <BarPlot width={500}
         height={300}
         series={[{ data: currentData, label: selectedMetric, type: "bar" }]}
-        xAxis={[{ scaleType: "band", data: xLabels }]} />
-      </ChartContainer>
+        xAxis={[{ scaleType: "band", data: xLabels }]} 
+        />
     </div>
   );
 }
