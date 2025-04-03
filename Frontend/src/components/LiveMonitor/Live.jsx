@@ -80,7 +80,7 @@ function Live() {
       <MessageBox messageIndex={messageIndex} />
       <div className="box2">
         <h2 style={{textAlign:"center"}}>Vitals Monitoring</h2>
-        <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around", margin:"50px"}}>
+        <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around", marginTop:"50px"}}>
           <li style={{display:"flex",flexDirection:"column"}}>
             <h3 title="A normal resting heart rate for adults ranges from 60 to 100 beats per minute.">Heart Rate</h3>
             {heartRate.loading ? (
