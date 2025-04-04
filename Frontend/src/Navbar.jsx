@@ -29,7 +29,7 @@ const Navbar = () => {
           credentials: "include",
         });
       }
-  
+      
       localStorage.removeItem("user");
       setIsLoggedIn(false);
       navigate("/login");

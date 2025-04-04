@@ -18,7 +18,7 @@ const AdminLogin = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn || localStorage.getItem("admin")) {
+    if (isLoggedIn || localStorage.getItem("user")) {
       navigate("/admin/dashboard");
       setIsLoggedIn(true);
       toast.success("Admin Logged In");
@@ -50,8 +50,7 @@ const AdminLogin = () => {
         withCredentials: true,
       });
 
-      // localStorage.setItem("admin", JSON.stringify(response.data.user));
-      console.log(response)
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       navigate("/admin/dashboard");
       setIsLoggedIn(true);
       toast.success("Admin login successful!");
