@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./HomePage.css"; // Reusing your CSS styles
 
 function AdminSignup() {
   const [formData, setFormData] = useState({
