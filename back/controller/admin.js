@@ -235,7 +235,7 @@ const updateRecord = async (req, res) => {
           doctor: doctor || undefined,
           diagnosis: diagnosis || undefined,
           notes: notes || undefined,
-          hospital: req.user?.name ? `${req.user.name} -> ${req.user.address || "Unknown"}` : undefined,
+          hospital: req.user._id,
         },
         $push: { image: { $each: uploadedImages } },
       },
@@ -278,7 +278,7 @@ const addMed = async (req, res) => {
       end: end || null,
       prescribedBy,
       dosage,
-      hospital: req.user?.name ? `${req.user.name} -> ${req.user.address || "Unknown"}` : undefined,
+      hospital: req.user._id,
       isEnd: end ? new Date(end) <= new Date() : false, // Sets isEnd directly
     });
 
@@ -323,7 +323,7 @@ const updateMed = async (req, res) => {
 
     // Update hospital info only if req.user exists
     if (req.user?.name) {
-      medication.hospital = `${req.user.name} -> ${req.user.address || "Unknown"}`;
+      medication.hospital = req.user._id;
     }
 
     await medication.save();
