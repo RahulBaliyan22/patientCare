@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AuthContext } from "../../main";
+import { AuthContext } from "../../../main";
 
 const AdminLogin = () => {
   const [form, setForm] = useState({ email: "", password: "" });
