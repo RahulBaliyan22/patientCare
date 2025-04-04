@@ -15,10 +15,21 @@ const Navbar = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`https://patientcare-2.onrender.com/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const clientString = localStorage.getItem("user");
+      const client = clientString ? JSON.parse(clientString) : null;
+  
+      if (client?.role === "patient") {
+        await fetch(`https://patientcare-2.onrender.com/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
+      } else if (client?.role === "admin") {
+        await fetch(`https://patientcare-2.onrender.com/admin/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
+      }
+  
       localStorage.removeItem("user");
       setIsLoggedIn(false);
       navigate("/login");
@@ -26,6 +37,7 @@ const Navbar = () => {
       console.error("Logout failed:", err);
     }
   };
+  
 
   return (
     <nav className="navbar">
@@ -217,6 +229,10 @@ const Navbar = () => {
               </div>
             </li>
           )}
+          {!isLoggedIn && 
+          <li className="navbar-item">
+            <Link to="/admin/home" className="nav-link">Hospitals</Link>
+          </li>}
 
           {isLoggedIn ? (
             <li>

@@ -32,6 +32,19 @@ import ContactsPage from "./components/Contact/ContactsPage";
 import ResetPassword from "./components/ResetPassword";
 import ChatbotButton from "./components/ChatBot/ChatbotButton";
 import Live from "./components/LiveMonitor/Live";
+import AdminHome from "./components/Admin/pages/AdminHome";
+import AdminSignup from "./components/Admin/pages/AdminSignup";
+import AdminLogin from "./components/Admin/pages/AdminLogin";
+import AdminDashboard from "./components/Admin/pages/AdminDashboard";
+import AdminShowpatient from "./components/Admin/pages/AdminShowpatient";
+import AdminSearchPatient from "./components/Admin/pages/AdminSearchPatient";
+import Allpatient from "./components/Admin/pages/Allpatient";
+import AdminShowRecords from "./components/Admin/pages/AdminShowRecords";
+import AllMeds from "./components/Admin/pages/AllMeds";
+import AdminShowMed from "./components/Admin/pages/AdminShowMed";
+import AdminShowRecord from "./components/Admin/pages/AdminShowRecord";
+import AdminEditRecord from "./components/Admin/pages/AdminEditRecord";
+import AdminEditMed from "./components/Admin/pages/AdminEditMed";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -79,6 +92,22 @@ const App = () => {
           <Route path="/contact/show" element={<ContactsPage/>}/>
           <Route path="/reset-password/:token" element={<ResetPassword/>} />
           <Route path="/vital-check" element={<Live/>}/>
+
+          <Route path="/admin/home" element={<AdminHome/>}/> {/*all hospitals list data*/}
+          <Route path="/admin/signup" element = {<AdminSignup/>}/>
+          <Route path="/admin/login" element = {<AdminLogin/>}/>
+
+          <Route path="/admin/dashboard" element = {<AdminDashboard/>}/>
+          <Route path="/admin/showpatient/:patientId"element = {<AdminShowpatient/>}/>
+          <Route path="/admin/SearchPatient" element = {<AdminSearchPatient/>}/>
+          <Route path="/admin/Allpatient" element = {<Allpatient/>}/>
+          <Route path="/admin/showRecords/:patientId" element = {<AdminShowRecords/>}/>
+          <Route path = "/admin/showMedcations/:patientId" element = {<AllMeds/>}/>
+          <Route path="/admin/showRecord/:patientId/:recordId" element = {<AdminShowRecord/>}/>
+          <Route path="/admin/showMedication/:patientId/:medId" element = {<AdminShowMed/>}/>
+          <Route path="/admin/EditRecord/:patientId/:recordId" element = {<AdminEditRecord/>}/>
+          <Route path="/admin/EditMadication/:patientId/:medId" element = {<AdminEditMed/>}/> 
+
           <Route path="*" element={<Error />} />
           
         </Routes>
