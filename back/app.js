@@ -75,17 +75,22 @@ passport.serializeUser((user, done) => {
   done(null, { id: user.id, role: user.role }); // include role info
 });
 
-passport.deserializeUser((user, done) => {
-  if (user.role === 'patient') {
-    Patient.findById(user.id, (err, patient) => {
-      done(err, patient); // patient becomes req.user
-    });
-  } else if (user.role === 'admin') {
-    Admin.findById(user.id, (err, admin) => {
-      done(err, admin); // admin becomes req.user
-    });
+passport.deserializeUser(async (user, done) => {
+  try {
+    if (user.role === 'patient') {
+      const patient = await Patient.findById(user.id);
+      return done(null, patient);
+    } else if (user.role === 'admin') {
+      const admin = await Admin.findById(user.id);
+      return done(null, admin);
+    } else {
+      return done(new Error("Invalid role"), null);
+    }
+  } catch (err) {
+    done(err);
   }
 });
+
 
 // Socket.io Connection
 io.on("connection", (socket) => {
