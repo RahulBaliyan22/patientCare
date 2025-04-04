@@ -100,7 +100,7 @@ const getPatient = async (req, res) => {
     // Find patient and populate `med` and `hasPrimaryContact.primaryContact`
     const patient = await Patient.findById(patientId)
       .populate("med") // Populating the medication field
-      .populate("Record"); // Populating the primary contact
+      .populate("list"); // Populating the primary contact
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
@@ -119,7 +119,7 @@ const getPatients = async (req, res) => {
     // Find all patients and populate `med` and `hasPrimaryContact.primaryContact`
     const patients = await Patient.find({})
       .populate("med") // Populating the medication field
-      .populate("Record"); // Populating the primary contact
+      .populate("list"); // Populating the primary contact
 
     if (patients.length === 0) {
       return res.status(404).json({ message: "No patients found" });
@@ -140,7 +140,7 @@ const getPatientById = async (req, res) => {
     // Find a single patient by UID and populate necessary fields
     const patient = await Patient.findOne({ uid: patientId })
       .populate("med") // Populating the medication field
-      .populate("Record"); // Populating the primary contact
+      .populate("list"); // Populating the primary contact
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
