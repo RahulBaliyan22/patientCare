@@ -50,7 +50,8 @@ const AdminLogin = () => {
         withCredentials: true,
       });
 
-      localStorage.setItem("admin", JSON.stringify(response.data.user));
+      // localStorage.setItem("admin", JSON.stringify(response.data.user));
+      console.log(response)
       navigate("/admin/dashboard");
       setIsLoggedIn(true);
       toast.success("Admin login successful!");
