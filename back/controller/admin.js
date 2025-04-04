@@ -346,6 +346,22 @@ const updateMed = async (req, res) => {
     }
   };
 
+ 
+  const getHospitals = async (req, res) => {
+    try {
+      const hospitals = await Hospital.find({}).select("name address").lean();
+  
+      res.status(200).json({
+        message: "Hospitals fetched successfully",
+        hospitals,
+      });
+    } catch (e) {
+      console.error("Error fetching hospitals:", e);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+  
+
 module.exports = { 
   signup, 
   login, 
@@ -357,6 +373,7 @@ module.exports = {
   addRecord, 
   updateRecord, 
   addMed, 
-  updateMed 
+  updateMed,
+  getHospitals
 };
 

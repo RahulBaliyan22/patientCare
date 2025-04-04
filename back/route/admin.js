@@ -11,7 +11,7 @@ const initializeS3 = require("../config/s3");
 const { 
   signup, login, logout, addPatient, getPatient, 
   getPatients, getPatientById, addRecord, updateRecord, 
-  addMed, updateMed 
+  addMed, updateMed , getHospitals
 } = require("../controller/admin");
 
 const s3 = initializeS3();
@@ -30,6 +30,9 @@ const upload = multer({
     },
   }),
 });
+
+//get all hospitals
+router.get("/gethospitals",getHospitals);
 
 // Auth Routes
 router.post("/signup", isLoggedOut, validateHospital, signup);
