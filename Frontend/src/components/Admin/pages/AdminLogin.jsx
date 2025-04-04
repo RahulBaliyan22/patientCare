@@ -50,7 +50,7 @@ const AdminLogin = () => {
         withCredentials: true,
       });
 
-      localStorage.setItem("admin", JSON.stringify(response.data.admin));
+      localStorage.setItem("admin", JSON.stringify(response.data.user));
       navigate("/admin/dashboard");
       setIsLoggedIn(true);
       toast.success("Admin login successful!");
@@ -119,7 +119,7 @@ const AdminLogin = () => {
           <button type="submit" className="submit-button">Login</button>
         </form>
         <div className="extra-links">
-          <p>Back to <Link to="/">Home</Link></p>
+          <p>Back to  <Link to="/">Home</Link></p>
         </div>
       </div>
     </div>
