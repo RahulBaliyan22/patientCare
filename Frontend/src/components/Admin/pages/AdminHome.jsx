@@ -9,7 +9,7 @@ function AdminHome() {
   useEffect(() => {
     const getHospitals = async () => {
       try {
-        const resp = await axios.get("https://patientcare-2.onrender.com/gethospitals", {
+        const resp = await axios.get("https://patientcare-2.onrender.com/admin/gethospitals", {
           withCredentials: true,
         });
         setHospitals(resp.data.hospitals);
@@ -29,8 +29,11 @@ function AdminHome() {
           <h1>Welcome to Admin Portal</h1>
           <p>Register a new hospital or manage existing hospital information.</p>
           <div className="cta-buttons">
-            <Link to="/registerhospital" className="btn-primary">
+            <Link to="/admin/signup" className="btn-primary">
               Register New Hospital
+            </Link>
+            <Link to="/admin/login" className="btn-secondary">
+              Login
             </Link>
           </div>
         </div>
