@@ -42,7 +42,7 @@ router.post("/signup", isLoggedOut, validatePatient, signup);
 //   }
 // );
 
-router.post("/login",  isVerified,isLoggedOut,passport.authenticate("local"),isPatient,login);
+router.post("/login",  isVerified,isLoggedOut,passport.authenticate("patient-local"),isPatient,login);
 router.post("/logout", logout);
 
 router.get("/verify-email", verifyemail);

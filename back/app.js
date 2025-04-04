@@ -69,9 +69,23 @@ io.use((socket, next) => {
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(Patient.createStrategy());
-passport.serializeUser(Patient.serializeUser());
-passport.deserializeUser(Patient.deserializeUser());
+passport.use('patient-local', Patient.createStrategy());
+passport.use('admin-local', Admin.createStrategy());
+passport.serializeUser((user, done) => {
+  done(null, { id: user.id, role: user.role }); // include role info
+});
+
+passport.deserializeUser((user, done) => {
+  if (user.role === 'patient') {
+    Patient.findById(user.id, (err, patient) => {
+      done(err, patient); // patient becomes req.user
+    });
+  } else if (user.role === 'admin') {
+    Admin.findById(user.id, (err, admin) => {
+      done(err, admin); // admin becomes req.user
+    });
+  }
+});
 
 // Socket.io Connection
 io.on("connection", (socket) => {
