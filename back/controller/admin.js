@@ -306,40 +306,45 @@ const addMed = async (req, res) => {
 
 const updateMed = async (req, res) => {
   const { medId } = req.params;
-  const { start, end, name, prescribedBy, dosage } = req.body;
-
-  try {
-    const medication = await Medication.findById(medId);
-
-    if (!medication) {
-      return res.status(404).json({ message: "Medication not found." });
-    }
-
-    // Update fields dynamically if provided
-    Object.assign(medication, { start, end: end || null, name, prescribedBy, dosage });
-
-    // Set isEnd based on end date
-    medication.isEnd = !!end;
-
-    // Update hospital info only if req.user exists
-    if (req.user?.name) {
+    const { start, end, name, prescribedBy, dosage } = req.body;
+  
+    try {
+      const medication = await Medication.findById(medId);
+  
+      if (!medication) {
+        return res.status(404).json({ message: "Medication not found." });
+      }
+      if (start) medication.start = start;
+      if (end) {
+        medication.end = end;
+      } else {
+        medication.end = null;
+      }
+      if (name) medication.name = name;
+      if (prescribedBy) medication.prescribedBy = prescribedBy;
+      if (dosage) medication.dosage = dosage;
+      if (end) {
+        medication.isEnd = true;
+      } else {
+        medication.isEnd = false;
+      }
+  
       medication.hospital = req.user._id;
+      await medication.save();
+  
+      res.status(200).json({
+        message: "Medication updated successfully.",
+        medication,
+      });
+    } catch (error) {
+      console.error(error);
+  
+      res.status(500).json({
+        message: "An error occurred while updating the medication.",
+        error,
+      });
     }
-
-    await medication.save();
-
-    res.status(200).json({
-      message: "Medication updated successfully.",
-      medication,
-    });
-  } catch (error) {
-    console.error("Error updating medication:", error);
-    res.status(500).json({
-      message: "An error occurred while updating the medication.",
-      error,
-    });
-  }
-};
+  };
 
 module.exports = { 
   signup, 
