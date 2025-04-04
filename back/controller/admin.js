@@ -1,7 +1,7 @@
 const Hospital = require("../model/Hospital");
 const Patient = require("../model/Patient");
 const Medication = require("../model/Medication");
-
+const Record = require("../model/Record")
 const signup = async (req, res) => {
   const { name, password, email, address } = req.body;
 
