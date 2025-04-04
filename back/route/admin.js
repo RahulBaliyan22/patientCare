@@ -44,7 +44,7 @@ router.get("/getpatients", isLoggedIn, isAdmin, getPatients);
 
 // Patient Records Routes
 router.post("/add-record/:patientId", isLoggedIn, isAdmin, upload.array("images"), validateRecords, addRecord);
-router.put("/update-record/:recordId", isLoggedIn, isAdmin, upload.array("images"), validateRecords, updateRecord);
+router.put("/update-record/:recordId", isLoggedIn, isAdmin, upload.array("images"), updateRecord);
 
 // Medication Routes
 router.post("/add-Med/:patientId", isLoggedIn, isAdmin, validateMedication, addMed);
