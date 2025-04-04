@@ -48,6 +48,6 @@ router.put("/update-record/:recordId", isLoggedIn, isAdmin, upload.array("images
 
 // Medication Routes
 router.post("/add-Med/:patientId", isLoggedIn, isAdmin, validateMedication, addMed);
-router.put("/update-Med/:medId", isLoggedIn, isAdmin, validateMedication, updateMed);
+router.put("/update-Med/:medId", isLoggedIn, isAdmin, updateMed);
 
 module.exports = router;
