@@ -33,13 +33,11 @@ const upload = multer({
 
 // Auth Routes
 router.post("/signup", isLoggedOut, validateHospital, signup);
-router.post("/login", isLoggedOut,passport.authenticate("admin-local"), isAdmin, (req, res) => {
-  res.json({ message: "Login successful", user: req.user });
-});
-router.post("/logout", logout);
+router.post("/login", isLoggedOut,passport.authenticate("admin-local"), isAdmin, login);
+router.post("/logout",isLoggedIn,isAdmin, logout);
 
 // Patient Routes
-router.post("/add-patient", isLoggedIn, isAdmin, validatePatient, addPatient);
+router.post("/add-patient", isLoggedIn, isAdmin, addPatient);
 router.get("/getpatient/me", isLoggedIn, isAdmin, getPatientById); // Better clarity
 router.get("/getpatient/:patientId", isLoggedIn, isAdmin, getPatient);
 router.get("/getpatients", isLoggedIn, isAdmin, getPatients);
