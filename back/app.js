@@ -20,7 +20,7 @@ const patientRoutes = require("./route/patient");
 const medicationRoutes = require("./route/medication");
 const Patient = require("./model/Patient");
 const adminRoutes = require('./route/admin');
-
+const Admin = require("./model/Hospital");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
