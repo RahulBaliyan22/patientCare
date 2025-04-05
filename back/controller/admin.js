@@ -120,7 +120,7 @@ const getPatients = async (req, res) => {
     const hospital = await Hospital.findById(req.user._id)
       .populate({
         path: 'patients',
-        select: '_id name age' // Include virtual 'age'
+        select: '_id uid name age' // Include virtual 'age'
       })
       .select('patients');
 
@@ -131,8 +131,9 @@ const getPatients = async (req, res) => {
     }
 
     // Only extract _id, name, and age (already populated and virtual)
-    const formatted = patientArray.map(({ _id, name, age }) => ({
+    const formatted = patientArray.map(({ _id,uid,name, age }) => ({
       _id,
+      uid,
       name,
       age
     }));

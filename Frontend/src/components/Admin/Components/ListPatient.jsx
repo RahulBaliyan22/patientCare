@@ -33,7 +33,7 @@ function ListPatient() {
         <tbody>
           {patients.map((patient) => (
             <tr key={patient._id}>
-              <td>{patient?.uid || patient?._id}</td>
+              <td>{patient?.uid || "not a valid patient"}</td>
               <td>{patient?.name || 'Unknown'}</td>
               <td>{patient?.age ?? 'Not Provided'}</td>
             </tr>
