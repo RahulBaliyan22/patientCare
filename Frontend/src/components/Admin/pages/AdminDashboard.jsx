@@ -1,31 +1,35 @@
-import React from 'react'
-import "../pages/Styles/AdminDashboard.css"
-import "../../Home.css"
-import ListPatient from '../Components/ListPatient'
-import Search from '../Components/Search'
+import React, { useState } from 'react';
+import "../pages/Styles/AdminDashboard.css";
+import "../../Home.css";
+import ListPatient from '../Components/ListPatient';
+import Search from '../Components/Search';
+
 function AdminDashboard() {
+  const [reload, setReload] = useState(false);
+
   return (
     <div className="dashContainer">
       <div className='dashChild1'>
         <div className="home-container">
-        <section className="hero">
-          <div className="hero-content">
-          <h1>Welcome, Admin!</h1>
-<p>You're now in the control center of patient care.</p>
-<p>Monitor vitals, manage patients, and ensure optimal health — all in one place.</p>
-          </div>
-        </section>
+          <section className="hero">
+            <div className="hero-content">
+              <h1>Welcome, Admin!</h1>
+              <p>You're now in the control center of patient care.</p>
+              <p>Monitor vitals, manage patients, and ensure optimal health — all in one place.</p>
+            </div>
+          </section>
         </div>
-         
       </div>
+
       <div className='dashChild2'>
-        <Search/>
+        <Search setReload={setReload} reload={reload} />
       </div>
+
       <div className='dashChild3'>
-        <ListPatient/>
+        <ListPatient reload={reload} />
       </div>
     </div>
-  )
+  );
 }
 
-export default AdminDashboard
+export default AdminDashboard;

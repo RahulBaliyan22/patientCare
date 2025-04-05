@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../Components/Styles/PatientList.css';
 import { Link } from 'react-router-dom';
 
-function ListPatient() {
+function ListPatient({reload}) {
   const [patients, setPatients] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function ListPatient() {
       }
     };
     fetchData();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="patient-container">
