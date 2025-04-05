@@ -179,7 +179,8 @@ const Navbar = () => {
                 </li>
               </ul>
             </div></>):(<>
-                {`Hi: ${user.name}`}
+            <div className="nav-link">{`Hi: ${user.name}`}</div>
+                
               <div className="navbar-dropdown">
                 <ul>
                   <li>
