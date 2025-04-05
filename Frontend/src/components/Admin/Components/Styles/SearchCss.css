@@ -1,0 +1,32 @@
+.searchContainer {
+  padding: 20px;
+  margin: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.query {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #00aaff;
+  border-radius: 6px;
+  outline: none;
+  color: #333;
+  background-color: #ffffff;
+  transition: border-color 0.3s;
+}
+
+.query:focus {
+  border-color: #0088cc;
+  box-shadow: 0 0 5px rgba(0, 136, 204, 0.3);
+}
+
+.result {
+  margin-top: 15px;
+  color: #004d4d;
+  font-size: 14px;
+}

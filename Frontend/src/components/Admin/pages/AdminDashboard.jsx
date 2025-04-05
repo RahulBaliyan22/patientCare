@@ -2,6 +2,7 @@ import React from 'react'
 import "../pages/Styles/AdminDashboard.css"
 import "../../Home.css"
 import ListPatient from '../Components/ListPatient'
+import Search from '../Components/Search'
 function AdminDashboard() {
   return (
     <div className="dashContainer">
@@ -17,7 +18,9 @@ function AdminDashboard() {
         </div>
          
       </div>
-      <div className='dashChild2'></div>
+      <div className='dashChild2'>
+        <Search/>
+      </div>
       <div className='dashChild3'>
         <ListPatient/>
       </div>
