@@ -8,9 +8,9 @@ function AdminDashboard() {
         <div className="home-container">
         <section className="hero">
           <div className="hero-content">
-            <h1>Welcome</h1>
-            <p>Thank u for chosing us!! </p>
-            
+          <h1>Welcome, Admin!</h1>
+<p>You're now in the control center of patient care.</p>
+<p>Monitor vitals, manage patients, and ensure optimal health — all in one place.</p>
           </div>
         </section>
         </div>

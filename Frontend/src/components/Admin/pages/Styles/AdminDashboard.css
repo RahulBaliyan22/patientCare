@@ -13,13 +13,11 @@
 }
 
 .dashChild1 {
-  border: 2px solid black;
   grid-row: 1 / 7;        
   grid-column: 1 / 9;     
 }
 
 .dashChild2 {
-  border: 2px solid black;
   grid-row: 7 / 13;       
   grid-column: 1 / 9;     
 }
