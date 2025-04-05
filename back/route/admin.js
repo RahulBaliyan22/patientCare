@@ -54,6 +54,6 @@ router.post("/add-Med/:patientId", isLoggedIn, isAdmin, validateMedication, addM
 router.put("/update-Med/:medId", isLoggedIn, isAdmin, updateMed);
 
 //update profile
-router.post("/update",isLoggedIn,isAdmin,updateProfile)
+router.put("/update",isLoggedIn,isAdmin,updateProfile)
 
 module.exports = router;
