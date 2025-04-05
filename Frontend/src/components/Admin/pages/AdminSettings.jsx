@@ -55,6 +55,9 @@ const AdminSettings = () => {
         localStorage.setItem("user", JSON.stringify(userDetails));
         navigate("/admin/dashboard");
         toast.success("User details updated successfully!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         toast.error(response.data.details?.[0]?.message || "Update failed.");
       }

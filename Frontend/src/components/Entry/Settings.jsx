@@ -67,6 +67,9 @@ const Settings = () => {
 
         navigate('/profile')
         toast.success("User details updated successfully!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }else{
        toast.error(response.details[0].message) 
       }
