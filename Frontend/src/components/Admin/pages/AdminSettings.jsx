@@ -53,11 +53,10 @@ const AdminSettings = () => {
 
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(userDetails));
-        navigate("/admin/dashboard");
         toast.success("User details updated successfully!");
         setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+          window.location.href = "/admin/dashboard"; // or full URL like 'http://yourdomain.com/profile'
+        }, 500);
       } else {
         toast.error(response.data.details?.[0]?.message || "Update failed.");
       }
