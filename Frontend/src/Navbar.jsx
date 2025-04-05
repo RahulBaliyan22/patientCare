@@ -169,17 +169,25 @@ const Navbar = () => {
 
           {/* Profile */}
           {isLoggedIn && user && (
-            <li className="navbar-item">
-              <Link to="/profile" className="nav-link">
+            <li className="navbar-item"> {user?.role === "patient"?(<><Link to="/profile" className="nav-link">
+              {`Hi: ${user.name}`}
+            </Link>
+            <div className="navbar-dropdown">
+              <ul>
+                <li>
+                  <button onClick={() => navigate("/settings")}>Edit</button>
+                </li>
+              </ul>
+            </div></>):(<>
                 {`Hi: ${user.name}`}
-              </Link>
               <div className="navbar-dropdown">
                 <ul>
                   <li>
-                    <button onClick={() => navigate("/settings")}>Edit</button>
+                    <button onClick={() => navigate("/admin/settings")}>Edit</button>
                   </li>
                 </ul>
-              </div>
+              </div></>)}
+              
             </li>
           )}
 

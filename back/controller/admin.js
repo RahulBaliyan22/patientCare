@@ -378,6 +378,25 @@ const updateMed = async (req, res) => {
   };
   
 
+  const updateProfile = async (req, res) => {
+    const { email, name, address } = req.body;
+  
+    try {
+      const hospital = req.user;
+  
+      if (email) hospital.email = email;
+      if (name) hospital.name = name;
+      if (address) hospital.address = address;
+  
+      await hospital.save();
+  
+      res.status(200).json({ message: "Profile updated successfully" });
+    } catch (error) {
+      console.error("Update error:", error);
+      res.status(500).json({ message: "Internal server error", error });
+    }
+  };
+  
 module.exports = { 
   signup, 
   login, 
@@ -390,6 +409,6 @@ module.exports = {
   updateRecord, 
   addMed, 
   updateMed,
-  getHospitals
+  getHospitals,updateProfile
 };
 

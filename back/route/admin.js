@@ -11,7 +11,7 @@ const initializeS3 = require("../config/s3");
 const { 
   signup, login, logout, addPatient, getPatient, 
   getPatients, getPatientById, addRecord, updateRecord, 
-  addMed, updateMed , getHospitals
+  addMed, updateMed , getHospitals,updateProfile
 } = require("../controller/admin");
 
 const s3 = initializeS3();
@@ -52,5 +52,8 @@ router.put("/update-record/:recordId", isLoggedIn, isAdmin, upload.array("images
 // Medication Routes
 router.post("/add-Med/:patientId", isLoggedIn, isAdmin, validateMedication, addMed);
 router.put("/update-Med/:medId", isLoggedIn, isAdmin, updateMed);
+
+//update profile
+router.post("/update",isLoggedIn,isAdmin,updateProfile)
 
 module.exports = router;

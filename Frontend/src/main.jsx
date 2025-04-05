@@ -45,6 +45,7 @@ import AdminShowMed from "./components/Admin/pages/AdminShowMed";
 import AdminShowRecord from "./components/Admin/pages/AdminShowRecord";
 import AdminEditRecord from "./components/Admin/pages/AdminEditRecord";
 import AdminEditMed from "./components/Admin/pages/AdminEditMed";
+import AdminSettings from "./components/Admin/pages/AdminSettings";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -107,7 +108,7 @@ const App = () => {
           <Route path="/admin/showMedication/:patientId/:medId" element = {<AdminShowMed/>}/>
           <Route path="/admin/EditRecord/:patientId/:recordId" element = {<AdminEditRecord/>}/>
           <Route path="/admin/EditMadication/:patientId/:medId" element = {<AdminEditMed/>}/> 
-
+          <Route path="/admin/settings" element={<AdminSettings/>}/>
           <Route path="*" element={<Error />} />
           
         </Routes>
