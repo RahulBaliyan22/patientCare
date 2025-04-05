@@ -8,7 +8,16 @@ const Home = () => {
   const {isLoggedIn,setisLoggedIn} = useContext(AuthContext)
   const nav = useNavigate()
   useEffect(()=>{
-    if(isLoggedIn || localStorage.getItem('user')){nav('/dashboard')};
+    if(isLoggedIn || localStorage.getItem('user')){
+      const clientString = localStorage.getItem("user");
+      const client = clientString ? JSON.parse(clientString) : null;
+  
+      if (client?.role === "patient") {
+        nav("/dashboard")
+      } else if (client?.role === "admin") {
+        nav("/admin/dashboard")
+      }
+    };
   },[nav])
   return (
     <div className="home-container">
