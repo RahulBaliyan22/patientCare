@@ -33,7 +33,7 @@ function AdminSignup() {
 
     try {
       const response = await axios.post(
-        "https://patientcare-2.onrender.com/adminsignup",
+        "https://patientcare-2.onrender.com/admin/signup",
         formData,
         {
           withCredentials: true,
