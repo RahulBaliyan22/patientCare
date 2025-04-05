@@ -2,34 +2,41 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./main";
 import "./Navbar.css";
-import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
+import "react-toastify/dist/ReactToastify.css";
+
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const handleMobileMenuToggle = () => {
     setIsMobile(!isMobile);
   };
 
+  useEffect(() => {
+    if (isLoggedIn && localStorage.getItem("user")) {
+      const clientString = localStorage.getItem("user");
+      const client = clientString ? JSON.parse(clientString) : null;
+      setUser(client);
+    }
+  }, [isLoggedIn]);
+
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const clientString = localStorage.getItem("user");
-      const client = clientString ? JSON.parse(clientString) : null;
-  
-      if (client?.role === "patient") {
+      if (user?.role === "patient") {
         await fetch(`https://patientcare-2.onrender.com/logout`, {
           method: "POST",
           credentials: "include",
         });
-      } else if (client?.role === "admin") {
+      } else if (user?.role === "admin") {
         await fetch(`https://patientcare-2.onrender.com/admin/logout`, {
           method: "POST",
           credentials: "include",
         });
       }
-      
+
       localStorage.removeItem("user");
       setIsLoggedIn(false);
       navigate("/login");
@@ -37,80 +44,69 @@ const Navbar = () => {
       console.error("Logout failed:", err);
     }
   };
-  
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {isLoggedIn ? (
-          <Link to="/dashboard" className="logo">
-            <h2>PatientCare</h2>
-          </Link>
-        ) : (
-          <Link to="/" className="logo">
-            <h2>PatientCare</h2>
-          </Link>
-        )}
+        <Link
+          to={
+            isLoggedIn
+              ? user?.role === "admin"
+                ? "/admin/dashboard"
+                : "/dashboard"
+              : "/"
+          }
+          className="logo"
+        >
+          <h2>PatientCare</h2>
+        </Link>
+
         <ul className={`nav-links ${isMobile ? "mobile" : ""}`}>
-          {isLoggedIn ? (
-            <li>
-              <Link to="/dashboard" className="nav-link">
-                Home{" "}
-              </Link>
-            </li>
-          ) : (
-            <li>
-              <Link to="/" className="nav-link">
-                Home{" "}
-              </Link>
-            </li>
-          )}
-          {isLoggedIn ? (
+          {/* Home */}
+          <li>
+            <Link
+              to={
+                isLoggedIn
+                  ? user?.role === "admin"
+                    ? "/admin/dashboard"
+                    : "/dashboard"
+                  : "/"
+              }
+              className="nav-link"
+            >
+              Home
+            </Link>
+          </li>
+
+          {/* Records */}
+          {isLoggedIn && user?.role === "patient" && (
             <li className="navbar-item">
               <Link to="/records" className="nav-link">
                 Records
               </Link>
               <div className="navbar-dropdown">
-                <ul style={{ listStyleType: "none" }}>
+                <ul>
                   <li>
-                   
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/records");
-                      }}
-                    >
-                      View
-                    </button>
+                    <button onClick={() => navigate("/records")}>View</button>
                   </li>
                   <li>
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/add-record");
-                      }}
-                    >
-                      Add
-                    </button>
+                    <button onClick={() => navigate("/add-record")}>Add</button>
                   </li>
                 </ul>
               </div>
             </li>
-          ) : (
+          )}
+
+          {/* Services for Guests */}
+          {!isLoggedIn && (
             <li>
               <Link to="/services" className="nav-link">
                 Services
               </Link>
             </li>
           )}
+
+          {/* About Us */}
           {!isLoggedIn && (
             <li>
               <Link to="/about" className="nav-link">
@@ -119,41 +115,21 @@ const Navbar = () => {
             </li>
           )}
 
-          {isLoggedIn ? (
+          {/* Contact */}
+          {isLoggedIn && user?.role === "patient" ? (
             <li className="navbar-item">
               <Link to="/contact/show" className="nav-link">
                 Contact
               </Link>
               <div className="navbar-dropdown">
-                <ul style={{ listStyleType: "none" }}>
+                <ul>
                   <li>
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/contact/show");
-                      }}
-                    >
+                    <button onClick={() => navigate("/contact/show")}>
                       View
                     </button>
                   </li>
                   <li>
-                    
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/contact/add");
-                      }}
-                    >
-                      Add
-                    </button>
+                    <button onClick={() => navigate("/contact/add")}>Add</button>
                   </li>
                 </ul>
               </div>
@@ -165,38 +141,22 @@ const Navbar = () => {
               </Link>
             </li>
           )}
-          {isLoggedIn && (
+
+          {/* Medications */}
+          {isLoggedIn && user?.role === "patient" && (
             <li className="navbar-item">
               <Link to="/medications" className="nav-link">
                 Medication
               </Link>
               <div className="navbar-dropdown">
-                <ul style={{ listStyleType: "none" }}>
+                <ul>
                   <li>
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/medications");
-                      }}
-                    >
+                    <button onClick={() => navigate("/medications")}>
                       View
                     </button>
                   </li>
                   <li>
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/medications/add");
-                      }}
-                    >
+                    <button onClick={() => navigate("/medications/add")}>
                       Add
                     </button>
                   </li>
@@ -204,36 +164,33 @@ const Navbar = () => {
               </div>
             </li>
           )}
-          {isLoggedIn && localStorage.getItem("user") && (
+
+          {/* Profile */}
+          {isLoggedIn && user && (
             <li className="navbar-item">
               <Link to="/profile" className="nav-link">
-                {`Hi : ${JSON.parse(localStorage.getItem("user")).name}`}
+                {`Hi: ${user.name}`}
               </Link>
               <div className="navbar-dropdown">
-                <ul style={{ listStyleType: "none" }}>
+                <ul>
                   <li>
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        navigate("/settings");
-                      }}
-                    >
-                      Edit
-                    </button>
+                    <button onClick={() => navigate("/settings")}>Edit</button>
                   </li>
                 </ul>
               </div>
             </li>
           )}
-          {!isLoggedIn && 
-          <li className="navbar-item">
-            <Link to="/admin/home" className="nav-link">Hospitals</Link>
-          </li>}
 
+          {/* Hospitals */}
+          {!isLoggedIn && (
+            <li>
+              <Link to="/admin/home" className="nav-link">
+                Hospitals
+              </Link>
+            </li>
+          )}
+
+          {/* Login / Logout */}
           {isLoggedIn ? (
             <li>
               <button className="nav-link btn-logout" onClick={handleLogout}>
@@ -249,6 +206,7 @@ const Navbar = () => {
           )}
         </ul>
 
+        {/* Mobile Hamburger */}
         <div
           className="mobile-menu-icon"
           onClick={handleMobileMenuToggle}
