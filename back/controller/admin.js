@@ -137,21 +137,23 @@ const getPatientById = async (req, res) => {
   const { patientId } = req.query;
   
   try {
-    // Find a single patient by UID and populate necessary fields
     const patient = await Patient.findOne({ uid: patientId })
-      .populate("med") // Populating the medication field
-      .populate("list"); // Populating the primary contact
+      .populate("med")
+      .populate("list");
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    res.status(200).json({ patient });
+    let isAdded = req.user.patients.includes(patient._id);
+
+    res.status(200).json({ patient, isAdded });
   } catch (error) {
     console.error("Error fetching patient:", error);
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 
 const addRecord = async (req, res) => {
   const { patientId } = req.params;

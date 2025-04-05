@@ -6,7 +6,7 @@
 
 .dashContainer {
   height: 100vh;
-  width: 100vw;
+  width: 98vw;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(12, 1fr);
@@ -23,7 +23,7 @@
 }
 
 .dashChild3 {
-  border: 2px solid black;
+  border-left: 2px solid black;
   grid-row: 1 / 13;       
   grid-column: 9 / 13;    
 }
