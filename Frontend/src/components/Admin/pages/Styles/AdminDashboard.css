@@ -22,6 +22,7 @@
   grid-column:0/8;
 }
 .dashChild3{
+  border: 2px solid black;
   grid-row: 0/12;
   grid-column:8/12;
 }
