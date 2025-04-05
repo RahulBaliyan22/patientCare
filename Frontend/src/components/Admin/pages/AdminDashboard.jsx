@@ -3,6 +3,7 @@ import "../pages/Styles/AdminDashboard.css";
 import "../../Home.css";
 import ListPatient from '../Components/ListPatient';
 import Search from '../Components/Search';
+import ReloadProvider from '../Components/ReloadProvider';
 
 function AdminDashboard() {
   return (
