@@ -30,16 +30,18 @@ const Navbar = () => {
           method: "POST",
           credentials: "include",
         });
+        localStorage.removeItem("user");
+      setIsLoggedIn(false);
+      navigate("/login");
       } else if (user?.role === "admin") {
         await fetch(`https://patientcare-2.onrender.com/admin/logout`, {
           method: "POST",
           credentials: "include",
         });
-      }
-
-      localStorage.removeItem("user");
+        localStorage.removeItem("user");
       setIsLoggedIn(false);
-      navigate("/login");
+      navigate("/admin/login");
+      }
     } catch (err) {
       console.error("Logout failed:", err);
     }
