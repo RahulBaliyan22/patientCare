@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../Components/Styles/PatientList.css';
+import { Link } from 'react-router-dom';
 
 function ListPatient() {
   const [patients, setPatients] = useState([]);
@@ -32,11 +33,13 @@ function ListPatient() {
         </thead>
         <tbody>
           {patients.map((patient) => (
+            <Link to={`/admin/showpatient/${patient._id}`} style={{textDecoration:"none",color:"blue"}}>
             <tr key={patient._id}>
               <td>{patient?.uid || "not a valid patient"}</td>
               <td>{patient?.name || 'Unknown'}</td>
               <td>{patient?.age ?? 'Not Provided'}</td>
             </tr>
+            </Link>
           ))}
         </tbody>
       </table>
