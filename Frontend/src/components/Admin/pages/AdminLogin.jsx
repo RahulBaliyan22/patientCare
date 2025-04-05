@@ -119,7 +119,7 @@ const AdminLogin = () => {
           <button type="submit" className="submit-button">Login</button>
         </form>
         <div className="extra-links">
-          <p>Back to  <Link to="/">Home</Link></p>
+          <p>Back to  <Link to="/admin/home">Home</Link></p>
         </div>
       </div>
     </div>

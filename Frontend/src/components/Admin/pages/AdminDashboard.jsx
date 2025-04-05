@@ -1,8 +1,12 @@
 import React from 'react'
-
+import "../pages/Styles/AdminDashboard.css"
 function AdminDashboard() {
   return (
-    <div>AdminDashboard</div>
+    <div className="dashContainer">
+      <div className='dashChild1'></div>
+      <div className='dashChild2'></div>
+      <div className='dashChild3'></div>
+    </div>
   )
 }
 

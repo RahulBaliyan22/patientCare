@@ -1,0 +1,25 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.dashContainer{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12,1fr);
+}
+.dashChild1{
+  border: 2px solid black;
+  grid-row: 0/6;
+  grid-column:0/8;
+}
+.dashChild2{
+  border: 2px solid black;
+  grid-row: 6/12;
+  grid-column:0/8;
+}
+.dashChild3{
+  grid-row: 0/12;
+  grid-column:8/12;
+}
