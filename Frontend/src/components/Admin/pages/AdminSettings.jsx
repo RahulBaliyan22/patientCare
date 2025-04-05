@@ -15,6 +15,7 @@ const AdminSettings = () => {
       name: storedUser.name || "",
       email: storedUser.email || "",
       address: storedUser.address || "",
+      role:"admin"
     };
   });
 
