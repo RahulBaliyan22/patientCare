@@ -8,7 +8,7 @@ function ListPatient() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get('https://patientcare-2.onrender.com/admin/getpatients');
+        const resp = await axios.get('https://patientcare-2.onrender.com/admin/getpatients',{withCredentials:true});
         console.log(resp)
         setPatients(resp?.data || []);
       } catch (e) {
