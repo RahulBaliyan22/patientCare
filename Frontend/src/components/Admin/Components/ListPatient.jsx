@@ -9,8 +9,8 @@ function ListPatient() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get('https://patientcare-2.onrender.com/admin/getpatients',{withCredentials:true});
-        console.log(resp)
+        const resp = await axios.get('https://patientcare-2.onrender.com/admin/getpatients', { withCredentials: true });
+        console.log(resp);
         setPatients(resp?.data || []);
       } catch (e) {
         console.error('Error fetching patients:', e);
@@ -33,13 +33,23 @@ function ListPatient() {
         </thead>
         <tbody>
           {patients.map((patient) => (
-            <Link to={`/admin/showpatient/${patient._id}`} style={{textDecoration:"none",color:"blue"}}>
             <tr key={patient._id}>
-              <td>{patient?.uid || "not a valid patient"}</td>
-              <td>{patient?.name || 'Unknown'}</td>
-              <td>{patient?.age ?? 'Not Provided'}</td>
+              <td>
+                <Link to={`/admin/showpatient/${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
+                  {patient?.uid || "not a valid patient"}
+                </Link>
+              </td>
+              <td>
+                <Link to={`/admin/showpatient/${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
+                  {patient?.name || 'Unknown'}
+                </Link>
+              </td>
+              <td>
+                <Link to={`/admin/showpatient/${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
+                  {patient?.age ?? 'Not Provided'}
+                </Link>
+              </td>
             </tr>
-            </Link>
           ))}
         </tbody>
       </table>
