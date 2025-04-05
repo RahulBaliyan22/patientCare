@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const patientSchema = new mongoose.Schema({
-  role:String,
+  role: String,
   list: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -84,12 +84,24 @@ const patientSchema = new mongoose.Schema({
     },
   ],
 
-  uid:String,
+  uid: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });
 
-// Adding passport-local-mongoose methods
+// ✅ Add Virtual `age`
+patientSchema.virtual("age").get(function () {
+  if (!this.DOB) return null;
+  const ageDifMs = Date.now() - this.DOB.getTime();
+  const ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+});
+
+// ✅ Include virtuals in JSON and Object outputs
+patientSchema.set("toJSON", { virtuals: true });
+patientSchema.set("toObject", { virtuals: true });
+
+// ✅ Passport plugin
 patientSchema.plugin(passportLocalMongoose, {
   usernameField: "email",
 });

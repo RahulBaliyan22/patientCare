@@ -98,6 +98,7 @@ const getPatient = async (req, res) => {
 
   try {
     // Find patient and populate `med` and `hasPrimaryContact.primaryContact`
+
     const patient = await Patient.findById(patientId)
       .populate("med") // Populating the medication field
       .populate("list"); // Populating the primary contact
@@ -116,21 +117,33 @@ const getPatient = async (req, res) => {
 
 const getPatients = async (req, res) => {
   try {
-    // Find all patients and populate `med` and `hasPrimaryContact.primaryContact`
-    const patients = await Patient.find({})
-      .populate("med") // Populating the medication field
-      .populate("list"); // Populating the primary contact
+    const hospital = await Hospital.findById(req.user._id)
+      .populate({
+        path: 'patients',
+        select: '_id name age' // Include virtual 'age'
+      })
+      .select('patients');
 
-    if (patients.length === 0) {
+    const patientArray = hospital?.patients || [];
+
+    if (patientArray.length === 0) {
       return res.status(404).json({ message: "No patients found" });
     }
 
-    res.status(200).json({ patients });
+    // Only extract _id, name, and age (already populated and virtual)
+    const formatted = patientArray.map(({ _id, name, age }) => ({
+      _id,
+      name,
+      age
+    }));
+
+    res.status(200).json(formatted);
   } catch (error) {
     console.error("Error fetching patients:", error);
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 
 
 const getPatientById = async (req, res) => {
