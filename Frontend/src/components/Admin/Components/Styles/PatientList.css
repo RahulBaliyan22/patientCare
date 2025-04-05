@@ -1,0 +1,58 @@
+.patient-container {
+  padding: 20px;
+  background-color: #f8f8f8; /* Feature background */
+  border: 1px solid #00aaff; /* Secondary border color */
+  border-radius: 8px;
+  margin: 10px;
+  font-family: Arial, sans-serif; /* Theme font */
+}
+
+.patient-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #004d4d; /* Dark teal header */
+  margin-bottom: 12px;
+}
+
+.patient-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Theme shadow */
+}
+
+.patient-table th,
+.patient-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 14px;
+  color: #333; /* Theme text color */
+}
+
+.patient-table th {
+  background-color: #00aaff; /* Primary accent */
+  color: white;
+  text-align: left;
+}
+
+.patient-table tr:hover {
+  background-color: #e6f7ff; /* Subtle hover effect */
+}
+
+.patient-table td:nth-child(4) {
+  font-weight: 500;
+}
+
+/* Status badge colors */
+.patient-table td.condition-critical {
+  color: #c0392b;
+  font-weight: bold;
+}
+.patient-table td.condition-stable {
+  color: #27ae60;
+  font-weight: bold;
+}
+.patient-table td.condition-recovering {
+  color: #f39c12;
+  font-weight: bold;
+}
