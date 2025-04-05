@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "../pages/Styles/AdminDashboard.css";
 import "../../Home.css";
 import ListPatient from '../Components/ListPatient';
 import Search from '../Components/Search';
 
 function AdminDashboard() {
-  const [reload, setReload] = useState(false);
-
   return (
+    <ReloadProvider>
     <div className="dashContainer">
       <div className='dashChild1'>
         <div className="home-container">
@@ -22,13 +21,14 @@ function AdminDashboard() {
       </div>
 
       <div className='dashChild2'>
-        <Search setReload={setReload} reload={reload} />
+        <Search />
       </div>
 
       <div className='dashChild3'>
-        <ListPatient reload={reload} />
+        <ListPatient />
       </div>
     </div>
+    </ReloadProvider>
   );
 }
 

@@ -3,11 +3,10 @@ import axios from 'axios';
 import '../Components/Styles/SearchCss.css';
 import PatientItem from './PatientItem';
 
-function Search({setReload,reload}) {
+function Search() {
   const [patient, setPatient] = useState(null);
   const [isAdded, setIsAdded] = useState(false);
   const inputRef = useRef();
-
   const handleSearch = async () => {
     const query = inputRef.current.value;
     if (!query) return;
@@ -18,7 +17,6 @@ function Search({setReload,reload}) {
       );
       setPatient(resp?.data?.patient);
       setIsAdded(resp?.data?.isAdded);
-      setReload(!reload);
     } catch (e) {
       console.log(e);
     }

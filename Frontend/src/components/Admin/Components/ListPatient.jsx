@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../Components/Styles/PatientList.css';
 import { Link } from 'react-router-dom';
-
-function ListPatient({reload}) {
+import ReloadContext from '../../../util/ReloadContext';
+function ListPatient() {
   const [patients, setPatients] = useState([]);
-
+  const { reload } = useContext(ReloadContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
