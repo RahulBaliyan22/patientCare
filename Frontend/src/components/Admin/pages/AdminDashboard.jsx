@@ -8,16 +8,9 @@ function AdminDashboard() {
         <div className="home-container">
         <section className="hero">
           <div className="hero-content">
-            <h1>Welcome to Admin Portal</h1>
-            <p>Register a new hospital or manage existing hospital information.</p>
-            <div className="cta-buttons">
-              <Link to="/admin/signup" className="btn-primary">
-                Register New Hospital
-              </Link>
-              <Link to="/admin/login" className="btn-secondary">
-                Login
-              </Link>
-            </div>
+            <h1>Welcome</h1>
+            <p>Thank u for chosing us!! </p>
+            
           </div>
         </section>
         </div>
