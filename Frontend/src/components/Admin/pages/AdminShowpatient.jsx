@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams,useSearchParams } from "react-router-dom";
 import "../pages/Styles/AdminShowpatient.css";
 
 const AdminShowPatient = () => {
-  const { patientId } = useParams();
+  const [search] = useSearchParams(); 
+const patientId = search.get("patientId"); // Pass the key name as a string
+
   const [patient, setPatient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
