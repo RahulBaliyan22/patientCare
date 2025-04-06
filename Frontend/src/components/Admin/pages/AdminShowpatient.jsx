@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 import "../pages/Styles/AdminShowpatient.css";
 
 const AdminShowPatient = () => {
-  const { id } = useParams();
+  const { patientId } = useParams();
   const [patient, setPatient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchPatient = async () => {
     try {
-      const res = await axios.get(`https://patientcare-2.onrender.com/admin/getpatient/${id}`,{withCredentials:true});
+      const res = await axios.get(`https://patientcare-2.onrender.com/admin/getpatient/${patientId}`,{withCredentials:true});
       setPatient(res.data.patient);
       setLoading(false);
     } catch (err) {
