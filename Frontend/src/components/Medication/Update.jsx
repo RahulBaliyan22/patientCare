@@ -7,7 +7,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 const Update = () => {
   const navigate = useNavigate();
   const [sR] = useSearchParams();
-  const patientId = sR.get("patientId")
+  const patientId = sR.get("patientId");
   const { id } = useParams(); // Get the medication ID from the URL if it exists
 
   const [formData, setFormData] = useState({
@@ -18,22 +18,22 @@ const Update = () => {
     dosage: "",
   });
 
-  
-
   // Fetch existing medication data if an ID is provided (for editing)
   useEffect(() => {
     const fetchMedication = async () => {
       if (id) {
-       
         try {
-          const response = await axios.get(`https://patientcare-2.onrender.com/med/${id}`, { withCredentials: true });
+          const response = await axios.get(
+            `https://patientcare-2.onrender.com/med/${id}`,
+            { withCredentials: true }
+          );
           const medication = response.data.medication;
           const formatDOB = medication.start
-      ? new Date(medication.start).toISOString().split('T')[0]
-      : "";
-      const formatDOB2 = medication.end
-      ? new Date(medication.end).toISOString().split('T')[0]
-      : "";
+            ? new Date(medication.start).toISOString().split("T")[0]
+            : "";
+          const formatDOB2 = medication.end
+            ? new Date(medication.end).toISOString().split("T")[0]
+            : "";
           setFormData({
             name: medication.name || "",
             start: formatDOB,
@@ -42,8 +42,7 @@ const Update = () => {
             dosage: medication.dosage || "",
           });
 
-          toast.success(response.data.message)
-          
+          toast.success(response.data.message);
         } catch (error) {
           console.error("Error fetching medication data:", error);
           toast.error("Failed to load medication details.");
@@ -74,20 +73,27 @@ const Update = () => {
     }
 
     try {
-       if(!patientId){
+      if (!patientId) {
         // Update existing medication
-        const response = await axios.patch(`https://patientcare-2.onrender.com/med/update/${id}`, formData, { withCredentials: true });
+        const response = await axios.patch(
+          `https://patientcare-2.onrender.com/med/update/${id}`,
+          formData,
+          { withCredentials: true }
+        );
         toast.success(response.data.message);
-     
 
-      // Navigate back to the medication list and reset the form
-      navigate("/medications");}else{
-        const response = await axios.patch(`https://patientcare-2.onrender.com/admin/update-Med/${id}`, formData, { withCredentials: true });
+        // Navigate back to the medication list and reset the form
+        navigate("/medications");
+      } else {
+        const response = await axios.patch(
+          `https://patientcare-2.onrender.com/admin/update-Med/${id}`,
+          formData,
+          { withCredentials: true }
+        );
         toast.success(response.data.message);
-     
 
-      // Navigate back to the medication list and reset the form
-      navigate(`/admin/showpatient?patient=${patientId}`)
+        // Navigate back to the medication list and reset the form
+        navigate(`/admin/showpatient?patient=${patientId}`);
       }
       setFormData({
         name: "",

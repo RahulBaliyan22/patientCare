@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const Create = () => {
   const [sR] = useSearchParams();
   const patientId = sR.get("patientId");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     start: "",
@@ -26,7 +26,7 @@ const Create = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, start,end } = formData;
+    const { name, start, end } = formData;
     if (!name || !start) {
       toast.error("Please fill in all required fields!");
       return;
@@ -34,36 +34,52 @@ const Create = () => {
     if (end) {
       const startDate = new Date(start);
       startDate.setHours(0, 0, 0, 0);
-    
+
       const endDate = new Date(end);
       endDate.setHours(0, 0, 0, 0);
-    
+
       if (endDate < startDate) {
-        toast.error("Error: End date should be greater than or equal to start date!");
+        toast.error(
+          "Error: End date should be greater than or equal to start date!"
+        );
         return;
       }
     }
     try {
-      if(!patientId){
-      const response = await axios.post(`https://patientcare-2.onrender.com/med`,formData,{withCredentials: true})
-
-      
-        navigate('/medications')}else{
-          const response = await axios.post(`https://patientcare-2.onrender.com/admin/add-Med/${patientId}`,formData,{withCredentials: true})
-          navigate(`/admin/showpatient?patientId=${patientId}`) 
-        }
-        toast.success(response.data.message)
+      if (!patientId) {
+        const response = await axios.post(
+          `https://patientcare-2.onrender.com/med`,
+          formData,
+          { withCredentials: true }
+        );
+        toast.success(response.data.message);
         setFormData({
           name: "",
           start: "",
           end: "",
           prescribedBy: "",
           dosage: "",
-    })
+        });
+        navigate("/medications");
+      } else {
+        const response = await axios.post(
+          `https://patientcare-2.onrender.com/admin/add-Med/${patientId}`,
+          formData,
+          { withCredentials: true }
+        );
+        toast.success(response.data.message);
+        setFormData({
+          name: "",
+          start: "",
+          end: "",
+          prescribedBy: "",
+          dosage: "",
+        });
+        navigate(`/admin/showpatient?patientId=${patientId}`);
+      }
     } catch (error) {
       console.error("Error submitting the form:", error);
-      toast.error("An error occurred!")
-      
+      toast.error("An error occurred!");
     }
   };
 
@@ -148,8 +164,6 @@ const Create = () => {
         <button className="submit-button" type="submit">
           Submit
         </button>
-
-        
       </form>
     </div>
   );
