@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./Create.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const Update = () => {
   const navigate = useNavigate();
+  const [sR] = useSearchParams();
+  const patientId = sR.get("patientId")
   const { id } = useParams(); // Get the medication ID from the URL if it exists
 
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const Update = () => {
   useEffect(() => {
     const fetchMedication = async () => {
       if (id) {
+       
         try {
           const response = await axios.get(`https://patientcare-2.onrender.com/med/${id}`, { withCredentials: true });
           const medication = response.data.medication;
@@ -71,14 +74,21 @@ const Update = () => {
     }
 
     try {
-      
+       if(!patientId){
         // Update existing medication
         const response = await axios.patch(`https://patientcare-2.onrender.com/med/update/${id}`, formData, { withCredentials: true });
         toast.success(response.data.message);
      
 
       // Navigate back to the medication list and reset the form
-      navigate("/medications");
+      navigate("/medications");}else{
+        const response = await axios.patch(`https://patientcare-2.onrender.com/update-Med/${id}`, formData, { withCredentials: true });
+        toast.success(response.data.message);
+     
+
+      // Navigate back to the medication list and reset the form
+      navigate(`/admin/showpatient?patient=${patientId}`)
+      }
       setFormData({
         name: "",
         start: "",

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "./Create.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 const Create = () => {
+  const [sR] = useSearchParams();
+  const patientId = sR.get("patientId");
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
@@ -42,10 +44,14 @@ const Create = () => {
       }
     }
     try {
+      if(!patientId){
       const response = await axios.post(`https://patientcare-2.onrender.com/med`,formData,{withCredentials: true})
 
       
-        navigate('/medications')
+        navigate('/medications')}else{
+          const response = await axios.post(`https://patientcare-2.onrender.com/add-Med/${patientId}`,formData,{withCredentials: true})
+          navigate(`/admin/showpatient?patientId=${patientId}`) 
+        }
         toast.success(response.data.message)
         setFormData({
           name: "",

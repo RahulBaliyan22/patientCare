@@ -38,7 +38,7 @@ const ViewRecord = () => {
       }
       console.log(record);
       setLoading(false);
-    } catch (err) {
+    }catch (err) {
       console.error("Error fetching record details:", err);
       setError(err.response?.data?.message || "Failed to load record details.");
       setLoading(false);

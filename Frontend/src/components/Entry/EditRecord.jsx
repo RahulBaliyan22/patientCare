@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import "./EditRecord.css";
 import { toast } from 'react-toastify';
@@ -7,7 +7,8 @@ import { toast } from 'react-toastify';
 const EditRecord = () => {
   const { id } = useParams(); // Get the record ID from the URL
   const navigate = useNavigate(); // For navigation
-
+  const [sR] = useSearchParams();
+  const patientId = sR.get("patientId");
   const [record, setRecord] = useState({
     date: "",
     doctor: "",
@@ -98,6 +99,7 @@ const EditRecord = () => {
     });
 
     try {
+      if(!patientId){
       const response = await axios.put(
         `https://patientcare-2.onrender.com/records/${id}`,
         formData,
@@ -106,7 +108,17 @@ const EditRecord = () => {
           withCredentials: true,
         }
       );
-      navigate("/records");
+      navigate("/records");}else{
+        const response = await axios.put(
+          `https://patientcare-2.onrender.com/update-record/${id}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true,
+          }
+        );
+        navigate(`/admin/showpatient?${patientId}`);
+      }
       toast.success("Record Updated");
     } catch (err) {
       console.error("Error updating record:", err);
