@@ -27,7 +27,7 @@ const settings = async (req, res) => {
     // Save updated patient info
     await patient.save();
     console.log("save");
-    res.status(200).json({ message: "User Info Updated Successfully." });
+    res.status(200).json({ message: "User Info Updated Successfully.",patient });
   } catch (e) {
     console.error(e); // Log error for debugging
     res.status(500).json({ message: "Server Error. Please try again later." });

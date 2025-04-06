@@ -53,7 +53,7 @@ const AdminSettings = () => {
       );
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(userDetails));
+        localStorage.setItem("user", JSON.stringify(response?.data?.hospital));
         toast.success("User details updated successfully!");
         setTimeout(() => {
           window.location.href = "/admin/dashboard"; // or full URL like 'http://yourdomain.com/profile'

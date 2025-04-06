@@ -390,7 +390,7 @@ const updateMed = async (req, res) => {
   
       await hospital.save();
   
-      res.status(200).json({ message: "Profile updated successfully" });
+      res.status(200).json({ message: "Profile updated successfully" ,hospital});
     } catch (error) {
       console.error("Update error:", error);
       res.status(500).json({ message: "Internal server error", error });

@@ -19,6 +19,7 @@ const Settings = () => {
       : "";
     console.log(formatDOB)
     return {
+      role:"patient",
       name: storedUser.name || "",
       email: storedUser.email || "",
       phone: storedUser.phone || "",
@@ -63,7 +64,7 @@ const Settings = () => {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(userDetails)); // Save to localStorage
+        localStorage.setItem("user", JSON.stringify(response?.data?.patient)); // Save to localStorage
 
         toast.success("User details updated successfully!");
         setTimeout(() => {
