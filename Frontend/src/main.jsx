@@ -97,7 +97,6 @@ const App = () => {
           <Route path="/admin/home" element={<AdminHome/>}/> {/*all hospitals list data*/}
           <Route path="/admin/signup" element = {<AdminSignup/>}/>
           <Route path="/admin/login" element = {<AdminLogin/>}/>
-
           <Route path="/admin/dashboard" element = {<AdminDashboard/>}/>
           <Route path="/admin/showpatient" element = {<AdminShowpatient/>}/>
           <Route path="/admin/SearchPatient" element = {<AdminSearchPatient/>}/>

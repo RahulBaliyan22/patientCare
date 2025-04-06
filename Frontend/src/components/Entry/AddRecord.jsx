@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./AddRecord.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AddRecord = () => {
+  const [searchParams] = useSearchParams();
+  const patientId = searchParams.get("patientId");
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     date: "",
@@ -54,6 +56,7 @@ const AddRecord = () => {
     });
 
     try {
+      if(patientId){
       const response = await axios.post(
         "https://patientcare-2.onrender.com/add-record", 
         data,
@@ -75,7 +78,22 @@ const AddRecord = () => {
       });
       setImages([]);
       setImagePreviews([]);
-      navigation("/records");
+      navigation("/records");}else{
+        const resp = await axios.post(`https://patientcare-2.onrender.com/admin/add-record/${patientId}`,data,{withCredentials:true})
+        toast.success(response.data.message);
+        setLoading(false);
+  
+        // Clear the form
+        setFormData({
+          date: "",
+          doctor: "",
+          diagnosis: "",
+          notes: "",
+        });
+        setImages([]);
+        setImagePreviews([]);
+        navigation(`/admin/showpatient?patientId=${patientId}`)
+      }
     } catch (error) {
       console.error("Error adding record:", error);
       toast.error("Failed to add record.");
