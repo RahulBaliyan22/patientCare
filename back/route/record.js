@@ -35,10 +35,10 @@ const upload = multer({
 
 
 // Routes
-router.post("/add-record", isLoggedIn, upload.array("images"), validateRecords, isPatient,addRecord);
+router.post("/add-record", isLoggedIn, upload.array("images"), validateRecords,addRecord);
 router.get("/records", isLoggedIn,isPatient, fetchRecord);
 router.get("/records/:id", isLoggedIn, isPatient,fetchOneRecord);
-router.put("/records/:id", isLoggedIn, upload.array("images"), validateRecords, isPatient,updateRecord);
+router.put("/records/:id", isLoggedIn, upload.array("images"), validateRecords,updateRecord);
 router.delete("/delete/:id", isLoggedIn,isPatient, deleteRecord);
 router.post("/record/send-email/:id", isLoggedIn,isPatient, sendOneRecord);
 router.post("/records/send-email", isLoggedIn,isPatient, sendRecords);
