@@ -49,7 +49,7 @@ const Create = () => {
 
       
         navigate('/medications')}else{
-          const response = await axios.post(`https://patientcare-2.onrender.com/add-Med/${patientId}`,formData,{withCredentials: true})
+          const response = await axios.post(`https://patientcare-2.onrender.com/admin/add-Med/${patientId}`,formData,{withCredentials: true})
           navigate(`/admin/showpatient?patientId=${patientId}`) 
         }
         toast.success(response.data.message)
