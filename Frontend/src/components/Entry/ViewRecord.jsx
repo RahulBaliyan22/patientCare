@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { toast } from "react-toastify";
@@ -9,6 +9,8 @@ const ViewRecord = () => {
   const { id } = useParams(); // Extract record ID from URL
   const navigate = useNavigate(); // For navigation
 
+  const [sR] = useSearchParams();
+  const patientId = sR.get("patientId");
   const [record, setRecord] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,8 +38,8 @@ const ViewRecord = () => {
         setPrimary(primary.primaryContact);
         setSendList([primary.primaryContact]);
       }
-      console.log(record);
       setLoading(false);
+
     }catch (err) {
       console.error("Error fetching record details:", err);
       setError(err.response?.data?.message || "Failed to load record details.");

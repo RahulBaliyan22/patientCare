@@ -11,7 +11,7 @@ const initializeS3 = require("../config/s3");
 const { 
   signup, login, logout, addPatient, getPatient, 
   getPatients, getPatientById, addRecord, updateRecord, 
-  addMed, updateMed , getHospitals,updateProfile
+  addMed, updateMed , getHospitals,updateProfile,getRecord
 } = require("../controller/admin");
 
 const s3 = initializeS3();
@@ -48,6 +48,7 @@ router.get("/getpatients", isLoggedIn, isAdmin, getPatients);
 // Patient Records Routes
 router.post("/add-record/:patientId", isLoggedIn, isAdmin, upload.array("images"), validateRecords, addRecord);
 router.put("/update-record/:recordId", isLoggedIn, isAdmin, upload.array("images"), updateRecord);
+router.get("/get-record/:recordId",isLoggedIn,isAdmin,getRecord);
 
 // Medication Routes
 router.post("/add-Med/:patientId", isLoggedIn, isAdmin, validateMedication, addMed);

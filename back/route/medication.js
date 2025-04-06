@@ -14,7 +14,7 @@ router.get("/med", isLoggedIn,isPatient, fetchMed);
 
 router.post("/med", isLoggedIn, validateMedication,isPatient, addMed);
 
-router.get("/med/:id", isLoggedIn,isPatient, fetchOneMed);
+router.get("/med/:id", isLoggedIn, fetchOneMed);
 
 router.patch("/med/end/:id", isLoggedIn,isPatient, updateMedEnd);
 
