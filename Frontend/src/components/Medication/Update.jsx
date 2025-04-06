@@ -93,7 +93,7 @@ const Update = () => {
         toast.success(response.data.message);
 
         // Navigate back to the medication list and reset the form
-        navigate(`/admin/showpatient?patient=${patientId}`);
+        navigate(`/admin/showpatient?patientId=${patientId}`);
       }
       setFormData({
         name: "",
