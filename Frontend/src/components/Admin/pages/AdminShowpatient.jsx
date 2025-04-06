@@ -79,6 +79,29 @@ const AdminShowPatient = () => {
           )}
         </div>
       </div>
+
+      {/* Patient Records */}
+<div className="admin-show-patient__medications">
+  <h3 className="admin-show-patient__subheading">Medical Records</h3>
+  <div className="admin-show-patient__scroll">
+    {patient.records?.length > 0 ? (
+      <ul>
+        {patient.records.map((record, index) => (
+          <li key={index}>
+            <strong>{record.title || `Record ${index + 1}`}</strong><br />
+            Date: {record.date ? new Date(record.date).toLocaleDateString() : "N/A"}<br />
+            {record.diagnosis && <span>{record.diagnosis}</span>}<br />
+            {record.notes && <span>{record.notes}</span>}
+
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No medical records available.</p>
+    )}
+  </div>
+</div>
+
     </div>
   );
 };
