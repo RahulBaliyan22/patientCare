@@ -117,7 +117,7 @@ const EditRecord = () => {
             withCredentials: true,
           }
         );
-        navigate(`/admin/showpatient?${patientId}`);
+        navigate(`/admin/showpatient?patientId=${patientId}`);
       }
       toast.success("Record Updated");
     } catch (err) {

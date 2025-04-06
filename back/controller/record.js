@@ -94,7 +94,9 @@ const fetchRecord = async (req, res) => {
 const fetchOneRecord = async (req, res) => {
   try {
     const { id } = req.params; // Correct way to access URL parameter
-   
+    const patient = await Patient.findById(req.user._id)
+      .populate({ path: "hasPrimaryContact.primaryContact" })
+      .populate({ path: "contacts" });
     const record = await Record.findById(id);
     if (!record) {
       return res.status(404).json({ message: "Record does not exist" });
@@ -102,7 +104,9 @@ const fetchOneRecord = async (req, res) => {
 
     res.status(200).json({
       message: "Record fetched successfully",
-      record
+      record,
+      primary: patient.hasPrimaryContact,
+      contacts: patient.contacts,
     });
   } catch (e) {
     res.status(500).json({ message: "Server error" });
