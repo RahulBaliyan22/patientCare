@@ -58,8 +58,7 @@ const AddRecord = () => {
     });
 
     try {
-      console.log(patientId);
-      if(patientId){
+      if(!patientId){
       const response = await axios.post(
         "https://patientcare-2.onrender.com/add-record", 
         data,
