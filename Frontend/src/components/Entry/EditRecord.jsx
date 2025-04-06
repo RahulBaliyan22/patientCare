@@ -34,17 +34,32 @@ const EditRecord = () => {
   useEffect(() => {
     const fetchRecordDetails = async () => {
       try {
-        const response = await axios.get(`https://patientcare-2.onrender.com/records/${id}`, {
-          withCredentials: true,
-        });
-        setRecord({
-          date: response.data.record.date.slice(0, 10), // Format date for input
-          doctor: response.data.record.doctor,
-          diagnosis: response.data.record.diagnosis || "",
-          notes: response.data.record.notes || "",
-          image: response.data.record.image || [],
-        });
-        setLoading(false);
+        if(patientId){
+          const response = await axios.get(`https://patientcare-2.onrender.com/admin/get-record/${id}`, {
+            withCredentials: true,
+          });
+          setRecord({
+            date: response.data.record.date.slice(0, 10), // Format date for input
+            doctor: response.data.record.doctor,
+            diagnosis: response.data.record.diagnosis || "",
+            notes: response.data.record.notes || "",
+            image: response.data.record.image || [],
+          });
+          setLoading(false);
+        }else{
+          const response = await axios.get(`https://patientcare-2.onrender.com/records/${id}`, {
+            withCredentials: true,
+          });
+          setRecord({
+            date: response.data.record.date.slice(0, 10), // Format date for input
+            doctor: response.data.record.doctor,
+            diagnosis: response.data.record.diagnosis || "",
+            notes: response.data.record.notes || "",
+            image: response.data.record.image || [],
+          });
+          setLoading(false);
+        }
+        
       } catch (err) {
         console.error("Error fetching record details:", err);
         setError(err.response?.data?.message || "Failed to load record.");
