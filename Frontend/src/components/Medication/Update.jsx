@@ -82,7 +82,7 @@ const Update = () => {
 
       // Navigate back to the medication list and reset the form
       navigate("/medications");}else{
-        const response = await axios.patch(`https://patientcare-2.onrender.com/update-Med/${id}`, formData, { withCredentials: true });
+        const response = await axios.patch(`https://patientcare-2.onrender.com/admin/update-Med/${id}`, formData, { withCredentials: true });
         toast.success(response.data.message);
      
 

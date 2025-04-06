@@ -110,7 +110,7 @@ const EditRecord = () => {
       );
       navigate("/records");}else{
         const response = await axios.put(
-          `https://patientcare-2.onrender.com/update-record/${id}`,
+          `https://patientcare-2.onrender.com/admin/update-record/${id}`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
