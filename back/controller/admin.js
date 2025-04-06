@@ -152,8 +152,6 @@ const getPatientById = async (req, res) => {
   
   try {
     const patient = await Patient.findOne({ uid: patientId })
-      .populate("med")
-      .populate("list");
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
@@ -340,10 +338,8 @@ const updateMed = async (req, res) => {
       if (prescribedBy) medication.prescribedBy = prescribedBy;
       if (dosage) medication.dosage = dosage;
       if (end) {
-        medication.isEnd = true;
-      } else {
-        medication.isEnd = false;
-      }
+        medication.isEnd = (new Date(end) <= new Date());
+      } 
   
       medication.hospital = req.user._id;
       await medication.save();

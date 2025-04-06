@@ -34,17 +34,17 @@ function ListPatient() {
           {patients.map((patient) => (
             <tr key={patient._id}>
               <td>
-                <Link to={`/admin/showpatient/${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
+                <Link to={`/admin/showpatient?patientId=${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
                   {patient?.uid || "not a valid patient"}
                 </Link>
               </td>
               <td>
-                <Link to={`/admin/showpatient/${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
+                <Link to={`/admin/showpatient?patientId=${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
                   {patient?.name || 'Unknown'}
                 </Link>
               </td>
               <td>
-                <Link to={`/admin/showpatient/${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
+                <Link to={`/admin/showpatient?patientId=${patient._id}`} style={{ textDecoration: "none", color: "blue" }}>
                   {patient?.age ?? 'Not Provided'}
                 </Link>
               </td>

@@ -31,7 +31,7 @@ function PatientItem({ patient, isAdded }) {
       </div>
       <div className="btnContainer">
         <button>
-          <Link to={`/admin/showpatient/${patient._id}`}>View Patient</Link>
+          <Link to={`/admin/showpatient?patientId=${patient._id}`}>View Patient</Link>
         </button>
         {!isAdd && (
           <button onClick={handleClick}>

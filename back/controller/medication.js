@@ -185,10 +185,8 @@ const updateOneMed = async (req, res) => {
     if (prescribedBy) medication.prescribedBy = prescribedBy;
     if (dosage) medication.dosage = dosage;
     if (end) {
-      medication.isEnd = true;
-    } else {
-      medication.isEnd = false;
-    }
+      medication.isEnd = (new Date(end) <= new Date());
+    } 
 
     await medication.save();
 
