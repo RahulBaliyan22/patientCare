@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams,useSearchParams } from "react-router-dom";
+import { useSearchParams,Link } from "react-router-dom";
 import "../pages/Styles/AdminShowpatient.css";
 
 const AdminShowPatient = () => {
@@ -86,14 +86,14 @@ const patientId = search.get("patientId"); // Pass the key name as a string
 <div className="admin-show-patient__medications">
   <h3 className="admin-show-patient__subheading">Medical Records</h3>
   <div className="admin-show-patient__scroll">
-    {patient.records?.length > 0 ? (
+    {patient.list?.length > 0 ? (
       <ul>
-        {patient.records.map((record, index) => (
+        {patient.list.map((record, index) => (
           <li key={index}>
-            <strong>{record.title || `Record ${index + 1}`}</strong><br />
+            <Link to={`/admin/showRecord?patientId=${patient._id}&recordId=${record._id}`} style={{textDecoration:"none"}}> <strong>{record.title || `Record ${index + 1}`}</strong><br />
             Date: {record.date ? new Date(record.date).toLocaleDateString() : "N/A"}<br />
             {record.diagnosis && <span>{record.diagnosis}</span>}<br />
-            {record.notes && <span>{record.notes}</span>}
+            {record.notes && <span>{record.notes}</span>}</Link>
 
           </li>
         ))}
