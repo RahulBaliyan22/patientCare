@@ -1,67 +1,86 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import '../pages/Styles/AdminShowpatient.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import "./AdminShowPatient.css";
 
-function AdminShowpatient() {
-  const [searchParams] = useSearchParams();
-  const patientId = searchParams.get('patientId');
+const AdminShowPatient = () => {
+  const { id } = useParams();
   const [patient, setPatient] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await axios.get(
-          `https://patientcare-2.onrender.com/admin/getpatient/${patientId}`,
-          { withCredentials: true }
-        );
-        setPatient(resp?.data?.patient);
-      } catch (e) {
-        console.error("Error fetching patient:", e);
-        setError("Failed to load patient details. Please try again.");
-      }
-    };
-
-    if (patientId) {
-      fetchData();
+  const fetchPatient = async () => {
+    try {
+      const res = await axios.get(`/admin/patient/${id}`);
+      setPatient(res.data);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch patient data.");
+      setLoading(false);
     }
-  }, [patientId]);
+  };
 
-  if (error)
-    return <div className="admin-show-patient__error">{error}</div>;
+  useEffect(() => {
+    fetchPatient();
+  }, []);
 
-  if (!patient)
-    return <div className="admin-show-patient__loading">Loading patient info...</div>;
+  if (loading) return <div className="admin-show-patient__loading">Loading patient data...</div>;
+  if (error) return <div className="admin-show-patient__error">{error}</div>;
 
   return (
     <div className="admin-show-patient">
       <h2 className="admin-show-patient__heading">Patient Details</h2>
+
       <div className="admin-show-patient__details">
         <p><strong>Name:</strong> {patient.name}</p>
-        <p><strong>Age:</strong> {patient.age || 'N/A'}</p>
-        <p><strong>Gender:</strong> {patient.gender || 'N/A'}</p>
-        <p><strong>Blood Group:</strong> {patient.bloodGroup || 'N/A'}</p>
-        <p><strong>Email:</strong> {patient.email || 'N/A'}</p>
-        <p><strong>Phone:</strong> {patient.phone || 'N/A'}</p>
+        <p><strong>Age:</strong> {patient.age}</p>
+        <p><strong>Gender:</strong> {patient.gender}</p>
+        <p><strong>Email:</strong> {patient.email}</p>
+        <p><strong>Phone:</strong> {patient.phone}</p>
+      </div>
 
-        <div className="admin-show-patient__medications">
-          <strong>Medications:</strong>
-          {patient.med?.length > 0 ? (
+      {/* Active Medications */}
+      <div className="admin-show-patient__medications">
+        <h3 className="admin-show-patient__subheading">Active Medications</h3>
+        <div className="admin-show-patient__scroll">
+          {patient.med?.filter(med => !med.isEnd).length > 0 ? (
             <ul>
-              {patient.med.map((med, index) => (
+              {patient.med.filter(med => !med.isEnd).map((med, index) => (
                 <li key={index}>
-                  {typeof med === 'string' ? med : med.name || 'Unnamed medication'}
+                  <strong>{med.name}</strong> ({med.dosage || "N/A"})<br />
+                  Start: {new Date(med.start).toLocaleDateString()}
+                  {med.prescribedBy && <> | Prescribed by: {med.prescribedBy}</>}
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No medications listed.</p>
+            <p>No active medications.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Non-Active Medications */}
+      <div className="admin-show-patient__medications">
+        <h3 className="admin-show-patient__subheading">Non-Active Medications</h3>
+        <div className="admin-show-patient__scroll">
+          {patient.med?.filter(med => med.isEnd).length > 0 ? (
+            <ul>
+              {patient.med.filter(med => med.isEnd).map((med, index) => (
+                <li key={index}>
+                  <strong>{med.name}</strong> ({med.dosage || "N/A"})<br />
+                  Start: {new Date(med.start).toLocaleDateString()} — End:{" "}
+                  {med.end ? new Date(med.end).toLocaleDateString() : "N/A"}
+                  {med.prescribedBy && <> | Prescribed by: {med.prescribedBy}</>}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No non-active medications.</p>
           )}
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default AdminShowpatient;
+export default AdminShowPatient;

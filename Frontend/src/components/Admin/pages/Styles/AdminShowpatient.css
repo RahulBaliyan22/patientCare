@@ -1,5 +1,5 @@
 .admin-show-patient {
-  max-width: 600px;
+  max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
   background: #f8f8f8;
@@ -15,17 +15,41 @@
   color: #004d4d;
   border-bottom: 2px solid #00aaff;
   padding-bottom: 0.5rem;
+  font-size: 1.8rem;
 }
 
-.admin-show-patient__details {
-  line-height: 1.8;
+.admin-show-patient__details p {
+  margin-bottom: 0.8rem;
   font-size: 1rem;
+  line-height: 1.6;
 }
 
 .admin-show-patient__medications {
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid #00aaff;
+}
+
+.admin-show-patient__subheading {
+  color: #004d4d;
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+}
+
+.admin-show-patient__scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.admin-show-patient__scroll ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.admin-show-patient__scroll li {
+  margin-bottom: 0.7rem;
+  line-height: 1.5;
 }
 
 .admin-show-patient__loading,
