@@ -12,7 +12,7 @@ const AdminShowPatient = () => {
   const fetchPatient = async () => {
     try {
       const res = await axios.get(`/admin/patient/${id}`);
-      setPatient(res.data);
+      setPatient(res.data.patient);
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch patient data.");
