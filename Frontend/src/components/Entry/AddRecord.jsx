@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 const AddRecord = () => {
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get("patientId");
+
+
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     date: "",
@@ -56,6 +58,7 @@ const AddRecord = () => {
     });
 
     try {
+      console.log(patientId);
       if(patientId){
       const response = await axios.post(
         "https://patientcare-2.onrender.com/add-record", 
@@ -80,7 +83,7 @@ const AddRecord = () => {
       setImagePreviews([]);
       navigation("/records");}else{
         const resp = await axios.post(`https://patientcare-2.onrender.com/admin/add-record/${patientId}`,data,{withCredentials:true})
-        toast.success(response.data.message);
+        toast.success(resp.data.message);
         setLoading(false);
   
         // Clear the form
