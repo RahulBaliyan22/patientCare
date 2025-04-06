@@ -11,7 +11,7 @@ const AdminShowPatient = () => {
 
   const fetchPatient = async () => {
     try {
-      const res = await axios.get(`/admin/patient/${id}`);
+      const res = await axios.get(`https://patientcare-2.onrender.com/admin/getpatient/${id}`);
       setPatient(res.data.patient);
       setLoading(false);
     } catch (err) {
