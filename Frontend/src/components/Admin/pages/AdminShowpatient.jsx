@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import "../Components/Styles/AdminShowPatient.css";
+import "../Components/Styles/AdminShowpatient.css";
 
 const AdminShowPatient = () => {
   const { id } = useParams();
