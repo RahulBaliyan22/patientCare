@@ -69,6 +69,8 @@
 
 
 .admin-show-patient__add-button {
+  width: 32px;
+  height: 32px;
   background:none;
   color: black;
   font-size: 1.2rem;
