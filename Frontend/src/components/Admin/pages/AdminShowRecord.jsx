@@ -15,7 +15,6 @@ const AdminShowRecord = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [sendList, setSendList] = useState([]);
 
   // Fetch record details
   const fetchRecordDetails = async () => {
@@ -25,7 +24,7 @@ const AdminShowRecord = () => {
         { withCredentials: true }
       );
 
-      const { record, contacts, primary } = response.data;
+      const { record} = response.data;
 
       setRecord(record);
       setLoading(false);
