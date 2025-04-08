@@ -15,7 +15,16 @@ const ChatSidebar = ({ role, socket, onClose, messages, setMessages }) => {
       setUser(client);
     }
   }, [isLoggedIn]);
+  useEffect(() => {
+    role = user?.role || "guest";
 
+  // Socket to use
+   socket =
+    role === "admin" ? adminsocket :
+    role === "patient" ? patientsocket :
+    guestsocket;
+    socket.connect();
+  }, [user]);
   // Listen for incoming responses
   useEffect(() => {
     const responseEvent = `${role}:receive-response`;
