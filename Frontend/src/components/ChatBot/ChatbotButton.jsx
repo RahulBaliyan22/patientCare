@@ -12,7 +12,8 @@ const ChatbotButton = () => {
 
   useEffect(() => {
     if (chatUser?.socket) {
-      console.log(`${chatUser?.socket} is connected`)
+      console.log(`${chatUser.role}:`, JSON.stringify(chatUser.socket));
+
       chatUser.socket.connect();
     }
   }, [chatUser]);
