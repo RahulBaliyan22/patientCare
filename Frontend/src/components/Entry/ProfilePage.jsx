@@ -30,6 +30,7 @@ const ProfilePage = () => {
         <div className="profile-header">
           <h1>{patient.name}</h1>
           <p>Email: {patient.email}</p>
+          <p>Patient ID: {patient.uid}</p>
         </div>
         <div className="profile-body">
           <div className="profile-info">

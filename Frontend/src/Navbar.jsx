@@ -169,7 +169,7 @@ const Navbar = () => {
 
           {/* Profile */}
           {isLoggedIn && user && (
-            <li className="navbar-item"> {user?.role === "patient"?(<><Link to="/profile" className="nav-link">
+            <li className="navbar-item"> {user?.role === "patient"?(<><Link to="/profile" className="nav-link" title={user.uid}>
               {`Hi: ${user.name}`}
             </Link>
             <div className="navbar-dropdown">

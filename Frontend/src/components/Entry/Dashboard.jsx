@@ -15,18 +15,20 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   // Sample medical history data (you can replace this with dynamic data from API)
-  const [medicalHistory,setMedicalHistory] = useState([]);
+  const [medicalHistory, setMedicalHistory] = useState([]);
 
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-          const response = await axios.get(`https://patientcare-2.onrender.com/dashboard`, {
+        const response = await axios.get(
+          `https://patientcare-2.onrender.com/dashboard`,
+          {
             withCredentials: true,
-          });
-          setUser(response.data.patient);
-          setMedicalHistory(response.data.records);
-        }
-       catch (error) {
+          }
+        );
+        setUser(response.data.patient);
+        setMedicalHistory(response.data.records);
+      } catch (error) {
         setError("Error fetching patient data. Please try again.");
       } finally {
         setLoading(false);
@@ -59,11 +61,23 @@ const Dashboard = () => {
       <header className="dashboard-header">
         <h1>
           Welcome{" "}
-          {user
-            ? user.isFirstTimeUser
-              ? "to PatientCare!"
-              : user.lastLogin==null?<>{user.name}</>:`back, ${user.name}`
-            : "Loading..."}
+          <h1>
+            {user ? (
+              user.isFirstTimeUser ? (
+                <>
+                  Welcome to PatientCare!
+                  <br />
+                  <p>Patient ID: {patient.uid}</p>
+                </>
+              ) : user.lastLogin == null ? (
+                <>Welcome, {user.name}</>
+              ) : (
+                <>Welcome back, {user.name}</>
+              )
+            ) : (
+              "Loading..."
+            )}
+          </h1>
         </h1>
 
         {user && user.isFirstTimeUser && (
@@ -75,17 +89,15 @@ const Dashboard = () => {
 
         {user && !user.isFirstTimeUser && (
           <p className="last-login">
-            
-           {user.lastLogin && (
-  <>
-    Last Login:{" "}
-    {new Intl.DateTimeFormat("en-US", {
-      dateStyle: "full",
-      timeStyle: "short",
-    }).format(new Date(user.lastLogin))}
-  </>
-)}
-
+            {user.lastLogin && (
+              <>
+                Last Login:{" "}
+                {new Intl.DateTimeFormat("en-US", {
+                  dateStyle: "full",
+                  timeStyle: "short",
+                }).format(new Date(user.lastLogin))}
+              </>
+            )}
           </p>
         )}
       </header>
@@ -123,20 +135,20 @@ const Dashboard = () => {
 
       {!user?.isFirstTimeUser && (
         <>
-        <div className="add-Flex">
-          <Data/>
-          <div className="dashboard-card" style={{alignContent:"center"}}>
-              
-  <h2>Check Your Vitals</h2>
-  <p>Monitor and manage your health records in one place.</p>
-  <button className="action-btn" onClick={() => navigate("/vital-check")}>
-    Check Vitals
-  </button>
-</div>
-
+          <div className="add-Flex">
+            <Data />
+            <div className="dashboard-card" style={{ alignContent: "center" }}>
+              <h2>Check Your Vitals</h2>
+              <p>Monitor and manage your health records in one place.</p>
+              <button
+                className="action-btn"
+                onClick={() => navigate("/vital-check")}
+              >
+                Check Vitals
+              </button>
+            </div>
           </div>
           <Timeline history={medicalHistory} itemsPerPage={3} />
-          
         </>
       )}
 
@@ -160,37 +172,31 @@ const Dashboard = () => {
           </button>
         </div>
 
-        
         <div className="dashboard-card">
-              <h2>View Your Contacts</h2>
-              <p>View and manage your contacts in one place.</p>
-              <button
-                className="action-btn"
-                onClick={() => navigate("/contact/show")}
-              >
-                My Contacts
-              </button>
-            </div>
-            <div className="dashboard-card">
-              <h2> What's new !</h2>
-              <div className="what">
-              {
-                <NewComponents/>
-              }
-              </div>
-              
+          <h2>View Your Contacts</h2>
+          <p>View and manage your contacts in one place.</p>
+          <button
+            className="action-btn"
+            onClick={() => navigate("/contact/show")}
+          >
+            My Contacts
+          </button>
         </div>
-            <div className="dashboard-card">
-              <h2>Add Patient Record</h2>
-              <p>View and manage your health records in one place.</p>
-              <button
-                className="action-btn"
-                onClick={() => navigate("/add-record")}
-              >
-                Add Records
-              </button>
-            </div>
-            <div className="dashboard-card">
+        <div className="dashboard-card">
+          <h2> What's new !</h2>
+          <div className="what">{<NewComponents />}</div>
+        </div>
+        <div className="dashboard-card">
+          <h2>Add Patient Record</h2>
+          <p>View and manage your health records in one place.</p>
+          <button
+            className="action-btn"
+            onClick={() => navigate("/add-record")}
+          >
+            Add Records
+          </button>
+        </div>
+        <div className="dashboard-card">
           <h2>Settings</h2>
           <p>Update your account information and preferences.</p>
           <button className="action-btn" onClick={() => navigate("/settings")}>
