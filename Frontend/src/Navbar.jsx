@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./main";
 import "./Navbar.css";
 import "react-toastify/dist/ReactToastify.css";
+import { connectSocketByRole } from "./util/socket";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -43,7 +44,7 @@ const Navbar = () => {
       setIsLoggedIn(false);
       navigate("/admin/login");
       }
-
+     
       connectSocketByRole("guest");
     } catch (err) {
       console.error("Logout failed:", err);

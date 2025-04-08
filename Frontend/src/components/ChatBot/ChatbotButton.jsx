@@ -36,7 +36,6 @@ const ChatbotButton = () => {
 
   useEffect(() => {
     connectSocketByRole(role);
-    return () => disconnectAllSockets();
   }, [role]);
 
   const handleToggle = () => setIsOpen((prev) => !prev);
