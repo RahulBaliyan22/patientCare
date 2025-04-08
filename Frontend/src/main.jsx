@@ -46,6 +46,7 @@ import AdminShowRecord from "./components/Admin/pages/AdminShowRecord";
 import AdminEditRecord from "./components/Admin/pages/AdminEditRecord";
 import AdminEditMed from "./components/Admin/pages/AdminEditMed";
 import AdminSettings from "./components/Admin/pages/AdminSettings";
+import { connectSocketByRole } from "./util/socket";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -59,8 +60,8 @@ const App = () => {
     if (user) {
       setIsLoggedIn(true); // Set logged-in status based on localStorage
     }
+    connectSocketByRole(user?.role);
   }, []);
-  
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <BrowserRouter basename="/">
@@ -102,7 +103,7 @@ const App = () => {
           <Route path="/admin/SearchPatient" element = {<AdminSearchPatient/>}/>
           <Route path="/admin/Allpatient" element = {<Allpatient/>}/>
           <Route path="/admin/showRecords/:patientId" element = {<AdminShowRecords/>}/>
-          <Route path = "/admin/showMedcations/:patientId" element = {<AllMeds/>}/>
+          <Route path="/admin/showMedcations/:patientId" element = {<AllMeds/>}/>
           <Route path="/admin/showRecord/:id" element = {<AdminShowRecord/>}/>
           <Route path="/admin/showMedication/:patientId/:medId" element = {<AdminShowMed/>}/>
           <Route path="/admin/EditRecord/:patientId/:recordId" element = {<AdminEditRecord/>}/>

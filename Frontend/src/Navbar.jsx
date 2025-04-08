@@ -31,6 +31,7 @@ const Navbar = () => {
           credentials: "include",
         });
         localStorage.removeItem("user");
+        
       setIsLoggedIn(false);
       navigate("/login");
       } else if (user?.role === "admin") {
@@ -42,6 +43,8 @@ const Navbar = () => {
       setIsLoggedIn(false);
       navigate("/admin/login");
       }
+
+      connectSocketByRole("guest");
     } catch (err) {
       console.error("Logout failed:", err);
     }

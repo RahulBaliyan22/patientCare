@@ -1,40 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 import ChatSidebar from "./ChatSidebar";
-import { socket } from "../../util/socket";
+import {
+  patientsocket,
+  adminsocket,
+  guestsocket,
+  connectSocketByRole,
+  disconnectAllSockets,
+} from "../../util/socket";
 import "./Chat.css";
 
-const ChatbotButton = () => {
+const ChatbotButton = ({ role = "guest" }) => {
   const [messages, setMessages] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
+  // Determine which socket to use
+  const socket =
+    role === "admin"
+      ? adminsocket
+      : role === "patient"
+      ? patientsocket
+      : guestsocket;
+
   useEffect(() => {
-    const handleInitialResponse = (message) => {
-      setIsOpen(true);
-      setMessages((prev) => [...prev, { text: message, sender: "bot" }]);
-    };
+    connectSocketByRole(role);
+    return () => disconnectAllSockets();
+  }, [role]);
 
-    // Listen only once for initial message
-    socket.once("bot-initial-response", handleInitialResponse);
-
-    return () => {
-      socket.off("bot-initial-response", handleInitialResponse);
-    };
-  }, []);
+  const handleToggle = () => setIsOpen((prev) => !prev);
 
   return (
     <div className="chat-wrapper">
       {isOpen && (
         <ChatSidebar
-          onClose={() => setIsOpen(false)}
+          role={role}
+          socket={socket}
+          onClose={handleToggle}
           messages={messages}
           setMessages={setMessages}
         />
       )}
-      <button
-        className="chat-wrapper__button"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button className="chat-wrapper__button" onClick={handleToggle}>
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
     </div>
