@@ -21,16 +21,21 @@ const guestsocket = io("https://patientcare-2.onrender.com/chat-guest", {
 
 // 🔌 Connect socket based on role
 export const connectSocketByRole = (role) => {
-  disconnectAllSockets(); // Optional: Disconnect all before connecting one
+  disconnectAllSockets(); // Ensure all previous sockets are closed
+
   switch (role) {
     case "admin":
-      return adminsocket.connect();
+      if (!adminsocket.connected) return adminsocket.connect();
+      break;
     case "patient":
-      return patientsocket.connect();
+      if (!patientsocket.connected) return patientsocket.connect();
+      break;
     default:
-      return guestsocket.connect();
+      if (!guestsocket.connected) return guestsocket.connect();
+      break;
   }
 };
+
 
 export const checkConnectSocketByRole = (role) => {
   switch (role) {
@@ -58,10 +63,11 @@ export const disconnectSocketByRole = (role) => {
 
 // 🔌 Disconnect all sockets (optional use case)
 export const disconnectAllSockets = () => {
-  patientsocket.disconnect();
-  adminsocket.disconnect();
-  guestsocket.disconnect();
+  if (patientsocket?.connected) patientsocket.disconnect();
+  if (adminsocket?.connected) adminsocket.disconnect();
+  if (guestsocket?.connected) guestsocket.disconnect();
 };
+
 
 
 // 👉 Export sockets in case you need to listen/send messages
