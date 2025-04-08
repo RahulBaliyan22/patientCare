@@ -12,6 +12,7 @@ const ChatbotButton = () => {
 
   useEffect(() => {
     if (chatUser?.socket) {
+      console.log(`${chatUser?.socket} is connected`)
       chatUser.socket.connect();
     }
   }, [chatUser]);
@@ -24,8 +25,8 @@ const ChatbotButton = () => {
       {isOpen  && (
         <ChatSidebar
           onClose={handleClose}
-          socket={chatUser.socket}
-          role={chatUser.role}
+          socket={chatUser?.socket}
+          role={chatUser?.role}
           messages={messages}
           setMessages={setMessages}
         />
