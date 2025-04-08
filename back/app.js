@@ -21,6 +21,9 @@ const medicationRoutes = require("./route/medication");
 const Patient = require("./model/Patient");
 const adminRoutes = require('./route/admin');
 const Admin = require("./model/Hospital");
+const soketServer = require('./utils/chatBotHandler')
+
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -93,18 +96,7 @@ passport.deserializeUser(async (user, done) => {
 
 
 // Socket.io Connection
-io.on("connection", (socket) => {
-  console.log("A user connected: ", socket.id);
-
-  socket.on("health-data", (data) => {
-    console.log("Received health data:", data);
-    io.emit("update-health", data); // Broadcast to all clients
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected: ", socket.id);
-  });
-});
+soketServer(io)
 
 // Routes
 app.use(authRoutes);

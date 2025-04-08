@@ -84,6 +84,11 @@ const patientSchema = new mongoose.Schema({
     },
   ],
 
+  vistals: {
+    heartRate: [Number],
+    SpO2: [Number],
+    temperature: [Number]
+  },
   uid: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
