@@ -1,8 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import "./Chat.css";
+import { AuthContext } from "../../main";
 
 const ChatSidebar = ({ role, socket, onClose, messages, setMessages }) => {
   const [input, setInput] = useState("");
+  const { isLoggedIn } = useContext(AuthContext);
+    const [user, setUser] = useState(null);
+  
+    // Determine role
+    
+  
+    useEffect(() => {
+      if (isLoggedIn && localStorage.getItem("user")) {
+        const clientString = localStorage.getItem("user");
+        const client = clientString ? JSON.parse(clientString) : null;
+        setUser(client);
+      }
+    }, [isLoggedIn]);
+  
+    useEffect(() => {
+      const role = user?.role || "guest";
+    // Socket to use
+    const socket =
+      role === "admin" ? adminsocket :
+      role === "patient" ? patientsocket :
+      guestsocket;
+      socket.connect();
+    }, [user]);
 
   useEffect(() => {
     const responseEvent = `${role}:receive-response`; // e.g., guest:receive-response

@@ -18,13 +18,7 @@ const ChatbotButton = () => {
   const [user, setUser] = useState(null);
 
   // Determine role
-  const role = user?.role || "guest";
-
-  // Socket to use
-  const socket =
-    role === "admin" ? adminsocket :
-    role === "patient" ? patientsocket :
-    guestsocket;
+  
 
   useEffect(() => {
     if (isLoggedIn && localStorage.getItem("user")) {
@@ -35,7 +29,14 @@ const ChatbotButton = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    connectSocketByRole(user?.role);
+    const role = user?.role || "guest";
+
+  // Socket to use
+  const socket =
+    role === "admin" ? adminsocket :
+    role === "patient" ? patientsocket :
+    guestsocket;
+    socket.connect();
   }, [user]);
 
   const handleToggle = () => setIsOpen((prev) => !prev);
