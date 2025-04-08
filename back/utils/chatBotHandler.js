@@ -1,5 +1,5 @@
 const Patient = require("../model/Patient");
-const getBotReply = require('./openAI');
+// const getBotReply = require('./openAI');
 
 module.exports = (io) => {
   io.on("connection", async (socket) => {
@@ -26,7 +26,7 @@ module.exports = (io) => {
     // Initial welcome
     const initialPrompt = "Greet the patient and summarize their current condition and medications.";
     try {
-      const botResponse = await getBotReply(initialPrompt, patientData);
+      const botResponse = "thanks for logging in";
       socket.emit("bot-initial-response", botResponse);
     } catch (err) {
       console.error("Bot error:", err);
@@ -36,7 +36,7 @@ module.exports = (io) => {
     // Chat message handler
     socket.on("user-message", async (message) => {
       try {
-        const reply = await getBotReply(message, patientData);
+        const reply = "hi i am a bot";
         socket.emit("bot-response", reply);
       } catch (err) {
         console.error("Bot reply error:", err);
