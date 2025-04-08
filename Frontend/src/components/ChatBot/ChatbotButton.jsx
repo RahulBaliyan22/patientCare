@@ -21,7 +21,7 @@ const ChatbotButton = () => {
 
   return (
     <div className="chat-wrapper">
-      {isOpen && socketRef.current && (
+      {isOpen  && (
         <ChatSidebar
           onClose={handleClose}
           socket={chatUser.socket}
