@@ -6,7 +6,7 @@ const {
   patientResponses,
   adminResponses,
   guestResponses,
-} = require("./grok.js");
+} = require("./grok");
 
 const guestChat = (io) => {
   const chatNamespace = io.of("/chat-guest");
