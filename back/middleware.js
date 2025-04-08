@@ -85,6 +85,17 @@ const isLoggedOut = (req, res, next) => {
   next();
 };
 
+
+const authorizeRole = (role) => {
+  return (socket, next) => {
+    const user = socket.request.user;
+    if (user && user.role === role) {
+      return next();
+    }
+    return next(new Error(`Unauthorized: ${role} access only`));
+  };
+};
+
 module.exports = {
   isAdmin,
   isPatient,
@@ -95,5 +106,5 @@ module.exports = {
   validateContact,
   validatePatient,
   validateRecords,
-  validateHospital
+  validateHospital,authorizeRole
 };

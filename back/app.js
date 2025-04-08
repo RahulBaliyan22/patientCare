@@ -21,7 +21,9 @@ const medicationRoutes = require("./route/medication");
 const adminRoutes = require('./route/admin');
 const Patient = require("./model/Patient");
 const Admin = require("./model/Hospital");
-const socketServer = require('./utils/chatBotHandler');
+const {guestChat,patientChat,adminChat}  = require('./utils/chatBotHandler');
+const vitalData = require('./utils/vitalRealTime')
+
 
 const app = express();
 const server = http.createServer(app);
@@ -97,7 +99,11 @@ io.use((socket, next) => {
 });
 
 // Socket.io logic
-socketServer(io);
+guestChat(io);
+patientChat(io)
+adminChat(io)
+
+vitalData(io);
 
 // Routes
 app.use(authRoutes);

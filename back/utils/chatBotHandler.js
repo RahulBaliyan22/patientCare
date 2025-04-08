@@ -1,47 +1,88 @@
 const Patient = require("../model/Patient");
-// const getBotReply = require('./openAI');
+const Hospital = require("../model/Hospital.js");
 
-module.exports = (io) => {
-  io.on("connection", async (socket) => {
-    const user = socket.request.user;
+const { authorizeRole } = require('../middleware');
+const {
+  patientResponses,
+  adminResponses,
+  guestResponses,
+} = require("./grok.js");
 
-    if (!user) {
-      console.log("Unauthenticated socket connection");
-      socket.disconnect();
-      return;
-    }
+const guestChat = (io) => {
+  const chatNamespace = io.of("/chat-guest");
 
-    console.log(`Socket connected: ${socket.id} as ${user}`);
+  chatNamespace.on("connection", async (socket) => {
+    console.log("🟢 Guest connected");
 
-    // Fetch patient data
-    let patientData;
-    try {
-      patientData = await Patient.findById(user._id).populate("list").populate("med").select("-_id -uid");
-    } catch (err) {
-      console.error("Error fetching patient data:", err);
-      socket.emit("bot-initial-response", "Error loading your health information.");
-      return;
-    }
-
-    // Initial welcome
-    const initialPrompt = "Greet the patient and summarize their current condition and medications.";
-    try {
-      const botResponse = "thanks for logging in";
-      socket.emit("bot-initial-response", botResponse);
-    } catch (err) {
-      console.error("Bot error:", err);
-      socket.emit("bot-initial-response", "Sorry, I couldn't process your health summary.");
-    }
-
-    // Chat message handler
-    socket.on("user-message", async (message) => {
+    socket.on("guest:send-message", async (message) => {
       try {
-        const reply = "hi i am a bot";
-        socket.emit("bot-response", reply);
+        const context = "General inquiries about the app";
+        const response = await guestResponses(message, context);
+        socket.emit("guest:receive-response", response);
       } catch (err) {
-        console.error("Bot reply error:", err);
-        socket.emit("bot-response", "Something went wrong. Try again later.");
+        console.error("Guest response error:", err);
+        socket.emit("guest:receive-response", "Sorry, an error occurred.");
       }
+    });
+
+    socket.on("disconnect", () => {
+      console.log("🔴 Guest user disconnected");
     });
   });
 };
+
+const patientChat = (io) => {
+  const chatNamespace = io.of("/chat-patient");
+
+  chatNamespace.use(authorizeRole("patient"));
+  chatNamespace.on("connection", async (socket) => {
+    console.log("🟢 Patient connected");
+
+    const patientId = socket.request.user?._id;
+    const patient = await Patient.findById(patientId);
+
+    socket.on("patient:send-message", async (message) => {
+      try {
+        const context = "Patient asking about health, medication, or app help";
+        const response = await patientResponses(message, patient, context);
+        socket.emit("patient:receive-response", response);
+      } catch (err) {
+        console.error("Patient response error:", err);
+        socket.emit("patient:receive-response", "Sorry, an error occurred.");
+      }
+    });
+
+    socket.on("disconnect", () => {
+      console.log("🔴 Patient user disconnected");
+    });
+  });
+};
+
+const adminChat = (io) => {
+  const chatNamespace = io.of("/chat-admin");
+
+  chatNamespace.use(authorizeRole("admin"));
+  chatNamespace.on("connection", async (socket) => {
+    console.log("🟢 Admin connected");
+
+    const adminId = socket.request.user?._id;
+    const hospital = await Hospital.findOne({ admin: adminId }).populate("patients");
+
+    socket.on("admin:send-message", async (message) => {
+      try {
+        const context = "Admin asking for hospital analytics, system status, or patient summary";
+        const response = await adminResponses(message, hospital, context);
+        socket.emit("admin:receive-response", response);
+      } catch (err) {
+        console.error("Admin response error:", err);
+        socket.emit("admin:receive-response", "Sorry, an error occurred.");
+      }
+    });
+
+    socket.on("disconnect", () => {
+      console.log("🔴 Admin user disconnected");
+    });
+  });
+};
+
+module.exports = { guestChat, patientChat, adminChat };
