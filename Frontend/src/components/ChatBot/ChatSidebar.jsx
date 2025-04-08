@@ -1,51 +1,45 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Chat.css";
 import { AuthContext } from "../../main";
 
 const ChatSidebar = ({ role, socket, onClose, messages, setMessages }) => {
   const [input, setInput] = useState("");
   const { isLoggedIn } = useContext(AuthContext);
-    const [user, setUser] = useState(null);
-  
-    // Determine role
-    
-  
-    useEffect(() => {
-      if (isLoggedIn && localStorage.getItem("user")) {
-        const clientString = localStorage.getItem("user");
-        const client = clientString ? JSON.parse(clientString) : null;
-        setUser(client);
-      }
-    }, [isLoggedIn]);
-  
-    useEffect(() => {
-      const role = user?.role || "guest";
-    // Socket to use
-    const socket =
-      role === "admin" ? adminsocket :
-      role === "patient" ? patientsocket :
-      guestsocket;
-      socket.connect();
-    }, [user]);
+  const [user, setUser] = useState(null);
 
+  // Load user data from localStorage
   useEffect(() => {
-    const responseEvent = `${role}:receive-response`; // e.g., guest:receive-response
+    if (isLoggedIn && localStorage.getItem("user")) {
+      const clientString = localStorage.getItem("user");
+      const client = clientString ? JSON.parse(clientString) : null;
+      setUser(client);
+    }
+  }, [isLoggedIn]);
+
+  // Listen for incoming responses
+  useEffect(() => {
+    const responseEvent = `${role}:receive-response`;
 
     const handleResponse = (message) => {
       setMessages((prev) => [...prev, { text: message, sender: "bot" }]);
     };
 
-    socket.on(responseEvent, handleResponse);
+    if (socket) {
+      socket.on(responseEvent, handleResponse);
+    }
 
     return () => {
-      socket.off(responseEvent, handleResponse);
+      if (socket) {
+        socket.off(responseEvent, handleResponse);
+      }
     };
   }, [role, socket, setMessages]);
 
+  // Handle send message
   const handleSend = () => {
     if (input.trim()) {
       setMessages((prev) => [...prev, { text: input, sender: "user" }]);
-      const emitEvent = `${role}:send-message`; // e.g., guest:send-message
+      const emitEvent = `${role}:send-message`;
       socket.emit(emitEvent, input.trim());
       setInput("");
     }
