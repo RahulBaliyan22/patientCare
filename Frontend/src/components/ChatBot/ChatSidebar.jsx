@@ -1,3 +1,9 @@
+import React, { useState, useEffect } from "react";
+import { socket } from "../../util/socket";
+import "./Chat.css";
+
+// Move socket initialization outside component to avoid reconnects on re-render
+
 const ChatSidebar = ({ onClose, messages, setMessages }) => {
   const [input, setInput] = useState("");
 
@@ -25,6 +31,7 @@ const ChatSidebar = ({ onClose, messages, setMessages }) => {
     <div className="chat-wrapper__sidebar">
       <div className="chat-wrapper__header">
         <h3>Chatbot</h3>
+        <button onClick={onClose} className="chat-wrapper__close-btn">✖</button>
       </div>
 
       <div className="chat-wrapper__messages">
@@ -55,3 +62,4 @@ const ChatSidebar = ({ onClose, messages, setMessages }) => {
     </div>
   );
 };
+export default ChatSidebar;
