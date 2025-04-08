@@ -44,7 +44,7 @@ const ChatbotButton = () => {
     <div className="chat-wrapper">
       {isOpen && (
         <ChatSidebar
-          role={role}
+          role={user?.role || "guest"}
           socket={socket}
           onClose={handleToggle}
           messages={messages}
