@@ -5,6 +5,7 @@ import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
 
 import { AuthContext } from "../../main";
+import { patientsocket } from "../../util/socket";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -15,7 +16,7 @@ const Login = () => {
   const [isVisible,setIsVisible] = useState(false)
 
 
-  
+
 
   const handlePasswordShow = (e)=>{
     setIsVisible(e.target.checked)
@@ -25,6 +26,9 @@ const Login = () => {
     if (isLoggedIn || localStorage.getItem("user")) {
       navigate("/dashboard");
       setIsLoggedIn(true);
+      if(!patientsocket.connected){
+        patientsocket.connect()
+      }
       toast.success("Logged In");
     }
   }, [navigate]);
@@ -62,7 +66,7 @@ const Login = () => {
 
       // Update login state after navigation
       setIsLoggedIn(true);
-
+      patientsocket.connect();
       toast.success("Login successful!");
     } catch (error) {
       console.error("Login error:", error);

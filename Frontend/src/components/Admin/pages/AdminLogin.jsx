@@ -4,6 +4,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../../main";
+import { adminsocket } from "../../../util/socket";
 
 const AdminLogin = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -20,6 +21,9 @@ const AdminLogin = () => {
   useEffect(() => {
     if (isLoggedIn || localStorage.getItem("user")) {
       navigate("/admin/dashboard");
+      if(!adminsocket.connected){
+        adminsocket.connect();
+      }
       setIsLoggedIn(true);
       toast.success("Admin Logged In");
     }
@@ -53,6 +57,7 @@ const AdminLogin = () => {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       navigate("/admin/dashboard");
       setIsLoggedIn(true);
+      adminsocket.connect();
       toast.success("Admin login successful!");
     } catch (error) {
       console.error("Admin login error:", error);

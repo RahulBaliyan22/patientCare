@@ -55,13 +55,16 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn)
   useEffect(() => {
-    // Check if there's a user in localStorage
-    const user = localStorage.getItem("user");
-    if (user) {
-      setIsLoggedIn(true); // Set logged-in status based on localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setIsLoggedIn(true); // ✅ Set login status
+      connectSocketByRole(user.role); // ✅ Use parsed user's role
+    }else{
+      connectSocketByRole("guest");
     }
-    connectSocketByRole(user?.role);
   }, []);
+  
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <BrowserRouter basename="/">
