@@ -41,7 +41,6 @@ const ChatSidebar = ({ onClose }) => {
     <div className="chat-wrapper__sidebar">
       <div className="chat-wrapper__header">
         <h3>Chatbot</h3>
-        <button onClick={onClose}>✖</button>
       </div>
 
       <div className="chat-wrapper__messages">
