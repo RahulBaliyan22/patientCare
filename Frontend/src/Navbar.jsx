@@ -3,14 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./main";
 import "./Navbar.css";
 import "react-toastify/dist/ReactToastify.css";
-import { connectSocketByRole } from "./util/socket";
+import ChatContext from "./util/chatContext";
+import { guestsocket } from "./util/socket";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
+  const { chatUser, setChatUser } = useContext(ChatContext);
   const handleMobileMenuToggle = () => {
     setIsMobile(!isMobile);
   };
@@ -19,6 +20,7 @@ const Navbar = () => {
     if (isLoggedIn && localStorage.getItem("user")) {
       const clientString = localStorage.getItem("user");
       const client = clientString ? JSON.parse(clientString) : null;
+
       setUser(client);
     }
   }, [isLoggedIn]);
@@ -32,20 +34,30 @@ const Navbar = () => {
           credentials: "include",
         });
         localStorage.removeItem("user");
-        
-      setIsLoggedIn(false);
-      navigate("/login");
+
+        setIsLoggedIn(false);
+        navigate("/login");
       } else if (user?.role === "admin") {
         await fetch(`https://patientcare-2.onrender.com/admin/logout`, {
           method: "POST",
           credentials: "include",
         });
         localStorage.removeItem("user");
-      setIsLoggedIn(false);
-      navigate("/admin/login");
+        setIsLoggedIn(false);
+        navigate("/admin/login");
       }
-     
-      connectSocketByRole("guest");
+      const currentRole = chatUser?.role;
+      const currentSocket = chatUser?.socket;
+
+      // Only disconnect if role is different or socket is not connected
+      if (currentRole !== "guest" || !currentSocket?.connected) {
+        if (currentSocket?.connected) {
+          currentSocket.disconnect();
+        }
+
+        // Only set if we’re actually switching to a new role or socket
+        setChatUser({ socket: guestsocket, role: "guest" });
+      }
     } catch (err) {
       console.error("Logout failed:", err);
     }
@@ -135,7 +147,9 @@ const Navbar = () => {
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => navigate("/contact/add")}>Add</button>
+                    <button onClick={() => navigate("/contact/add")}>
+                      Add
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -173,26 +187,38 @@ const Navbar = () => {
 
           {/* Profile */}
           {isLoggedIn && user && (
-            <li className="navbar-item"> {user?.role === "patient"?(<><Link to="/profile" className="nav-link" title={user.uid}>
-              {`Hi: ${user.name}`}
-            </Link>
-            <div className="navbar-dropdown">
-              <ul>
-                <li>
-                  <button onClick={() => navigate("/settings")}>Edit</button>
-                </li>
-              </ul>
-            </div></>):(<>
-            <div className="nav-link">{`Hi: ${user.name}`}</div>
-                
-              <div className="navbar-dropdown">
-                <ul>
-                  <li>
-                    <button onClick={() => navigate("/admin/settings")}>Edit</button>
-                  </li>
-                </ul>
-              </div></>)}
-              
+            <li className="navbar-item">
+              {" "}
+              {user?.role === "patient" ? (
+                <>
+                  <Link to="/profile" className="nav-link" title={user.uid}>
+                    {`Hi: ${user.name}`}
+                  </Link>
+                  <div className="navbar-dropdown">
+                    <ul>
+                      <li>
+                        <button onClick={() => navigate("/settings")}>
+                          Edit
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="nav-link">{`Hi: ${user.name}`}</div>
+
+                  <div className="navbar-dropdown">
+                    <ul>
+                      <li>
+                        <button onClick={() => navigate("/admin/settings")}>
+                          Edit
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </>
+              )}
             </li>
           )}
 

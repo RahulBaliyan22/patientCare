@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./Chat.css";
 import { AuthContext } from "../../main";
+import ChatContext from "../../util/chatContext";
 
-const ChatSidebar = ({ role, socket, onClose, messages, setMessages }) => {
+const ChatSidebar = ({ onClose, messages, setMessages, socket, role }) => {
   const [input, setInput] = useState("");
   const { isLoggedIn } = useContext(AuthContext);
+  const { chatUser, setChatUser } = useContext(ChatContext);
   const [user, setUser] = useState(null);
 
   // Load user data from localStorage
@@ -15,32 +17,21 @@ const ChatSidebar = ({ role, socket, onClose, messages, setMessages }) => {
       setUser(client);
     }
   }, [isLoggedIn]);
-  useEffect(() => {
-    role = user?.role || "guest";
 
-  // Socket to use
-   socket =
-    role === "admin" ? adminsocket :
-    role === "patient" ? patientsocket :
-    guestsocket;
-    socket.connect();
-  }, [user]);
-  // Listen for incoming responses
+  // Handle bot responses
   useEffect(() => {
+    if (!role || !socket) return;
+
     const responseEvent = `${role}:receive-response`;
 
     const handleResponse = (message) => {
       setMessages((prev) => [...prev, { text: message, sender: "bot" }]);
     };
 
-    if (socket) {
-      socket.on(responseEvent, handleResponse);
-    }
+    socket.on(responseEvent, handleResponse);
 
     return () => {
-      if (socket) {
-        socket.off(responseEvent, handleResponse);
-      }
+      socket.off(responseEvent, handleResponse);
     };
   }, [role, socket, setMessages]);
 
@@ -57,7 +48,7 @@ const ChatSidebar = ({ role, socket, onClose, messages, setMessages }) => {
   return (
     <div className="chat-wrapper__sidebar">
       <div className="chat-wrapper__header">
-        <h3>{role.charAt(0).toUpperCase() + role.slice(1)} Chat</h3>
+        <h3>{role?.charAt(0).toUpperCase() + role?.slice(1)} Chat</h3>
         <button onClick={onClose}>×</button>
       </div>
 

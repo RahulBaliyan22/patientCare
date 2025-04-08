@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { AuthContext } from "../../main";
+import ChatContext from "../../util/chatContext";
 import { patientsocket } from "../../util/socket";
 
 const Login = () => {
@@ -14,21 +15,29 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
-
-  const ensureSocketConnected = () => {
-    if (!patientsocket.connected) {
-      patientsocket.connect();
-    }
-  };
+  const {chatUser,setChatUser}  = useContext(ChatContext)
+  
 
   useEffect(() => {
     if (isLoggedIn || localStorage.getItem("user")) {
+      const currentRole = chatUser?.role;
+      const currentSocket = chatUser?.socket;
+    
+      // Only disconnect if role is different or socket is not connected
+      if (currentRole !== "patient" || !currentSocket?.connected) {
+        if (currentSocket?.connected) {
+          currentSocket.disconnect();
+        }
+    
+        // Only set if we’re actually switching to a new role or socket
+        setChatUser({ socket: patientsocket, role: "patient" });
+      }
+    
       setIsLoggedIn(true);
       navigate("/dashboard");
-      ensureSocketConnected();
-      toast.success("Logged In");
+      toast.success("patient Logged In");
     }
-  }, [isLoggedIn, navigate, setIsLoggedIn]);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -36,13 +45,6 @@ const Login = () => {
     if (messageFromUrl) {
       toast.success(messageFromUrl);
     }
-
-    return () => {
-      // Optional cleanup (useful if you add listeners)
-      if (patientsocket.connected) {
-        patientsocket.off(); // Remove all listeners
-      }
-    };
   }, [location]);
 
   const handlePasswordShow = (e) => {
@@ -71,7 +73,18 @@ const Login = () => {
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
       setIsLoggedIn(true);
-      ensureSocketConnected();
+      const currentRole = chatUser?.role;
+      const currentSocket = chatUser?.socket;
+    
+      // Only disconnect if role is different or socket is not connected
+      if (currentRole !== "patient" || !currentSocket?.connected) {
+        if (currentSocket?.connected) {
+          currentSocket.disconnect();
+        }
+    
+        // Only set if we’re actually switching to a new role or socket
+        setChatUser({ socket: patientsocket, role: "patient" });
+      }
       navigate("/dashboard");
       toast.success("Login successful!");
     } catch (error) {

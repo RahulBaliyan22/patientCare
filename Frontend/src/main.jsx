@@ -46,7 +46,7 @@ import AdminShowRecord from "./components/Admin/pages/AdminShowRecord";
 import AdminEditRecord from "./components/Admin/pages/AdminEditRecord";
 import AdminEditMed from "./components/Admin/pages/AdminEditMed";
 import AdminSettings from "./components/Admin/pages/AdminSettings";
-import { connectSocketByRole } from "./util/socket";
+import ChatProvider from "./components/ChatBot/ChatProvider";
 
 // Create a context for user authentication
 export const AuthContext = createContext();
@@ -59,14 +59,12 @@ const App = () => {
     if (storedUser) {
       const user = JSON.parse(storedUser);
       setIsLoggedIn(true); // ✅ Set login status
-      connectSocketByRole(user.role); // ✅ Use parsed user's role
-    }else{
-      connectSocketByRole("guest");
     }
   }, []);
   
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+      <ChatProvider>
       <BrowserRouter basename="/">
         <Navbar />
 
@@ -116,8 +114,11 @@ const App = () => {
           
         </Routes>
         <ChatbotButton/>
+
         <Footer />
+
       </BrowserRouter>
+      </ChatProvider>
     </AuthContext.Provider>
   );
 };

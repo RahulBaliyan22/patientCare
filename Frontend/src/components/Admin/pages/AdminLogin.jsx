@@ -4,6 +4,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../../main";
+import ChatContext from "../../../util/chatContext";
 import { adminsocket } from "../../../util/socket";
 
 const AdminLogin = () => {
@@ -12,16 +13,28 @@ const AdminLogin = () => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const { chatUser, setChatUser } = useContext(ChatContext);
 
   useEffect(() => {
     if (isLoggedIn || localStorage.getItem("user")) {
+      const currentRole = chatUser?.role;
+      const currentSocket = chatUser?.socket;
+    
+      // Only disconnect if role is different or socket is not connected
+      if (currentRole !== "admin" || !currentSocket?.connected) {
+        if (currentSocket?.connected) {
+          currentSocket.disconnect();
+        }
+    
+        // Only set if we’re actually switching to a new role or socket
+        setChatUser({ socket: adminsocket, role: "admin" });
+      }
+    
       setIsLoggedIn(true);
       navigate("/admin/dashboard");
-      if (!adminsocket.connected) {
-        adminsocket.connect();
-      }
       toast.success("Admin Logged In");
     }
+    
   }, []);
 
   useEffect(() => {
@@ -55,16 +68,27 @@ const AdminLogin = () => {
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
       setIsLoggedIn(true);
-      navigate("/admin/dashboard");
-
-      if (!adminsocket.connected) {
-        adminsocket.connect();
+      const currentRole = chatUser?.role;
+      const currentSocket = chatUser?.socket;
+    
+      // Only disconnect if role is different or socket is not connected
+      if (currentRole !== "admin" || !currentSocket?.connected) {
+        if (currentSocket?.connected) {
+          currentSocket.disconnect();
+        }
+    
+        // Only set if we’re actually switching to a new role or socket
+        setChatUser({ socket: adminsocket, role: "admin" });
       }
+    
+      navigate("/admin/dashboard");
 
       toast.success("Admin login successful!");
     } catch (error) {
       console.error("Admin login error:", error);
-      toast.error(error.response?.data?.message || "Incorrect email or password");
+      toast.error(
+        error.response?.data?.message || "Incorrect email or password"
+      );
     }
   };
 
@@ -74,7 +98,9 @@ const AdminLogin = () => {
         <h2>Admin Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -88,7 +114,9 @@ const AdminLogin = () => {
           </div>
 
           <div className="form-group" style={{ position: "relative" }}>
-            <label htmlFor="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <input
               type={isVisible ? "text" : "password"}
               id="password"
@@ -99,13 +127,33 @@ const AdminLogin = () => {
               required
               className="form-input"
             />
-            <label htmlFor="isVisible" style={{ position: "absolute", top: "40%", right: "10px", cursor: "pointer" }}>
+            <label
+              htmlFor="isVisible"
+              style={{
+                position: "absolute",
+                top: "40%",
+                right: "10px",
+                cursor: "pointer",
+              }}
+            >
               {isVisible ? (
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="#004d4d">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                  fill="#004d4d"
+                >
                   <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Z" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="#004d4d">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                  fill="#004d4d"
+                >
                   <path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Z" />
                 </svg>
               )}
@@ -119,11 +167,15 @@ const AdminLogin = () => {
             />
           </div>
 
-          <button type="submit" className="submit-button">Login</button>
+          <button type="submit" className="submit-button">
+            Login
+          </button>
         </form>
 
         <div className="extra-links">
-          <p>Back to <Link to="/admin/home">Home</Link></p>
+          <p>
+            Back to <Link to="/admin/home">Home</Link>
+          </p>
         </div>
       </div>
     </div>
