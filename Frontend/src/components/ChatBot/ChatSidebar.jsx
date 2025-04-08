@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { socket } from "../../util/socket";
-import "./Chat.css";
-
-// Move socket initialization outside component to avoid reconnects on re-render
-
-
-const ChatSidebar = ({ onClose }) => {
-  const [messages, setMessages] = useState([]);
+const ChatSidebar = ({ onClose, messages, setMessages }) => {
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    // Listen for bot response
-    socket.on("bot-response", (message) => {
+    const handleBotResponse = (message) => {
       setMessages((prev) => [...prev, { text: message, sender: "bot" }]);
-    });
+    };
 
-    // Listen for initial bot message when socket connects
-    socket.on("bot-initial-response", (message) => {
-      setMessages((prev) => [...prev, { text: message, sender: "bot" }]);
-    });
+    socket.on("bot-response", handleBotResponse);
 
     return () => {
-      socket.off("bot-response");
-      socket.off("bot-initial-response");
+      socket.off("bot-response", handleBotResponse);
     };
-  }, []);
+  }, [setMessages]);
 
   const sendMessage = () => {
     if (input.trim() !== "") {
@@ -68,5 +55,3 @@ const ChatSidebar = ({ onClose }) => {
     </div>
   );
 };
-
-export default ChatSidebar;
