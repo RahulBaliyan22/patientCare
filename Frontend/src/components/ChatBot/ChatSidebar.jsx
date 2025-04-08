@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import { socket } from "../../util/socket";
 import "./Chat.css";
 
 // Move socket initialization outside component to avoid reconnects on re-render
-const socket = io("https://patientcare-2.onrender.com", {
-  transports: ["websocket"],
-  withCredentials: true,
-});
+
 
 const ChatSidebar = ({ onClose }) => {
   const [messages, setMessages] = useState([]);

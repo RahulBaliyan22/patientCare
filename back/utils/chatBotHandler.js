@@ -11,7 +11,7 @@ module.exports = (io) => {
       return;
     }
 
-    console.log(`Socket connected: ${socket.id} as ${user.username}`);
+    console.log(`Socket connected: ${socket.id} as ${user}`);
 
     // Fetch patient data
     let patientData;
