@@ -32,31 +32,43 @@ const guestChat = (io) => {
 };
 
 const patientChat = (io) => {
-  const chatNamespace = io.of("/chat-patient");
+  try {
+    const chatNamespace = io.of("/chat-patient");
 
-  chatNamespace.use(authorizeRole("patient"));
-  chatNamespace.on("connection", async (socket) => {
-    console.log("🟢 Patient connected");
+    chatNamespace.use(authorizeRole("patient"));
 
-    const patientId = socket.request.user?._id;
-    const patient = await Patient.findById(patientId);
-
-    socket.on("patient:send-message", async (message) => {
+    chatNamespace.on("connection", async (socket) => {
       try {
-        const context = "Patient asking about health, medication, or app help";
-        const response = await patientResponses(message, patient, context);
-        socket.emit("patient:receive-response", response);
-      } catch (err) {
-        console.error("Patient response error:", err);
-        socket.emit("patient:receive-response", "Sorry, an error occurred.");
+        console.log("🟢 Patient connected");
+
+        const patientId = socket.request.user?._id;
+        const patient = await Patient.findById(patientId);
+
+        socket.on("patient:send-message", async (message) => {
+          try {
+            const context = "Patient asking about health, medication, or app help";
+            const response = await patientResponses(message, patient, context);
+            socket.emit("patient:receive-response", response);
+          } catch (err) {
+            console.error("Patient response error:", err);
+            socket.emit("patient:receive-response", "Sorry, an error occurred.");
+          }
+        });
+
+        socket.on("disconnect", () => {
+          console.log("🔴 Patient user disconnected");
+        });
+
+      } catch (innerErr) {
+        console.error("Error inside patient socket connection:", innerErr);
+        socket.emit("patient:receive-response", "Connection error occurred.");
       }
     });
-
-    socket.on("disconnect", () => {
-      console.log("🔴 Patient user disconnected");
-    });
-  });
+  } catch (err) {
+    console.error("Error initializing patient chat namespace:", err);
+  }
 };
+
 
 const adminChat = (io) => {
   const chatNamespace = io.of("/chat-admin");
