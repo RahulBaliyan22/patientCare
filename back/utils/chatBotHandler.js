@@ -6,7 +6,7 @@ module.exports = (io) => {
     console.log("User connected:", socket.id);
 
     const user = socket.request.user;
-
+    console.log(user);
     if (!user || !user._id) {
       socket.emit("auth-error", "Unauthorized. Please log in.");
       socket.disconnect();
