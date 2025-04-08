@@ -12,9 +12,10 @@ const ChatbotButton = () => {
 
   useEffect(() => {
     if (chatUser?.socket) {
-      console.log(`${chatUser.role}:`);
+      
 
       chatUser.socket.connect();
+      console.log("Connecting to:", chatUser.socket.nsp); // confirm namespace
     }
   }, [chatUser]);
 
