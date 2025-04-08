@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useContext} from "react";
 import { MessageCircle, X } from "lucide-react";
 import ChatSidebar from "./ChatSidebar";
 import {
@@ -9,18 +9,30 @@ import {
   disconnectAllSockets,
 } from "../../util/socket";
 import "./Chat.css";
+import { AuthContext } from "../../main";
 
-const ChatbotButton = ({ role = "guest" }) => {
+const ChatbotButton = () => {
   const [messages, setMessages] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoggedIn } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
 
-  // Determine which socket to use
+  // Determine role
+  const role = user?.role || "guest";
+
+  // Socket to use
   const socket =
-    role === "admin"
-      ? adminsocket
-      : role === "patient"
-      ? patientsocket
-      : guestsocket;
+    role === "admin" ? adminsocket :
+    role === "patient" ? patientsocket :
+    guestsocket;
+
+  useEffect(() => {
+    if (isLoggedIn && localStorage.getItem("user")) {
+      const clientString = localStorage.getItem("user");
+      const client = clientString ? JSON.parse(clientString) : null;
+      setUser(client);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     connectSocketByRole(role);
@@ -46,5 +58,6 @@ const ChatbotButton = ({ role = "guest" }) => {
     </div>
   );
 };
+
 
 export default ChatbotButton;
