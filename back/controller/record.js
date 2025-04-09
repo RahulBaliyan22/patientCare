@@ -264,7 +264,7 @@ const updateRecord = async (req, res) => {
     }
 
     // Step 3: If isScript is truthy, run OCR and diagnosis
-    if (isScript === "true" || isScript === true) {
+    if (isScript) {
       const imgToText = async (files) => {
         const worker = await createWorker("eng+hin");
 
