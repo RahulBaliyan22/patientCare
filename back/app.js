@@ -88,15 +88,34 @@ passport.deserializeUser(async (user, done) => {
 });
 
 // Enable session + passport on Socket.io
-io.use((socket, next) => {
-  sessionMiddleware(socket.request, {}, () => {
-    passport.initialize()(socket.request, {}, () => {
-      passport.session()(socket.request, {}, () => {
-        next();
-      });
-    });
-  });
-});
+function onlyForHandshake(middleware) {
+  return (req, res, next) => {
+    const isHandshake = req._query?.sid === undefined;
+    if (isHandshake) {
+      middleware(req, res, next);
+    } else {
+      next();
+    }
+  };
+}
+
+// 🧠 This part ensures that during WebSocket upgrade (handshake), we extract the user from the session
+io.engine.use(onlyForHandshake(sessionMiddleware));
+io.engine.use(onlyForHandshake(passport.initialize()));
+io.engine.use(onlyForHandshake(passport.session()));
+
+io.engine.use(
+  onlyForHandshake((req, res, next) => {
+    if (req.user) {
+      console.log("✅ WebSocket handshake user:", req.user.username);
+      next();
+    } else {
+      console.log("❌ No user in WebSocket handshake");
+      res.writeHead(401);
+      res.end();
+    }
+  }),
+);
 
 // Socket.io logic
 guestChat(io);
