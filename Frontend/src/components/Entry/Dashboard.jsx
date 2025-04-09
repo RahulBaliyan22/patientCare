@@ -67,7 +67,6 @@ const Dashboard = () => {
                 <>
                   Welcome to PatientCare!
                   <br />
-                  <p>Patient ID: {patient.uid}</p>
                 </>
               ) : user.lastLogin == null ? (
                 <>Welcome, {user.name}</>
@@ -100,6 +99,10 @@ const Dashboard = () => {
             )}
           </p>
         )}
+      <p style={{ color: "white" }}>
+  Your Patient ID: {user.uid}. Connect with registered hospitals to get a more personalized experience.
+</p>
+
       </header>
 
       {user && user.isFirstTimeUser && (
