@@ -93,7 +93,6 @@ const App = () => {
           <Route path="/admin/login" element = {<AdminLogin/>}/>
           <Route path="/admin/dashboard" element = {<AdminDashboard/>}/>
           <Route path="/admin/showpatient" element = {<AdminShowpatient/>}/>
-          <Route path="/admin/Allpatient" element = {<Allpatient/>}/>
           <Route path="/admin/showRecord/:id" element = {<AdminShowRecord/>}/>
           <Route path="/admin/settings" element={<AdminSettings/>}/>
           <Route path="*" element={<Error />} />
