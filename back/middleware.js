@@ -89,7 +89,6 @@ const isLoggedOut = (req, res, next) => {
 const authorizeRole = (role) => {
   return (socket, next) => {
     const user = socket.request.user;
-    console.log(socket.request)
     if (user && user.role === role) {
       return next();
     }

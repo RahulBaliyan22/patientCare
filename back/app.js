@@ -107,12 +107,11 @@ io.engine.use(onlyForHandshake(passport.session()));
 io.engine.use(
   onlyForHandshake((req, res, next) => {
     if (req.user) {
-      console.log("✅ WebSocket handshake user:", req.user.username);
+      console.log("✅ WebSocket handshake user:", req.user);
       next();
     } else {
       console.log("❌ No user in WebSocket handshake");
-      res.writeHead(401);
-      res.end();
+      next();
     }
   }),
 );
