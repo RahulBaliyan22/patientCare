@@ -1,14 +1,37 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ChatContext from "../../util/chatContext"
-import { guestsocket } from "../../util/socket"
+import { guestsocket, patientsocket, adminsocket } from "../../util/socket"
+import { AuthContext } from "../../main"
 
-function ChatProvider({children}){
- const [chatUser,setChatUser] =  useState({
-  socket:guestsocket,role:"guest"
- })
+function ChatProvider({ children }) {
+  const { isLoggedIn } = useContext(AuthContext)
+  const [socket, setSocket] = useState(guestsocket)
+
+  useEffect(() => {
+    if (isLoggedIn && localStorage.getItem("user")) {
+      const client = JSON.parse(localStorage.getItem("user"))
+      if (client.role === "admin") {
+        setSocket(adminsocket)
+      } else if (client.role === "patient") {
+        setSocket(patientsocket)
+      }
+    }
+  }, [isLoggedIn])
+
+  const [chatUser, setChatUser] = useState({
+    socket: socket,
+    role: "guest",
+  })
+
+  useEffect(() => {
+    const client = JSON.parse(localStorage.getItem("user"))
+    if (client?.role) {
+      setChatUser({ socket: socket, role: client.role })
+    }
+  }, [socket])
 
   return (
-    <ChatContext.Provider value={{chatUser,setChatUser}}>
+    <ChatContext.Provider value={{ chatUser, setChatUser }}>
       {children}
     </ChatContext.Provider>
   )

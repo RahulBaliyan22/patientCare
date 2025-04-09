@@ -42,7 +42,7 @@ const patientChat = (io) => {
         console.log("🟢 Patient connected");
 
         const patientId = socket.request.user?._id;
-        const patient = await Patient.findById(patientId);
+        const patient = await Patient.findById(patientId).populate('list').populate('med').populate('contacts').populate('hasPrimaryContact.primaryContact');
 
         socket.on("patient:send-message", async (message) => {
           try {
@@ -78,7 +78,7 @@ const adminChat = (io) => {
     console.log("🟢 Admin connected");
 
     const adminId = socket.request.user?._id;
-    const hospital = await Hospital.findOne({ admin: adminId }).populate("patients");
+    const hospital = await Hospital.findById(adminId).populate("patients");
 
     socket.on("admin:send-message", async (message) => {
       try {

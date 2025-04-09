@@ -59,6 +59,8 @@ const ChatSidebar = ({ onClose, messages, setMessages, socket, role }) => {
             cursor: "pointer",
             fontWeight: "bold",
             transition: "background-color 0.2s ease",
+            textAlign:"center",
+            alignContent:"center"
           }}
           onClick={onClose}
         >
