@@ -283,6 +283,7 @@ const updateRecord = async (req, res) => {
 
       const texts = uploadedImages.length > 0 ? await imgToText(uploadedImages) : [];
       Curr_record.script = await diagnosisResponses(texts);
+    
     }
 
     // Step 4: Update fields (only if values are provided)
