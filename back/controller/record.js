@@ -51,7 +51,7 @@ const addRecord = async (req, res) => {
       
         await worker.terminate();
         console.log("Extracted Text Results:");
-texts.forEach((t, i) => {
+        textResults.forEach((t, i) => {
   console.log(`---- Text ${i + 1} ----`);
   console.log(t);
 });
