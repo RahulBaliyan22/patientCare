@@ -22,6 +22,7 @@ const EditRecord = () => {
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
@@ -259,7 +260,7 @@ const EditRecord = () => {
             )}
           </div>
           <button type="submit" className="submit-btn">
-            Update Record
+            {loading ? `Updating Please wait few seconds`: `Update Record`}
           </button>
           <button
             type="button"

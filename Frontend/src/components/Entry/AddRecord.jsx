@@ -182,6 +182,7 @@ const AddRecord = () => {
               checked={formData.isScript}
               onChange={handleInputChange}
               className="form-input"
+              style={{width:"20px"}}
             />
           </div>}
           {/* Display image previews */}
