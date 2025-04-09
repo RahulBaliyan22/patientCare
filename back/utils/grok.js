@@ -55,7 +55,7 @@ You are assisting hospital administrators by providing insights about system per
 Do not provide medical advice or diagnose any conditions.
 
 Hospital Info:
-${JSON.stringify(hospital, null, 2)}
+${JSON.stringify(hospital)}
 
 Context:
 ${context}

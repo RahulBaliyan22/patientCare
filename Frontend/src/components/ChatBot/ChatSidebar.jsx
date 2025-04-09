@@ -21,7 +21,6 @@ const ChatSidebar = ({ onClose, messages, setMessages, socket, role }) => {
   // Handle bot responses
   useEffect(() => {
     if (!role || !socket) return;
-    console.log("Connecting to:", socket.nsp); // confirm namespace
 
     const responseEvent = `${role}:receive-response`;
 
