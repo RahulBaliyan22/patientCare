@@ -131,13 +131,13 @@ Output a brief, medically-relevant summary covering:
 - Symptoms or observations
 - Possible diagnosis
 - Suggested next medical step (if clear from the text)
-
+if possible TRY DIAGNOSIS of Symptoms
 Just focus on summarizing the medical meaning from the provided inputs.
 
 Patient Records:
 ${texts.map((t, i) => `${i + 1}. ${t}`).join("\n\n")}
 
-if patient records is not feels correct of in sufficient tell user to give proper image
+NOTE:=[if patient records is not feels correct of in sufficient tell user to give proper image]
 
 Respond with only the medical analysis, no explanations or instructions.
     `;
