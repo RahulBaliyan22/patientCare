@@ -5,6 +5,7 @@ module.exports = (io)=>{
 
   
   vitalsNamespace.use(authorizeRole("patient"))
+  
   vitalsNamespace.on("connection",(socket)=>{
 
 

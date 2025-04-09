@@ -23,10 +23,12 @@ const AddRecord = () => {
 
   // Handle form input changes
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, type, checked, value } = e.target;
+    setRecord((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
-
   // Handle image selection
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);

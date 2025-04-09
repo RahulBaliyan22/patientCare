@@ -93,12 +93,13 @@ const EditRecord = () => {
 
   // Handle form field changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, checked, value } = e.target;
     setRecord((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
+  
 
   // Handle form submission
   const handleSubmit = async (e) => {
