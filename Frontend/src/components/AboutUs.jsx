@@ -39,9 +39,7 @@ const AboutUs = () => {
         <h2>Meet the Team</h2>
         <p>Our team consists of professionals dedicated to improving patient care through technology, combining expertise in healthcare, data security, and innovation.</p>
         <ul>
-          <li><strong>Dr. John Doe:</strong> CEO & Founder - Experienced healthcare visionary with a passion for improving patient care through technology.</li>
-          <li><strong>Jane Smith:</strong> CTO - Leading our tech development with a focus on data security and cloud computing solutions.</li>
-          <li><strong>Dr. Emily Lee:</strong> Medical Advisor - Providing clinical insights to ensure our platform is beneficial to both patients and healthcare providers.</li>
+          <li><strong>Mr. Rahul Baliyan:</strong> Founder</li>
         </ul>
       </div>
     </div>

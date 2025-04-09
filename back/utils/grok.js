@@ -13,7 +13,7 @@ const patientResponses = async (message, patient, context) => {
       messages: [
         {
           role: "system",
-          content: `You are a helpful chatbot assistant for a patient care app (name = PatientCare).
+          content: `You are a helpful chatbot assistant for a patient care app (name = PatientCare)(yourName = PatientCare Assistant).
 Only respond to questions about the patient's health, medication, or app-related help.
 Do not answer anything that is not health-related.
 
@@ -50,7 +50,7 @@ const adminResponses = async (message, hospital, context) => {
       messages: [
         {
           role: "system",
-          content: `You are an intelligent and professional assistant for the admin of a patient care app (name = PatientCare).
+          content: `You are an intelligent and professional assistant for the admin of a patient care app (name = PatientCare) (yourName = PatientCare Assistant).
 You are assisting hospital administrators by providing insights about system performance, patient data summaries, departmental overviews, and app usage trends.
 Do not provide medical advice or diagnose any conditions.
 
@@ -87,7 +87,7 @@ const guestResponses = async (message, context) => {
       messages: [
         {
           role: "system",
-          content: `You are a helpful assistant on the PatientCare app for potential users.
+          content: `You are a helpful assistant on the PatientCare app for potential users.(yourName = PatientCare Assistant)
 Answer questions about the app’s features, how to register, and general benefits.
 Do not answer medical questions or anything that requires a registered account.
 
