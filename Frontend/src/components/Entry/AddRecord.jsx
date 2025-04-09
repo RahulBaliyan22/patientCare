@@ -173,7 +173,7 @@ const AddRecord = () => {
               className="form-input"
             />
           </div>
-          <div className="form-group">
+          {!patientId && <div className="form-group">
             <label htmlFor="isScript" className="form-label">Want Analysis For Record : </label>
             <input
               type="checkbox"
@@ -183,7 +183,7 @@ const AddRecord = () => {
               onChange={handleInputChange}
               className="form-input"
             />
-          </div>
+          </div>}
           {/* Display image previews */}
           {imagePreviews.length > 0 && (
             <div className="image-previews">

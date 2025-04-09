@@ -15,6 +15,7 @@ const EditRecord = () => {
     diagnosis: "",
     notes: "",
     image: [],
+    isScript:false
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -107,7 +108,7 @@ const EditRecord = () => {
     formData.append('doctor', record.doctor);
     formData.append('diagnosis', record.diagnosis);
     formData.append('notes', record.notes);
-
+    formData.append('isScript',record.isScript)
     // Append images
     images.forEach((image) => {
       formData.append('images', image);
@@ -231,6 +232,18 @@ const EditRecord = () => {
                 onChange={handleImageChange}
               />
             </div>
+            {!patientId && <div className="form-group">
+            <label htmlFor="isScript" className="form-label">Want Analysis For Record : </label>
+            <input
+              type="checkbox"
+              id="is"
+              name="isScript"
+              checked={record.isScript}
+              onChange={handleChange}
+              className="form-input"
+              style={{width:"20px"}}
+            />
+          </div>}
             {/* Display image previews */}
             {imagePreviews.length > 0 && (
               <div className="image-previews">

@@ -50,12 +50,6 @@ const addRecord = async (req, res) => {
         );
       
         await worker.terminate();
-        console.log("Extracted Text Results:");
-        textResults.forEach((t, i) => {
-  console.log(`---- Text ${i + 1} ----`);
-  console.log(t);
-});
-
         return textResults;
       };
       
@@ -247,36 +241,57 @@ const deleteImage = async (req, res) => {
 };
 
 const updateRecord = async (req, res) => {
-  let { id } = req.params;
-  let { date, doctor, diagnosis, notes } = req.body;
+  const { id } = req.params;
+  const { date, doctor, diagnosis, notes, isScript } = req.body;
 
   try {
-    // Step 1: Find the current record by ID
+    // Step 1: Find the current record
     const Curr_record = await Record.findById(id);
     if (!Curr_record) {
       return res.status(404).json({ message: "Record not found." });
     }
 
-    // Step 2: Ensure images are stored
+    // Step 2: Handle new image uploads
+    let uploadedImages = [];
     if (req.files && req.files.length > 0) {
-      if (!Curr_record.image) Curr_record.image = [];
-    }
-
-      const uploadedImages = req.files.map((file) => ({
+      uploadedImages = req.files.map((file) => ({
         filename: file.originalname,
-        filePath: file.location, // `file.location` is provided by multer-s3
+        filePath: file.location,
       }));
 
+      Curr_record.image = Curr_record.image || [];
       Curr_record.image.push(...uploadedImages);
-    
+    }
 
-    // Step 3: Update fields with new data
-    Curr_record.date = date || Curr_record.date;
-    Curr_record.doctor = doctor || Curr_record.doctor;
-    Curr_record.diagnosis = diagnosis || Curr_record.diagnosis;
-    Curr_record.notes = notes || Curr_record.notes;
+    // Step 3: If isScript is truthy, run OCR and diagnosis
+    if (isScript === "true" || isScript === true) {
+      const imgToText = async (files) => {
+        const worker = await createWorker("eng+hin");
 
-    // Step 4: Save the updated record
+        const textResults = await Promise.all(
+          files.map(async ({ filePath }) => {
+            const {
+              data: { text },
+            } = await worker.recognize(filePath);
+            return text;
+          })
+        );
+
+        await worker.terminate();
+        return textResults;
+      };
+
+      const texts = uploadedImages.length > 0 ? await imgToText(uploadedImages) : [];
+      Curr_record.script = await diagnosisResponses(texts);
+    }
+
+    // Step 4: Update fields (only if values are provided)
+    if (date) Curr_record.date = date;
+    if (doctor) Curr_record.doctor = doctor;
+    if (diagnosis) Curr_record.diagnosis = diagnosis;
+    if (notes) Curr_record.notes = notes;
+
+    // Step 5: Save the updated record
     await Curr_record.save();
 
     res.status(200).json({ message: "Record updated successfully", record: Curr_record });
@@ -285,7 +300,6 @@ const updateRecord = async (req, res) => {
     res.status(500).json({ message: "Failed to update record", error: err.message });
   }
 };
-
 
 
 const sendRecords = async (req, res) => {
