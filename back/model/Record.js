@@ -27,6 +27,10 @@ const recordSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    script:{
+      type:String,
+      trim: true
+    },
     image: [
       {
         filename: {

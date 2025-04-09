@@ -4,11 +4,13 @@ const sendRecordEmail = require("../utils/sendRecordEmail");
 const sendRecordsEmail = require("../utils/sendRecordsEmail");
 const initializeS3 = require("../config/s3");
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { diagnosisResponses } = require("../utils/grok");
+const { createWorker }  = require('tesseract.js')
 
 const s3 = initializeS3();
 const addRecord = async (req, res) => {
   try {
-    const { date, doctor, diagnosis, notes } = req.body;
+    const { date, doctor, diagnosis, notes, isScript } = req.body;
 
     if (!date || !doctor) {
       return res.status(400).json({ message: "Date and doctor are required fields." });
@@ -35,6 +37,25 @@ const addRecord = async (req, res) => {
       notes,
       image: images,
     });
+
+    if(isScript){
+      const imgToText = async (files) => {
+        const worker = await createWorker('eng+hin');
+      
+        const textResults = await Promise.all(
+          files.map(async (file) => {
+            const { data: { text } } = await worker.recognize(file.location || file.path);;
+            return text;
+          })
+        );
+      
+        await worker.terminate();
+        return textResults;
+      };
+      
+      const texts = req.files?await imgToText(req.files):[];
+      newRecord.script = await diagnosisResponses(texts);
+    }
 
     const savedRecord = await newRecord.save();
 

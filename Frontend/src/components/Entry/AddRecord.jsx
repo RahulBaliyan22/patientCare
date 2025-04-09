@@ -15,6 +15,7 @@ const AddRecord = () => {
     doctor: "",
     diagnosis: "",
     notes: "",
+    isScript:false
   });
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -52,6 +53,7 @@ const AddRecord = () => {
     data.append("doctor", formData.doctor);
     data.append("diagnosis", formData.diagnosis);
     data.append("notes", formData.notes);
+    data.append("isScript",formData.isScript)
 
     images.forEach((image) => {
       data.append("images", image); // Send images directly
@@ -77,6 +79,7 @@ const AddRecord = () => {
         doctor: "",
         diagnosis: "",
         notes: "",
+        isScript:false
       });
       setImages([]);
       setImagePreviews([]);
@@ -91,6 +94,7 @@ const AddRecord = () => {
           doctor: "",
           diagnosis: "",
           notes: "",
+          isScript:false
         });
         setImages([]);
         setImagePreviews([]);
@@ -166,6 +170,17 @@ const AddRecord = () => {
               accept="image/*"
               multiple
               onChange={handleImageChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="isScript" className="form-label">Want Analysis For Record : </label>
+            <input
+              type="checkbox"
+              id="is"
+              name="isScript"
+              checked={formData.isScript}
+              onChange={handleInputChange}
               className="form-input"
             />
           </div>

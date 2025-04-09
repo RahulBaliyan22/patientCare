@@ -158,6 +158,10 @@ const ViewRecord = () => {
               <p>
                 <strong>Notes:</strong> {record.notes || "No additional notes"}
               </p>
+
+              <p>
+                <strong>Analysis:</strong> {record.script || "Not Done Anaylsis"}
+              </p>
             </div>
 
             {/* Images */}

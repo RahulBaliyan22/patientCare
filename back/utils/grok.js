@@ -118,8 +118,47 @@ Be friendly and informative.`,
   }
 };
 
+
+const diagnosisResponses = async (texts) => {
+  try {
+    const prompt = `
+You are a skilled medical assistant AI.
+Your job is to analyze raw patient notes, prescriptions, and record summaries and infer:
+- Key symptoms
+- Possible diagnoses
+- Recommended next step(s) (if any)
+
+Only use medical knowledge. Do not make assumptions beyond the given data.
+
+Patient Extracted Inputs:
+${texts.map((t, i) => `${i + 1}. ${t}`).join("\n")}
+
+Return a short, professional, and medically-aligned summary.
+`;
+
+    const completion = await groq.chat.completions.create({
+      model: "gemma2-9b-it",
+      messages: [
+        {
+          role: "system",
+          content: "You are a medical diagnosis assistant. Only give health-based insights.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+
+    return completion.choices[0].message.content;
+  } catch (err) {
+    console.error("Diagnosis response error:", err);
+    return "Sorry, we couldn't analyze the diagnosis right now.";
+  }
+};
 module.exports = {
   patientResponses,
   adminResponses,
   guestResponses,
+  diagnosisResponses
 };
