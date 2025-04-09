@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import ChatContext from "../../util/chatContext"
-import { guestsocket, patientsocket, adminsocket } from "../../util/socket"
+import { guestsocket, patientsocket, adminsocket, disconnectAllSockets } from "../../util/socket"
 import { AuthContext } from "../../main"
 
 function ChatProvider({ children }) {
@@ -26,6 +26,7 @@ function ChatProvider({ children }) {
   useEffect(() => {
     const client = JSON.parse(localStorage.getItem("user"))
     if (client?.role) {
+      disconnectAllSockets()
       setChatUser({ socket: socket, role: client.role })
     }
   }, [socket])
