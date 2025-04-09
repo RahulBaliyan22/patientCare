@@ -50,6 +50,7 @@ const addRecord = async (req, res) => {
         );
       
         await worker.terminate();
+        console.log(textResults);
         return textResults;
       };
       
