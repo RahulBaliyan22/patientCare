@@ -122,26 +122,30 @@ Be friendly and informative.`,
 const diagnosisResponses = async (texts) => {
   try {
     const prompt = `
-You are a skilled medical assistant AI.
-Your job is to analyze raw patient notes, prescriptions, and record summaries and infer:
-- Key symptoms
-- Possible diagnoses
-- Recommended next step(s) (if any)
+You are a skilled AI medical assistant.
+You are provided with OCR-extracted patient records, prescriptions, or medical notes.
 
-Only use medical knowledge. Do not make assumptions beyond the given data.
+Analyze the text **strictly based on the given content**. Do not ask for more information or refer to any missing context.
 
-Patient Extracted Inputs:
-${texts.map((t, i) => `${i + 1}. ${t}`).join("\n")}
+Output a brief, medically-relevant summary covering:
+- Symptoms or observations
+- Possible diagnosis
+- Suggested next medical step (if clear from the text)
 
-Return a short, professional, and medically-aligned summary.
-`;
+Just focus on summarizing the medical meaning from the provided inputs.
+
+Patient Records:
+${texts.map((t, i) => `${i + 1}. ${t}`).join("\n\n")}
+
+Respond with only the medical analysis, no explanations or instructions.
+    `;
 
     const completion = await groq.chat.completions.create({
       model: "gemma2-9b-it",
       messages: [
         {
           role: "system",
-          content: "You are a medical diagnosis assistant. Only give health-based insights.",
+          content: "You are a medical analysis assistant. Only give health-based summaries from input data.",
         },
         {
           role: "user",
@@ -156,6 +160,7 @@ Return a short, professional, and medically-aligned summary.
     return "Sorry, we couldn't analyze the diagnosis right now.";
   }
 };
+
 module.exports = {
   patientResponses,
   adminResponses,
