@@ -93,7 +93,9 @@ const ChatSidebar = ({ onClose, messages, setMessages, socket, role }) => {
           placeholder="Type a message..."
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
-        <button className="chat-wrapper__input__button" onClick={handleSend} style={{width: "fit-content"}}>
+        <button className="chat-wrapper__input__button" onClick={handleSend} style={{width: "fit-content", display: "flex",              
+    justifyContent: "center",     
+    alignItems: "center", marginLeft:"20px"}}>
         <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"
