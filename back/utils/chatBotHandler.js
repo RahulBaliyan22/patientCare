@@ -79,7 +79,7 @@ const adminChat = (io) => {
 
     const adminId = socket.request.user?._id;
     const hospital = await Hospital.findById(adminId).populate("patients");
-    console.log(hospital)
+  
     socket.on("admin:send-message", async (message) => {
       try {
         const context = "Admin asking for hospital analytics, system status, or patient summary";
