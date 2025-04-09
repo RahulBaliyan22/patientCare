@@ -99,10 +99,10 @@ const Dashboard = () => {
             )}
           </p>
         )}
-      <p style={{ color: "white" }}>
-  Your Patient ID: {user.uid}. Connect with registered hospitals to get a more personalized experience.
-</p>
-
+        <p style={{ color: "white" }}>
+          Your Patient ID: <strong>{user.uid}</strong>. Connect with registered
+          hospitals to get a more personalized experience.
+        </p>
       </header>
 
       {user && user.isFirstTimeUser && (
