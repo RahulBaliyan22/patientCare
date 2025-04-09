@@ -49,7 +49,21 @@ const ChatSidebar = ({ onClose, messages, setMessages, socket, role }) => {
     <div className="chat-wrapper__sidebar">
       <div className="chat-wrapper__header">
         <h3>{role?.charAt(0).toUpperCase() + role?.slice(1)} Chat</h3>
-        <button onClick={onClose}>×</button>
+        <button
+          style={{
+            width: "30px",
+            height: "30px",
+            borderRadius: "50%",
+            backgroundColor: "#f0f0f0",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "bold",
+            transition: "background-color 0.2s ease",
+          }}
+          onClick={onClose}
+        >
+          x
+        </button>
       </div>
 
       <div className="chat-wrapper__messages">
