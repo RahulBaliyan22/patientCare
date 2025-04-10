@@ -22,7 +22,7 @@ const adminRoutes = require('./route/admin');
 const Patient = require("./model/Patient");
 const Admin = require("./model/Hospital");
 const {guestChat,patientChat,adminChat}  = require('./utils/chatBotHandler');
-const vitalData = require('./utils/vitalRealTime')
+const {heartInfo,tempInfo,spoInfo} = require('./utils/vitalRealTime')
 
 
 const app = express();
@@ -121,7 +121,9 @@ guestChat(io);
 patientChat(io)
 adminChat(io)
 
-vitalData(io);
+heartInfo(io)
+tempInfo(io)
+spoInfo(io)
 
 // Routes
 app.use(authRoutes);
