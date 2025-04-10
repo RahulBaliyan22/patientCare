@@ -16,24 +16,32 @@ function CircularProgressWithLabel({ value }) {
         thickness={5}
       />
       <Box
-        top={0}
-        left={0}
-        bottom={0}
-        right={0}
         position="absolute"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
+        top="50%"
+        left="50%"
+        sx={{
+          transform: "translate(-50%, -50%)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <Typography variant="caption" component="div" color="textSecondary">
-          <strong>{value !== null ? `${value}` : "--"}</strong>
+        <Typography
+          variant="caption"
+          component="div"
+          color="textSecondary"
+          fontWeight="bold"
+          sx={{ fontSize: "1.2rem" }}
+        >
+          {value !== null ? `${value}` : "--"}
         </Typography>
       </Box>
     </Box>
   );
 }
 
-const MessageBox = React.memo(({ messageIndex,value1,value2,value3 }) => {
+
+const MessageBox = React.memo(({ messageIndex, resultValues }) => {
   const message = useMemo(() => {
     switch (messageIndex) {
       case 1:
@@ -47,16 +55,30 @@ const MessageBox = React.memo(({ messageIndex,value1,value2,value3 }) => {
       case 5:
         return "Please put your finger on the sensor";
       case 6:
-        return (<div className="gridPapa">
-          <div className="grid1"><strong>Heart Rate(in BPM)</strong><br/>{value1 && <CircularProgressWithLabel value={value1}/>}</div>
-          <div className="grid2"><strong>Spo2(in %)</strong><br/>{value2 && <CircularProgressWithLabel value={value2}/>}</div>
-          <div className="grid3">YOUR RESULTS</div>
-          <div className="grid4"><strong>Body Temperature(in °C)</strong><br/>{value3 && <CircularProgressWithLabel value={value3}/>}</div>
-        </div>)
+        return (
+          <div className="gridPapa">
+            <div className="grid1">
+              <strong>Heart Rate (in BPM)</strong>
+              <br />
+              {resultValues.heart !== null && <CircularProgressWithLabel value={resultValues.heart} />}
+            </div>
+            <div className="grid2">
+              <strong>SpO2 (in %)</strong>
+              <br />
+              {resultValues.spo2 !== null && <CircularProgressWithLabel value={resultValues.spo2} />}
+            </div>
+            <div className="grid3">YOUR RESULTS</div>
+            <div className="grid4">
+              <strong>Body Temperature (in °C)</strong>
+              <br />
+              {resultValues.temp !== null && <CircularProgressWithLabel value={resultValues.temp} />}
+            </div>
+          </div>
+        );
       default:
         return "Unknown Message";
     }
-  }, [messageIndex]);
+  }, [messageIndex, resultValues]);
 
   return (
     <div className="box1">
@@ -68,6 +90,8 @@ const MessageBox = React.memo(({ messageIndex,value1,value2,value3 }) => {
 
 function Live() {
   const [messageIndex, setMessageIndex] = useState(1);
+  const [resultValues, setResultValues] = useState({ heart: null, spo2: null, temp: null });
+
   const [heartRate, setHeartRate] = useState({ value: null, loading: false, active: false });
   const [spo2, setSpo2] = useState({ value: null, loading: false, active: false });
   const [temperature, setTemperature] = useState({ value: null, loading: false, active: false });
@@ -81,13 +105,10 @@ function Live() {
   }, []);
 
   const handleSubmitData = async (name, value) => {
-    
-
     try {
       await axios.post("https://patientcare-2.onrender.com/vitals/add", { [name]: value }, {
         withCredentials: true,
       });
-      
       console.log("Data submitted");
     } catch (e) {
       console.error("Submit error:", e);
@@ -106,7 +127,8 @@ function Live() {
         const handleHeartData = async (data) => {
           setHeartRate({ value: data, loading: false, active: false });
           await handleSubmitData("heartData", data);
-          setMessageIndex(6,data,spo2.value,temperature.value);
+          setResultValues((prev) => ({ ...prev, heart: data }));
+          setMessageIndex(6);
           heartSocket.off("heartData", handleHeartData);
         };
 
@@ -124,7 +146,8 @@ function Live() {
         const handleSpo2Data = async (data) => {
           setSpo2({ value: data, loading: false, active: false });
           await handleSubmitData("spo2data", data);
-          setMessageIndex(6 , heartRate.value,data,temperature.value);
+          setResultValues((prev) => ({ ...prev, spo2: data }));
+          setMessageIndex(6);
           spo2Socket.off("spo2Data", handleSpo2Data);
         };
 
@@ -142,7 +165,8 @@ function Live() {
         const handleTempData = async (data) => {
           setTemperature({ value: data, loading: false, active: false });
           await handleSubmitData("tempdata", data);
-          setMessageIndex(6,heartRate.value,spo2.value,data);
+          setResultValues((prev) => ({ ...prev, temp: data }));
+          setMessageIndex(6);
           bodyTemp.off("tempData", handleTempData);
         };
 
@@ -159,81 +183,69 @@ function Live() {
 
   return (
     <div className="ContainerGrid">
-      <MessageBox messageIndex={messageIndex} />
+      <MessageBox messageIndex={messageIndex} resultValues={resultValues} />
       <div className="box2">
         <h2 style={{ textAlign: "center" }}>Vitals Monitoring</h2>
-        <ul
-          style={{
-            listStyle: "none",
-            display: "flex",
-            justifyContent: "space-around",
-            marginTop: "50px",
-          }}
-        >
+        <ul style={{
+          listStyle: "none",
+          display: "flex",
+          justifyContent: "space-around",
+          marginTop: "50px",
+        }}>
           {/* Heart Rate */}
           <li style={{ display: "flex", flexDirection: "column" }}>
-            <h3 title="A normal resting heart rate for adults ranges from 60 to 100 beats per minute.">
-              Heart Rate
-            </h3>
+            <h3 title="A normal resting heart rate for adults ranges from 60 to 100 beats per minute.">Heart Rate</h3>
             {heartRate.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : heartRate.value !== null ? (
               <CircularProgressWithLabel value={heartRate.value} />
             ) : null}
             <p>{heartRate.value !== null ? `${heartRate.value} BPM` : "-- BPM"}</p>
-            <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)} style={{width:"150px",cursor:"pointer"}}>
-                {!heartRate.active ? "Start" : "Stop"}
-              </button>
-            </div>
+            <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)} style={{ width: "150px", cursor: "pointer" }}>
+              {!heartRate.active ? "Start" : "Stop"}
+            </button>
           </li>
 
           {/* SpO2 */}
           <li style={{ display: "flex", flexDirection: "column" }}>
-            <h3 title="Normal SpO2 should be between 96% to 99%.">
-              SpO2
-            </h3>
+            <h3 title="Normal SpO2 should be between 96% to 99%.">SpO2</h3>
             {spo2.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : spo2.value !== null ? (
               <CircularProgressWithLabel value={spo2.value} />
             ) : null}
             <p>{spo2.value !== null ? `${spo2.value}%` : "--%"}</p>
-            <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("spo2", 4)} style={{width:"150px",cursor:"pointer"}}>
-                {!spo2.active ? "Start" : "Stop"}
-              </button>
-            </div>
+            <button className="start-btn" onClick={() => handleVitalCheck("spo2", 4)} style={{ width: "150px", cursor: "pointer" }}>
+              {!spo2.active ? "Start" : "Stop"}
+            </button>
           </li>
 
           {/* Temperature */}
           <li style={{ display: "flex", flexDirection: "column" }}>
-            <h3 title="Typical adult body temperature ranges from 36.1°C to 37.2°C.">
-              Body Temperature
-            </h3>
+            <h3 title="Typical adult body temperature ranges from 36.1°C to 37.2°C.">Body Temperature</h3>
             {temperature.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
             ) : temperature.value !== null ? (
               <CircularProgressWithLabel value={temperature.value} />
             ) : null}
             <p>{temperature.value !== null ? `${temperature.value}°C` : "--°C"}</p>
-            <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("temperature", 3)} style={{width:"150px",cursor:"pointer"}}>
-                {!temperature.active ? "Start" : "Stop"}
-              </button>
-            </div>
+            <button className="start-btn" onClick={() => handleVitalCheck("temperature", 3)} style={{ width: "150px", cursor: "pointer" }}>
+              {!temperature.active ? "Start" : "Stop"}
+            </button>
           </li>
         </ul>
       </div>
 
       <div className="box3">
-        <CurrentData    heartData={heartRate.value}
+        <CurrentData
+          heartData={heartRate.value}
           tempData={temperature.value}
-          spo2Data={spo2.value}/>
+          spo2Data={spo2.value}
+        />
       </div>
 
       <div className="box4">
-        <Data/>
+        <Data />
       </div>
     </div>
   );
