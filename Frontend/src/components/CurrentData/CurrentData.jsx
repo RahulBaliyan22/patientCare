@@ -5,9 +5,9 @@ export default function CurrentData({heartData,spo2Data, tempData}) {
   const [selectedMetric, setSelectedMetric] = React.useState("heartRate");
 
   const metricsData = {
-    heartRate: { data: heartData||0, label: "Heart Rate (BPM)" },
-    spo2: { data: spo2Data||0, label: "SpO2 (%)" },
-    temperature: { data: tempData||0, label: "Body Temp (°C)" },
+    heartRate: { data: [heartData]||[0], label: "Heart Rate (BPM)" },
+    spo2: { data: [spo2Data]||[0], label: "SpO2 (%)" },
+    temperature: { data: [tempData]||[0], label: "Body Temp (°C)" },
   };
 
   // Get current data based on selection

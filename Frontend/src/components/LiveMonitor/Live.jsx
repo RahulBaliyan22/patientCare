@@ -222,9 +222,9 @@ function Live() {
       </div>
 
       <div className="box3">
-        {/* <CurrentData    heartData={heartRate.value}
+        <CurrentData    heartData={heartRate.value}
           tempData={temperature.value}
-          spo2Data={spo2.value}/> */}
+          spo2Data={spo2.value}/>
       </div>
 
       <div className="box4">
