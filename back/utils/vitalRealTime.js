@@ -9,7 +9,7 @@ const {authorizeRole} = require('../middleware')
   vitalsNamespace.on("connection",(socket)=>{
     console.log("heart connected")
     socket.on("start-machine",()=>{
-
+       
     })
 
     socket.on("disconnect", () => {

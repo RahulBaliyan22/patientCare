@@ -60,9 +60,11 @@ function Live() {
   const [spo2, setSpo2] = useState({ value: null, loading: false });
   const [temperature, setTemperature] = useState({ value: null, loading: false });
 
-  function handleVitalCheck(type, msgIndex) {
+  function handleVitalCheck(type, msgIndex,e) {
     setMessageIndex(msgIndex);
 
+    console.log(e.target)
+    
     if (type === "heartRate") {
       setHeartRate({ value: null, loading: true });
       setTimeout(() => setHeartRate({ value: 80, loading: false }), 5000);
@@ -90,7 +92,7 @@ function Live() {
             )}
             <p>{heartRate.value !== null ? `${heartRate.value} BPM` : "-- BPM"}</p>
             <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)}>
+              <button className="start-btn" onClick={(e) => handleVitalCheck("heartRate", 2,e)}>
                 {!heartRate.loading ?"Start":"Stop"}
               </button>
             </div>
