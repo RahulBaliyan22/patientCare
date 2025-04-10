@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const sendContactVerification = require("../utils/sendContactVerification");
 const Patient = require("../model/Patient");
 const Contact = require("../model/Contact");
+const sendQuery = require("../utils/sendQueryMail");
 
 const fetchContacts = async (req, res) => {
   try {
@@ -194,11 +195,28 @@ const togglePrimary = async (req, res) => {
   }
 };
 
+const queryMail = async()=>{
+  const {name,email,message} = req.body;
+  try{
+    let senderEmail;
+    if(email){
+      senderEmail = email
+    }else{
+      senderEmail = "rahulbaliyan7777@gmail.com"
+    }
+    await sendQuery(name,senderEmail,message);
+
+    res.status(200).json({message:"Query sent"})
+  }catch(e){
+    res.status(500).json({message:"Internal Server Error"})
+  }
+}
+
 module.exports = {
   togglePrimary,
   updateOneContact,
   fetchOneContact,
   addContact,
   deleteContact,
-  fetchContacts,
+  fetchContacts,queryMail
 };

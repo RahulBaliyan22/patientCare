@@ -5,8 +5,8 @@ import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
 const Contact = () => {
   const [form, setForm] = useState({
-    name: "",
-    email: "",
+    name: JSON.parse(localStorage.getItem("user"))?.name || "",
+    email: JSON.parse(localStorage.getItem("user"))?.email || "",
     message: "",
   });
 
@@ -22,7 +22,7 @@ const Contact = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/contact", form); // Adjust to your API route
+      const response = await axios.post("https://patientcare-2.onrender.com/sendQuery", form,{withCridentials:true}); // Adjust to your API route
       alert("Your message has been sent successfully. We will get back to you soon.");
       setForm({ name: "", email: "", message: "" });
     } catch (e) {

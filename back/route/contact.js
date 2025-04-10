@@ -1,6 +1,6 @@
 const express = require("express");
 const { isLoggedIn, validateContact,isPatient } = require("../middleware");
-const {togglePrimary,updateOneContact,fetchOneContact,addContact,deleteContact,fetchContacts} = require("../controller/contact")
+const {togglePrimary,updateOneContact,fetchOneContact,addContact,deleteContact,fetchContacts,queryMail} = require("../controller/contact")
 const router = express.Router();
 
 router.get("/contacts", isLoggedIn, isPatient,fetchContacts);
@@ -20,5 +20,7 @@ router.put(
 );
 
 router.put("/contact/:id/toggle-primary", isLoggedIn,isPatient, togglePrimary);
+
+router.post("/sendQuery",queryMail);
 
 module.exports = router;
