@@ -1,13 +1,20 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./LiveCss.css";
 import Data from "../HealthRecord/Data";
 import CurrentData from "../CurrentData/CurrentData";
 import { CircularProgress, Typography, Box } from "@mui/material";
+import { bodyTemp, heartSocket, spo2Socket } from "../../util/vitalScoket";
+import axios from "axios";
 
 function CircularProgressWithLabel({ value }) {
   return (
     <Box position="relative" display="inline-flex">
-      <CircularProgress variant="determinate" value={value || 0} size={100} thickness={5} />
+      <CircularProgress
+        variant="determinate"
+        value={value || 0}
+        size={100}
+        thickness={5}
+      />
       <Box
         top={0}
         left={0}
@@ -56,24 +63,92 @@ const MessageBox = React.memo(({ messageIndex }) => {
 
 function Live() {
   const [messageIndex, setMessageIndex] = useState(1);
-  const [heartRate, setHeartRate] = useState({ value: null, loading: false });
-  const [spo2, setSpo2] = useState({ value: null, loading: false });
-  const [temperature, setTemperature] = useState({ value: null, loading: false });
+  const [heartRate, setHeartRate] = useState({ value: null, loading: false, active: false });
+  const [spo2, setSpo2] = useState({ value: null, loading: false, active: false });
+  const [temperature, setTemperature] = useState({ value: null, loading: false, active: false });
 
-  function handleVitalCheck(type, msgIndex,e) {
+  useEffect(() => {
+    return () => {
+      heartSocket.disconnect();
+      spo2Socket.disconnect();
+      bodyTemp.disconnect();
+    };
+  }, []);
+
+  const handleSubmitData = async (name, value) => {
+    const form = new FormData();
+    form.append(name, value);
+
+    try {
+      await axios.post("https://patientcare-2.onrender.com/vitals/add", form, {
+        withCredentials: true,
+      });
+      console.log("Data submitted");
+    } catch (e) {
+      console.error("Submit error:", e);
+    }
+  };
+
+  function handleVitalCheck(type, msgIndex) {
     setMessageIndex(msgIndex);
 
-    console.log(e.target)
-    
-    if (type === "heartRate") {
-      setHeartRate({ value: null, loading: true });
-      setTimeout(() => setHeartRate({ value: 80, loading: false }), 5000);
-    } else if (type === "spo2") {
-      setSpo2({ value: null, loading: true });
-      setTimeout(() => setSpo2({ value: 98, loading: false }), 5000);
-    } else if (type === "temperature") {
-      setTemperature({ value: null, loading: true });
-      setTimeout(() => setTemperature({ value: 36.5, loading: false }), 5000);
+    try {
+      if (type === "heartRate" && !heartRate.active) {
+        setHeartRate({ value: null, loading: true, active: true });
+        heartSocket.connect();
+        heartSocket.emit("start", "start process");
+
+        const handleHeartData = async (data) => {
+          setHeartRate({ value: data, loading: false, active: false });
+          await handleSubmitData("heartData", data);
+          setMessageIndex(6);
+          heartSocket.off("heartData", handleHeartData);
+        };
+
+        heartSocket.on("heartData", handleHeartData);
+      } else if (type === "heartRate") {
+        heartSocket.disconnect();
+        setHeartRate((prev) => ({ ...prev, loading: false, active: false }));
+      }
+
+      if (type === "spo2" && !spo2.active) {
+        setSpo2({ value: null, loading: true, active: true });
+        spo2Socket.connect();
+        spo2Socket.emit("start", "start process");
+
+        const handleSpo2Data = async (data) => {
+          setSpo2({ value: data, loading: false, active: false });
+          await handleSubmitData("spo2Data", data);
+          setMessageIndex(6);
+          spo2Socket.off("spo2Data", handleSpo2Data);
+        };
+
+        spo2Socket.on("spo2Data", handleSpo2Data);
+      } else if (type === "spo2") {
+        spo2Socket.disconnect();
+        setSpo2((prev) => ({ ...prev, loading: false, active: false }));
+      }
+
+      if (type === "temperature" && !temperature.active) {
+        setTemperature({ value: null, loading: true, active: true });
+        bodyTemp.connect();
+        bodyTemp.emit("start", "start process");
+
+        const handleTempData = async (data) => {
+          setTemperature({ value: data, loading: false, active: false });
+          await handleSubmitData("tempData", data);
+          setMessageIndex(6);
+          bodyTemp.off("tempData", handleTempData);
+        };
+
+        bodyTemp.on("tempData", handleTempData);
+      } else if (type === "temperature") {
+        bodyTemp.disconnect();
+        setTemperature((prev) => ({ ...prev, loading: false, active: false }));
+      }
+    } catch (e) {
+      console.error("Error:", e);
+      setMessageIndex(5);
     }
   }
 
@@ -81,57 +156,80 @@ function Live() {
     <div className="ContainerGrid">
       <MessageBox messageIndex={messageIndex} />
       <div className="box2">
-        <h2 style={{textAlign:"center"}}>Vitals Monitoring</h2>
-        <ul style={{ listStyle: "none", display: "flex", justifyContent: "space-around", marginTop:"50px"}}>
-          <li style={{display:"flex",flexDirection:"column"}}>
-            <h3 title="A normal resting heart rate for adults ranges from 60 to 100 beats per minute.">Heart Rate</h3>
+        <h2 style={{ textAlign: "center" }}>Vitals Monitoring</h2>
+        <ul
+          style={{
+            listStyle: "none",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "50px",
+          }}
+        >
+          {/* Heart Rate */}
+          <li style={{ display: "flex", flexDirection: "column" }}>
+            <h3 title="A normal resting heart rate for adults ranges from 60 to 100 beats per minute.">
+              Heart Rate
+            </h3>
             {heartRate.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
-            ) : (
-              heartRate.value!==null &&<CircularProgressWithLabel value={heartRate.value} />
-            )}
+            ) : heartRate.value !== null ? (
+              <CircularProgressWithLabel value={heartRate.value} />
+            ) : null}
             <p>{heartRate.value !== null ? `${heartRate.value} BPM` : "-- BPM"}</p>
             <div className="buttons">
-              <button className="start-btn" onClick={(e) => handleVitalCheck("heartRate", 2,e)}>
-                {!heartRate.loading ?"Start":"Stop"}
+              <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)}>
+                {!heartRate.active ? "Start" : "Stop"}
               </button>
             </div>
           </li>
-          <li style={{display:"flex",flexDirection:"column"}}>
-            <h3 title="Oxygen saturation (SpO2) is a measurement of how much oxygen your blood is carrying as a percentage of the maximum it could carry. For a healthy individual, the normal SpO2 should be between 96% to 99%.">SpO2</h3>
+
+          {/* SpO2 */}
+          <li style={{ display: "flex", flexDirection: "column" }}>
+            <h3 title="Normal SpO2 should be between 96% to 99%.">
+              SpO2
+            </h3>
             {spo2.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
-            ) : (
-              spo2.value!==null &&<CircularProgressWithLabel value={spo2.value} />
-            )}
+            ) : spo2.value !== null ? (
+              <CircularProgressWithLabel value={spo2.value} />
+            ) : null}
             <p>{spo2.value !== null ? `${spo2.value}%` : "--%"}</p>
             <div className="buttons">
               <button className="start-btn" onClick={() => handleVitalCheck("spo2", 4)}>
-                {!spo2.loading ?"Start":"Stop"}
+                {!spo2.active ? "Start" : "Stop"}
               </button>
             </div>
           </li>
-          <li style={{display:"flex",flexDirection:"column"}}>
-            <h3 title="For a typical adult, body temperature ranges from 36.1°C to 37.2°C. Adults over the age of 60 tend to have a lower body temperature compared to younger adults. Babies and children have a wider range: 35.5°C to 37.5°C (if measured with an oral thermometer) or 36.6°C to 38°C (if measured with a rectal thermometer).">Body Temperature</h3>
+
+          {/* Temperature */}
+          <li style={{ display: "flex", flexDirection: "column" }}>
+            <h3 title="Typical adult body temperature ranges from 36.1°C to 37.2°C.">
+              Body Temperature
+            </h3>
             {temperature.loading ? (
               <CircularProgress disableShrink size={100} thickness={5} />
-            ) : (
-              temperature.value!==null&&<CircularProgressWithLabel value={temperature.value} />
-            )}
+            ) : temperature.value !== null ? (
+              <CircularProgressWithLabel value={temperature.value} />
+            ) : null}
             <p>{temperature.value !== null ? `${temperature.value}°C` : "--°C"}</p>
             <div className="buttons">
               <button className="start-btn" onClick={() => handleVitalCheck("temperature", 3)}>
-                {!temperature.loading ?"Start":"Stop"}
+                {!temperature.active ? "Start" : "Stop"}
               </button>
             </div>
           </li>
         </ul>
       </div>
+
       <div className="box3">
-        <CurrentData />
+        <CurrentData    heartData={heartRate.value}
+          tempData={temperature.value}
+          spo2Data={spo2.value}/>
       </div>
+
       <div className="box4">
-        <Data />
+        <Data
+        />
       </div>
     </div>
   );

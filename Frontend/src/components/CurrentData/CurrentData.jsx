@@ -1,13 +1,13 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 
-export default function CurrentData() {
+export default function CurrentData({heartData,spo2Data, tempData}) {
   const [selectedMetric, setSelectedMetric] = React.useState("heartRate");
 
   const metricsData = {
-    heartRate: { data: [72], label: "Heart Rate (BPM)" },
-    spo2: { data: [98], label: "SpO2 (%)" },
-    temperature: { data: [36.5], label: "Body Temp (°C)" },
+    heartRate: { data: heartData||0, label: "Heart Rate (BPM)" },
+    spo2: { data: spo2Data||0, label: "SpO2 (%)" },
+    temperature: { data: tempData||0, label: "Body Temp (°C)" },
   };
 
   // Get current data based on selection

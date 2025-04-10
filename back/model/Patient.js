@@ -84,11 +84,24 @@ const patientSchema = new mongoose.Schema({
     },
   ],
 
-  vistals: {
-    heartRate: [Number],
-    SpO2: [Number],
-    temperature: [Number]
-  },
+  vitals: {
+    heartRate: [{
+      date: { type: String }, // e.g. '2025-04-10'
+      time: { type: String }, // e.g. '14:30:22'
+      data: { type: Number }
+    }],
+    SpO2: [{
+      date: { type: String },
+      time: { type: String },
+      data: { type: Number }
+    }],
+    temperature: [{
+      date: { type: String },
+      time: { type: String },
+      data: { type: Number }
+    }]
+  }  
+  ,
   uid: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,

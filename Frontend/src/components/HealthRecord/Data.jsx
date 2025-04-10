@@ -1,30 +1,43 @@
-import * as React from 'react';
-import { LineChart } from '@mui/x-charts/LineChart';
+const fetchVitals = async () => {
+  try {
+    const response = await axios.get("https://patientcare-2.onrender.com/vitals/data", {
+      withCredentials: true,
+    });
 
-const heartRateData = [72, 75, 78, 80, 77, 74, 73];
-const spo2Data = [98, 97, 96, 95, 96, 97, 98];
-const bodyTempData = [36.5, 36.7, 37.0, 37.2, 37.1, 36.9, 36.8];
-const timeLabels = [
-  '10:00 AM',
-  '10:10 AM',
-  '10:20 AM',
-  '10:30 AM',
-  '10:40 AM',
-  '10:50 AM',
-  '11:00 AM',
-];
+    const { heartRate, SpO2, temperature } = response.data;
 
-export default function Data() {
-  return (
-    <LineChart
-      width={500}
-      height={300}
-      series={[
-        { data: heartRateData, label: 'Heart Rate (BPM)' },
-        { data: spo2Data, label: 'SpO2 (%)' },
-        { data: bodyTempData, label: 'Body Temp (°C)' }
-      ]}
-      xAxis={[{ scaleType: 'point', data: timeLabels }]}
-    />
-  );
-}
+    // Helper to convert date + time into a unified timestamp
+    const toTimestamp = (item) => `${item.date}T${item.time}`;
+
+    const timeSet = new Set([
+      ...heartRate.map((t) => toTimestamp(t)),
+      ...SpO2.map((t) => toTimestamp(t)),
+      ...temperature.map((t) => toTimestamp(t)),
+    ]);
+    
+
+    const rawLabels = Array.from(timeSet).sort(); // keep raw ISO strings
+
+    const heartMap = new Map(heartRate.map((item) => [toTimestamp(item), item.data]));
+    const spo2Map = new Map(SpO2.map((item) => [toTimestamp(item), item.data]));
+    const tempMap = new Map(temperature.map((item) => [toTimestamp(item), item.data]));
+
+    const alignedHeart = rawLabels.map((time) => heartMap.get(time) ?? null);
+    const alignedSpo2 = rawLabels.map((time) => spo2Map.get(time) ?? null);
+    const alignedTemp = rawLabels.map((time) => tempMap.get(time) ?? null);
+
+    // Format the label for x-axis: 'YYYY-MM-DD HH:mm:ss'
+    const formattedLabels = rawLabels.map((ts) => {
+      const dateObj = new Date(ts);
+      return `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+    });
+
+    setTimeLabels(formattedLabels);
+    setHeartRateData(alignedHeart);
+    setSpo2Data(alignedSpo2);
+    setBodyTempData(alignedTemp);
+  } catch (e) {
+    console.error(e);
+    alert(e.message);
+  }
+};
