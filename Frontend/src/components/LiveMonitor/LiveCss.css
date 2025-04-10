@@ -18,3 +18,30 @@
 .box2 { grid-row: 1/2;grid-column: 4/11;background-color: lightcoral; }
 .box3 { grid-row: 2/3;grid-column: 1/6; background-color: lightgreen; text-align: center; align-content: center; }
 .box4 { grid-row: 2/3; grid-column: 6/11; background-color: lightgoldenrodyellow; text-align: center; align-content: center;}
+
+
+
+.gridPapa{
+  display: grid;
+  text-align: center;
+  grid-template-columns: 1fr  1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:' grid1 grid2'
+                      'grid3 grid4'
+}
+
+.grid1{
+  grid-area: grid1;
+}
+
+.grid2{
+  grid-area: grid2;
+}
+
+.grid3{
+  grid-area: grid3;
+}
+
+.grid4{
+  grid-area: grid4;
+}

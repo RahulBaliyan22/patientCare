@@ -26,14 +26,14 @@ function CircularProgressWithLabel({ value }) {
         justifyContent="center"
       >
         <Typography variant="caption" component="div" color="textSecondary">
-          {value !== null ? `${value}` : "--"}
+          <strong>{value !== null ? `${value}` : "--"}</strong>
         </Typography>
       </Box>
     </Box>
   );
 }
 
-const MessageBox = React.memo(({ messageIndex }) => {
+const MessageBox = React.memo(({ messageIndex,value1,value2,value3 }) => {
   const message = useMemo(() => {
     switch (messageIndex) {
       case 1:
@@ -47,7 +47,12 @@ const MessageBox = React.memo(({ messageIndex }) => {
       case 5:
         return "Please put your finger on the sensor";
       case 6:
-        return <strong>Your Results</strong>;
+        return (<div className="gridPapa">
+          <div className="grid1"><strong>Heart Rate(in BPM)</strong><br/>{value1 && <CircularProgressWithLabel value={value1}/>}</div>
+          <div className="grid2"><strong>Spo2(in %)</strong><br/>{value2 && <CircularProgressWithLabel value={value2}/>}</div>
+          <div className="grid3">YOUR RESULTS</div>
+          <div className="grid4"><strong>Body Temperature(in °C)</strong><br/>{value3 && <CircularProgressWithLabel value={value3}/>}</div>
+        </div>)
       default:
         return "Unknown Message";
     }
@@ -101,7 +106,7 @@ function Live() {
         const handleHeartData = async (data) => {
           setHeartRate({ value: data, loading: false, active: false });
           await handleSubmitData("heartData", data);
-          setMessageIndex(6);
+          setMessageIndex(6,data,spo2.value,temperature.value);
           heartSocket.off("heartData", handleHeartData);
         };
 
@@ -119,7 +124,7 @@ function Live() {
         const handleSpo2Data = async (data) => {
           setSpo2({ value: data, loading: false, active: false });
           await handleSubmitData("spo2data", data);
-          setMessageIndex(6);
+          setMessageIndex(6 , heartRate.value,data,temperature.value);
           spo2Socket.off("spo2Data", handleSpo2Data);
         };
 
@@ -137,7 +142,7 @@ function Live() {
         const handleTempData = async (data) => {
           setTemperature({ value: data, loading: false, active: false });
           await handleSubmitData("tempdata", data);
-          setMessageIndex(6);
+          setMessageIndex(6,heartRate.value,spo2.value,data);
           bodyTemp.off("tempData", handleTempData);
         };
 
@@ -177,7 +182,7 @@ function Live() {
             ) : null}
             <p>{heartRate.value !== null ? `${heartRate.value} BPM` : "-- BPM"}</p>
             <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)}>
+              <button className="start-btn" onClick={() => handleVitalCheck("heartRate", 2)} style={{width:"150px",cursor:"pointer"}}>
                 {!heartRate.active ? "Start" : "Stop"}
               </button>
             </div>
@@ -195,7 +200,7 @@ function Live() {
             ) : null}
             <p>{spo2.value !== null ? `${spo2.value}%` : "--%"}</p>
             <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("spo2", 4)}>
+              <button className="start-btn" onClick={() => handleVitalCheck("spo2", 4)} style={{width:"150px",cursor:"pointer"}}>
                 {!spo2.active ? "Start" : "Stop"}
               </button>
             </div>
@@ -213,7 +218,7 @@ function Live() {
             ) : null}
             <p>{temperature.value !== null ? `${temperature.value}°C` : "--°C"}</p>
             <div className="buttons">
-              <button className="start-btn" onClick={() => handleVitalCheck("temperature", 3)}>
+              <button className="start-btn" onClick={() => handleVitalCheck("temperature", 3)} style={{width:"150px",cursor:"pointer"}}>
                 {!temperature.active ? "Start" : "Stop"}
               </button>
             </div>
