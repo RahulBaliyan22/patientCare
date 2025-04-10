@@ -67,7 +67,7 @@ const MessageBox = React.memo(({ messageIndex, resultValues }) => {
               <br />
               {resultValues.spo2 !== null && <CircularProgressWithLabel value={resultValues.spo2} />}
             </div>
-            <div className="grid3">YOUR RESULTS</div>
+            <div className="grid3" style={{textAlign:"center",alignContent:"center"}}>YOUR RESULTS</div>
             <div className="grid4">
               <strong>Body Temperature (in °C)</strong>
               <br />
