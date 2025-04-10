@@ -76,13 +76,13 @@ function Live() {
   }, []);
 
   const handleSubmitData = async (name, value) => {
-    const form = new FormData();
-    form.append(name, value);
+    
 
     try {
-      await axios.post("https://patientcare-2.onrender.com/vitals/add", form, {
+      await axios.post("https://patientcare-2.onrender.com/vitals/add", { [name]: value }, {
         withCredentials: true,
       });
+      
       console.log("Data submitted");
     } catch (e) {
       console.error("Submit error:", e);
@@ -118,7 +118,7 @@ function Live() {
 
         const handleSpo2Data = async (data) => {
           setSpo2({ value: data, loading: false, active: false });
-          await handleSubmitData("spo2Data", data);
+          await handleSubmitData("spo2data", data);
           setMessageIndex(6);
           spo2Socket.off("spo2Data", handleSpo2Data);
         };
@@ -136,7 +136,7 @@ function Live() {
 
         const handleTempData = async (data) => {
           setTemperature({ value: data, loading: false, active: false });
-          await handleSubmitData("tempData", data);
+          await handleSubmitData("tempdata", data);
           setMessageIndex(6);
           bodyTemp.off("tempData", handleTempData);
         };
