@@ -195,7 +195,7 @@ const togglePrimary = async (req, res) => {
   }
 };
 
-const queryMail = async()=>{
+const queryMail = async(req,res)=>{
   const {name,email,message} = req.body;
   try{
     let senderEmail;
