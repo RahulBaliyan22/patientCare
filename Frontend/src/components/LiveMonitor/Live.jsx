@@ -228,8 +228,7 @@ function Live() {
       </div>
 
       <div className="box4">
-        {/* <Data
-        /> */}
+        <Data/>
       </div>
     </div>
   );
