@@ -16,9 +16,9 @@ export default function CurrentData({heartData,spo2Data, tempData}) {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "10px" }}>
-        <button onClick={() => setSelectedMetric("heartRate")}>Heart Rate</button>
-        <button onClick={() => setSelectedMetric("spo2")}>SpO2</button>
-        <button onClick={() => setSelectedMetric("temperature")}>Body Temp</button>
+        <button  style={{width:"300px",cursor:"pointer"}} onClick={() => setSelectedMetric("heartRate")}>Heart Rate</button>
+        <button style={{width:"300px",cursor:"pointer"}} onClick={() => setSelectedMetric("spo2")}>SpO2</button>
+        <button style={{width:"300px",cursor:"pointer"}} onClick={() => setSelectedMetric("temperature")}>Body Temp</button>
       </div>
 
       <BarChart
