@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./AddRecord.css";
-import { useNavigate,useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AddRecord = () => {
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get("patientId");
-
 
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
@@ -15,7 +14,7 @@ const AddRecord = () => {
     doctor: "",
     diagnosis: "",
     notes: "",
-    isScript:false
+    isScript: false,
   });
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -24,7 +23,7 @@ const AddRecord = () => {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
-    setRecord((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -33,7 +32,7 @@ const AddRecord = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files);
-    
+
     // Create previews for the selected images
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews(previews);
@@ -55,52 +54,57 @@ const AddRecord = () => {
     data.append("doctor", formData.doctor);
     data.append("diagnosis", formData.diagnosis);
     data.append("notes", formData.notes);
-    data.append("isScript",formData.isScript)
+    data.append("isScript", formData.isScript);
 
     images.forEach((image) => {
       data.append("images", image); // Send images directly
     });
 
     try {
-      if(!patientId){
-      const response = await axios.post(
-        "https://patientcare-2.onrender.com/add-record", 
-        data,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        }
-      );
+      if (!patientId) {
+        const response = await axios.post(
+          "https://patientcare-2.onrender.com/add-record",
+          data,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true,
+          }
+        );
 
-      toast.success(response.data.message);
-      setLoading(false);
-
-      // Clear the form
-      setFormData({
-        date: "",
-        doctor: "",
-        diagnosis: "",
-        notes: "",
-        isScript:false
-      });
-      setImages([]);
-      setImagePreviews([]);
-      navigation("/records");}else{
-        const resp = await axios.post(`https://patientcare-2.onrender.com/admin/add-record/${patientId}`,data,{withCredentials:true})
-        toast.success(resp.data.message);
+        toast.success(response.data.message);
         setLoading(false);
-  
+
         // Clear the form
         setFormData({
           date: "",
           doctor: "",
           diagnosis: "",
           notes: "",
-          isScript:false
+          isScript: false,
         });
         setImages([]);
         setImagePreviews([]);
-        navigation(`/admin/showpatient?patientId=${patientId}`)
+        navigation("/records");
+      } else {
+        const resp = await axios.post(
+          `https://patientcare-2.onrender.com/admin/add-record/${patientId}`,
+          data,
+          { withCredentials: true }
+        );
+        toast.success(resp.data.message);
+        setLoading(false);
+
+        // Clear the form
+        setFormData({
+          date: "",
+          doctor: "",
+          diagnosis: "",
+          notes: "",
+          isScript: false,
+        });
+        setImages([]);
+        setImagePreviews([]);
+        navigation(`/admin/showpatient?patientId=${patientId}`);
       }
     } catch (error) {
       console.error("Error adding record:", error);
@@ -115,7 +119,9 @@ const AddRecord = () => {
         <h2>Add Medical Record</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="date" className="form-label">Date</label>
+            <label htmlFor="date" className="form-label">
+              Date
+            </label>
             <input
               type="date"
               id="date"
@@ -127,7 +133,9 @@ const AddRecord = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="doctor" className="form-label">Doctor</label>
+            <label htmlFor="doctor" className="form-label">
+              Doctor
+            </label>
             <input
               type="text"
               id="doctor"
@@ -140,7 +148,9 @@ const AddRecord = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="diagnosis" className="form-label">Diagnosis</label>
+            <label htmlFor="diagnosis" className="form-label">
+              Diagnosis
+            </label>
             <input
               type="text"
               id="diagnosis"
@@ -152,7 +162,9 @@ const AddRecord = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="notes" className="form-label">Notes</label>
+            <label htmlFor="notes" className="form-label">
+              Notes
+            </label>
             <textarea
               id="notes"
               name="notes"
@@ -163,7 +175,9 @@ const AddRecord = () => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="images" className="form-label">Upload Images</label>
+            <label htmlFor="images" className="form-label">
+              Upload Images
+            </label>
             <em>For multiple uploads, hold Ctrl and select images</em>
             <input
               type="file"
@@ -175,18 +189,22 @@ const AddRecord = () => {
               className="form-input"
             />
           </div>
-          {!patientId && <div className="form-group">
-            <label htmlFor="isScript" className="form-label">Want Analysis For Record : </label>
-            <input
-              type="checkbox"
-              id="is"
-              name="isScript"
-              checked={formData.isScript}
-              onChange={handleInputChange}
-              className="form-input"
-              style={{width:"20px"}}
-            />
-          </div>}
+          {!patientId && (
+            <div className="form-group">
+              <label htmlFor="isScript" className="form-label">
+                Want Analysis For Record :{" "}
+              </label>
+              <input
+                type="checkbox"
+                id="is"
+                name="isScript"
+                checked={formData.isScript}
+                onChange={handleInputChange}
+                className="form-input"
+                style={{ width: "20px" }}
+              />
+            </div>
+          )}
           {/* Display image previews */}
           {imagePreviews.length > 0 && (
             <div className="image-previews">
