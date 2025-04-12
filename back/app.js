@@ -124,7 +124,7 @@ guestChat(io);
 patientChat(io)
 adminChat(io)
 
-heartInfo(io,wss)
+heartInfo(io)
 tempInfo(io)
 spoInfo(io)
 
