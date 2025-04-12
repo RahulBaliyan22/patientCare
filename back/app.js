@@ -32,6 +32,8 @@ const io = new Server(server, {
     origin: "https://patient-care-ten.vercel.app",
     credentials: true,
   },
+  transports: ["websocket"], // Force WebSocket
+  allowEIO3: true, 
 });
 
 // Middleware setup
