@@ -11,7 +11,7 @@ const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const initializeS3 = require("./config/s3");
 const webSocket = require('ws')
-const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
+
 // Routes and models
 const authRoutes = require("./route/auth");
 const dashboardRoutes = require("./route/dashboard");
@@ -36,7 +36,7 @@ const io = new Server(server, {
   transports: ["websocket"], // Force WebSocket
   allowEIO3: true, 
 });
-
+const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
 // Middleware setup
 app.set("trust proxy", 1);
 app.use(express.json());

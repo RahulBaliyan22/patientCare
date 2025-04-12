@@ -1,6 +1,7 @@
 
 const { authorizeRole } = require("../middleware");
 let esp32Socket = null;
+
 const heartInfo = (io,wss) => {
   wss.on("connection", (ws) => {
     console.log("✅ ESP32 WebSocket connected");
