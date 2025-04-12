@@ -10,7 +10,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const initializeS3 = require("./config/s3");
-const webSocket = require('ws')
+const WebSocket = require('ws')
 
 // Routes and models
 const authRoutes = require("./route/auth");
