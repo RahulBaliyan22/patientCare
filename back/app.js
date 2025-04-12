@@ -36,7 +36,7 @@ const io = new Server(server, {
   transports: ["websocket"], // Force WebSocket
   allowEIO3: true, 
 });
-const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
+// const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
 // Middleware setup
 app.set("trust proxy", 1);
 app.use(express.json());
