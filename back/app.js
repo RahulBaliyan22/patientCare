@@ -10,7 +10,8 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const initializeS3 = require("./config/s3");
-
+const webSocket = require('ws')
+const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
 // Routes and models
 const authRoutes = require("./route/auth");
 const dashboardRoutes = require("./route/dashboard");
@@ -123,7 +124,7 @@ guestChat(io);
 patientChat(io)
 adminChat(io)
 
-heartInfo(io)
+heartInfo(io,wss)
 tempInfo(io)
 spoInfo(io)
 

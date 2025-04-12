@@ -1,27 +1,25 @@
-const { WebSocket } = require("ws");
+
 const { authorizeRole } = require("../middleware");
 let esp32Socket = null;
-const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
-
-wss.on("connection", (ws) => {
-  console.log("✅ ESP32 WebSocket connected");
-  esp32Socket = ws;
-
-  ws.on("message", (message) => {
-    console.log("📦 Message from ESP32:", message.toString());
-
-    // Forward message to frontend via Socket.IO
-    io.of("/vital-heart-rate").emit("heartDataFromSensor", message.toString());
+const heartInfo = (io,wss) => {
+  wss.on("connection", (ws) => {
+    console.log("✅ ESP32 WebSocket connected");
+    esp32Socket = ws;
+  
+    ws.on("message", (message) => {
+      console.log("📦 Message from ESP32:", message.toString());
+  
+      // Forward message to frontend via Socket.IO
+      io.of("/vital-heart-rate").emit("heartDataFromSensor", message.toString());
+    });
+  
+    ws.on("close", () => {
+      console.log("❌ ESP32 WebSocket disconnected");
+      esp32Socket = null;
+    });
   });
 
-  ws.on("close", () => {
-    console.log("❌ ESP32 WebSocket disconnected");
-    esp32Socket = null;
-  });
-});
-
-
-const heartInfo = (io) => {
+  
   const vitalsNamespace = io.of("/vital-heart-rate");
 
   vitalsNamespace.use(authorizeRole("patient"));
