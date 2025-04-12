@@ -1,4 +1,25 @@
+const { WebSocket } = require("ws");
 const { authorizeRole } = require("../middleware");
+let esp32Socket = null;
+const wss = new WebSocket.Server({ server, path: "/esp32-ws" });
+
+wss.on("connection", (ws) => {
+  console.log("✅ ESP32 WebSocket connected");
+  esp32Socket = ws;
+
+  ws.on("message", (message) => {
+    console.log("📦 Message from ESP32:", message.toString());
+
+    // Forward message to frontend via Socket.IO
+    io.of("/vital-heart-rate").emit("heartDataFromSensor", message.toString());
+  });
+
+  ws.on("close", () => {
+    console.log("❌ ESP32 WebSocket disconnected");
+    esp32Socket = null;
+  });
+});
+
 
 const heartInfo = (io) => {
   const vitalsNamespace = io.of("/vital-heart-rate");
@@ -8,12 +29,15 @@ const heartInfo = (io) => {
   vitalsNamespace.on("connection", (socket) => {
     console.log("heart connected");
     socket.on("start", () => {
-      try {
-        //make hardware start call
-        socket.emit("heartDataStart");
-      } catch (e) {
-        console.log(e);
-      }
+      console.log("📥 connectToESP32 event from frontend");
+
+    if (esp32Socket && esp32Socket.readyState === WebSocket.OPEN) {
+      esp32Socket.send("start"); // Tell ESP32 to send heart data
+      console.log("📤 Sent 'start' command to ESP32");
+    } else {
+      console.log("⚠️ ESP32 not connected");
+      socket.emit("esp32-not-connected");
+    }
     });
     socket.on("heartDataFromSensor", (data) => {
       socket.emit("heartData", data);
