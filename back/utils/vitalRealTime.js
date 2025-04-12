@@ -10,10 +10,13 @@ const heartInfo = (io) => {
     socket.on("start", () => {
       try {
         //make hardware start call
-        socket.emit("heartData", 80);
+        socket.emit("heartDataStart");
       } catch (e) {
         console.log(e);
       }
+    });
+    socket.on("heartDataFromSensor", (data) => {
+      socket.emit("heartData", data);
     });
 
     socket.on("disconnect", () => {
