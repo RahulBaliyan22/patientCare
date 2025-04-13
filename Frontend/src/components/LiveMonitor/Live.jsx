@@ -125,6 +125,7 @@ function Live() {
         heartSocket.emit("start", "start process");
 
         const handleHeartData = async (data) => {
+          
           setHeartRate({ value: data, loading: false, active: false });
           await handleSubmitData("heartData", data);
           setResultValues((prev) => ({ ...prev, heart: data }));
