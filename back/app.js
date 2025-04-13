@@ -108,7 +108,7 @@ io.engine.use(onlyForHandshake(passport.session()));
 
 io.engine.use(
   onlyForHandshake((req, res, next) => {
-    console.log('request' , req)
+    // console.log('request' , req)
     if (req.user) {
       console.log("✅ WebSocket handshake user:", req.user);
       next();
@@ -118,13 +118,13 @@ io.engine.use(
     }
   }),
 );
-io.on("connection", (socket) => {
-  const isESP = socket.handshake.headers["user-agent"].includes("arduino");
+// io.on("connection", (socket) => {
+//   const isESP = socket.handshake.headers["user-agent"].includes("arduino");
 
-  if (isESP) {
-    registerESP(socket);
-  }
-});
+//   if (isESP) {
+//     registerESP(socket);
+//   }
+// });
 // Socket.io logic
 guestChat(io);
 patientChat(io)
