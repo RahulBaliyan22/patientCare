@@ -10,7 +10,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const initializeS3 = require("./config/s3");
-const ws = require("ws");
+const { registerESP, sendToESP, isESPConnected } = require('./utils/espConfig');
 // Routes and models
 const authRoutes = require("./route/auth");
 const dashboardRoutes = require("./route/dashboard");
@@ -117,7 +117,13 @@ io.engine.use(
     }
   }),
 );
+io.on("connection", (socket) => {
+  const isESP = socket.handshake.headers["user-agent"].includes("arduino");
 
+  if (isESP) {
+    registerESP(socket);
+  }
+});
 // Socket.io logic
 guestChat(io);
 patientChat(io)
@@ -146,29 +152,7 @@ app.get("/check-session", (req, res) => {
   });
 });
 
-const wsHttpServer = http.createServer(); // New HTTP server for WebSocket (ESP32)
-const wss = new ws.Server({ server: wsHttpServer, path: '/esp' });
 
-wss.on('connection', (socket) => {
-  console.log('🟢 ESP32 connected via native WebSocket');
-
-  socket.on('message', (data) => {
-    console.log('📨 ESP32 sent:', data.toString());
-
-    // Emit this data to connected web clients via socket.io
-    // io.emit('esp-data', data.toString());
-  });
-
-  socket.on('close', () => {
-    console.log('🔌 ESP32 disconnected');
-  });
-});
-
-// Start the new WebSocket server on port 4000
-const WSPORT = 4000;
-wsHttpServer.listen(WSPORT, () =>
-  console.log(`🛰️ Native WebSocket (ESP32) listening on port ${WSPORT}`)
-);
 
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

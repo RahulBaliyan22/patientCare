@@ -3,7 +3,7 @@ import "./LiveCss.css";
 import Data from "../HealthRecord/Data";
 import CurrentData from "../CurrentData/CurrentData";
 import { CircularProgress, Typography, Box } from "@mui/material";
-import { bodyTemp, heartSocket, spo2Socket } from "../../util/vitalScoket";
+import { bodyTemp, heartSocket, spo2Socket,connectTOBack } from "../../util/vitalScoket";
 import axios from "axios";
 
 function CircularProgressWithLabel({ value }) {

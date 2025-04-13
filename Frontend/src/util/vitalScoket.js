@@ -20,4 +20,11 @@ const bodyTemp = io('https://patientcare-2.onrender.com/vital-body-temp',{
 })
 
 
-export  {heartSocket,spo2Socket,bodyTemp};
+
+const connectTOBack = io('https://patientcare-2.onrender.com/frontend',{
+  transports: ["websocket"],
+  autoConnect: false,
+  withCredentials: true,
+})
+
+export  {heartSocket,spo2Socket,bodyTemp,connectTOBack};
