@@ -1,5 +1,5 @@
 let espSocket = null; // will store ESP32 socket connection
-let { value } = require("./vitalRealTime");
+let { value } = require("./sharedVitals");
 
 const handleSensorData = (sensorType) => (data) => {
   console.log(`Received ${sensorType} data: `, data);

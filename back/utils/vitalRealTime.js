@@ -1,7 +1,7 @@
 const { authorizeRole } = require("../middleware");
 const { isESPConnected, sendToESP } = require("./espConfig");
 
-let value = { heart: null, spo2: null, temp: null };
+const { value } = require('./sharedVitals');
 
 const heartInfo = (io) => {
   const vitalsNamespace = io.of("/vital-heart-rate");
