@@ -108,6 +108,7 @@ io.engine.use(onlyForHandshake(passport.session()));
 
 io.engine.use(
   onlyForHandshake((req, res, next) => {
+    console.log('request' , req)
     if (req.user) {
       console.log("✅ WebSocket handshake user:", req.user);
       next();
