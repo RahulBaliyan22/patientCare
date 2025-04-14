@@ -11,6 +11,7 @@ const heartInfo = (io) => {
     console.log("🫀 Patient connected for heart data");
 
     socket.on("start", () => {
+      device.publish("patientcare/control", "start");
       waitingSockets[socket.id+"_get_hr"] = {  type:"get_hr", socket };
       const requestData = {
         type: "get_hr&",
@@ -36,6 +37,7 @@ const spoInfo = (io) => {
   vitalsNamespace.use(authorizeRole("patient"));
 
   vitalsNamespace.on("connection", (socket) => {
+    device.publish("patientcare/control", "start");
     console.log("🩸 Patient connected for SpO2 data");
 
     socket.on("start", () => {
@@ -64,6 +66,7 @@ const tempInfo = (io) => {
   vitalsNamespace.use(authorizeRole("patient"));
 
   vitalsNamespace.on("connection", (socket) => {
+    device.publish("patientcare/control", "start");
     console.log("🌡️ Patient connected for temperature data");
 
     socket.on("start", () => {
