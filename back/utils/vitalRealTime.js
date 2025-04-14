@@ -10,7 +10,7 @@ const heartInfo = (io) => {
     console.log("🫀 Patient connected for heart data");
 
     socket.on("start", () => {
-      device.publish("patientcare/control", JSON.stringify("get_hr"));
+      device.publish("patientcare/control", "get_hr");
 
       // Wait a moment and send once
       setTimeout(() => {
@@ -24,7 +24,7 @@ const heartInfo = (io) => {
     });
 
     socket.on("stop", () => {
-      device.publish("patientcare/control", JSON.stringify("stop"));
+      device.publish("patientcare/control", "stop");
     });
 
     socket.on("disconnect", () => {
@@ -41,7 +41,7 @@ const spoInfo = (io) => {
     console.log("🩸 Patient connected for SpO2 data");
 
     socket.on("start", () => {
-      device.publish("patientcare/control", JSON.stringify("get_spo2"));
+      device.publish("patientcare/control", "get_spo2");
 
       setTimeout(() => {
         if (value.spo2) {
@@ -54,7 +54,7 @@ const spoInfo = (io) => {
     });
 
     socket.on("stop", () => {
-      device.publish("patientcare/control", JSON.stringify("stop"));
+      device.publish("patientcare/control","stop");
     });
 
     socket.on("disconnect", () => {
@@ -71,7 +71,7 @@ const tempInfo = (io) => {
     console.log("🌡️ Patient connected for temperature data");
 
     socket.on("start", () => {
-      device.publish("patientcare/control", JSON.stringify("get_temp"));
+      device.publish("patientcare/control", "get_temp");
 
       setTimeout(() => {
         if (value.temp) {
@@ -84,7 +84,7 @@ const tempInfo = (io) => {
     });
 
     socket.on("stop", () => {
-      device.publish("patientcare/control", JSON.stringify("stop"));
+      device.publish("patientcare/control", "stop");
     });
 
     socket.on("disconnect", () => {
