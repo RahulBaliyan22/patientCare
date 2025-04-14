@@ -26,11 +26,11 @@ device.on("message", (topic, payload) => {
 
       // Store to shared value object
       if (data.type === "heart") {
-        value.heart = data;
+        value.heart = data.value;
       } else if (data.type === "spo2") {
-        value.spo2 = data;
+        value.spo2 = data.value;
       } else if (data.type === "temp") {
-        value.temp = data;
+        value.temp = data.value;
       }
   }
 });
