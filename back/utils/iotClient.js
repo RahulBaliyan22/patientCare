@@ -15,7 +15,7 @@ const device = awsIot.device({
 device
     .on('connect', function() {
         console.log('connect');
-        device.publish("patientcare/control", JSON.stringify("start"));
+        device.publish("patientcare/control", "start");
         device.subscribe("patientcare/data"); 
         device.subscribe("patientcare/message");
     });
