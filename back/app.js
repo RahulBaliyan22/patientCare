@@ -10,7 +10,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const initializeS3 = require("./config/s3");
-const { registerESP, sendToESP, isESPConnected } = require('./utils/espConfig');
+
 // Routes and models
 const authRoutes = require("./route/auth");
 const dashboardRoutes = require("./route/dashboard");
@@ -118,13 +118,7 @@ io.engine.use(
     }
   }),
 );
-// io.on("connection", (socket) => {
-//   const isESP = socket.handshake.headers["user-agent"].includes("arduino");
 
-//   if (isESP) {
-//     registerESP(socket);
-//   }
-// });
 // Socket.io logic
 guestChat(io);
 patientChat(io)
