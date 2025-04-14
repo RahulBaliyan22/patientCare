@@ -21,10 +21,10 @@ device
     });
 
 device.on("message", (topic, message) => {
-  const data = JSON.parse(message.toString());
+  
 if(topic === "patientcare/data"){
     const { type, socketId, value } = data;
-
+    const data = JSON.parse(message.toString());
   // Check if the socketId exists in the waitingSockets
   if (waitingSockets[`${socketId}_${type}`]) {
     const socketData = waitingSockets[`${socketId}_${type}`];
