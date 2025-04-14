@@ -14,7 +14,7 @@ const heartInfo = (io) => {
       device.publish("patientcare/control", "start");
       waitingSockets[socket.id+"_get_hr"] = {  type:"get_hr", socket };
       const requestData = {
-        type: "get_hr&",
+        type: "get_hr",
         socketId: socket.id // Pass socket.id to ESP32
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
@@ -43,7 +43,7 @@ const spoInfo = (io) => {
     socket.on("start", () => {
       waitingSockets[socket.id+"_get_spo2"] = {  type:"get_spo2", socket };
       const requestData = {
-        type: "get_spo2&",
+        type: "get_spo2",
         socketId: socket.id // Pass socket.id to ESP32
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
@@ -72,7 +72,7 @@ const tempInfo = (io) => {
     socket.on("start", () => {
       waitingSockets[socket.id+"_get_temp"] = {  type:"get_temp", socket };
       const requestData = {
-        type: "get_temp&",
+        type: "get_temp",
         socketId: socket.id // Pass socket.id to ESP32
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
