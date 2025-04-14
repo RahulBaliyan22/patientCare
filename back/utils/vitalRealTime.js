@@ -12,9 +12,9 @@ const heartInfo = (io) => {
 
     socket.on("start", () => {
       device.publish("patientcare/control", "start");
-      waitingSockets[socket.id+"_get_hr"] = {  type:"get_hr", socket };
+      waitingSockets[socket.id+"_heart"] = {  type:"heart", socket };
       const requestData = {
-        type: "get_hr",
+        type: "heart",
         socketId: socket.id // Pass socket.id to ESP32
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
@@ -22,12 +22,12 @@ const heartInfo = (io) => {
 
     socket.on("stop", () => {
       device.publish("patientcare/control", "stop");
-      delete waitingSockets[socket.id+"_get_hr"];
+      delete waitingSockets[socket.id+"_heart"];
     });
 
     socket.on("disconnect", () => {
       console.log("🔴 Heart namespace disconnected");
-      delete waitingSockets[socket.id+"_get_hr"];
+      delete waitingSockets[socket.id+"_heart"];
     });
   });
 };
@@ -41,9 +41,9 @@ const spoInfo = (io) => {
     console.log("🩸 Patient connected for SpO2 data");
 
     socket.on("start", () => {
-      waitingSockets[socket.id+"_get_spo2"] = {  type:"get_spo2", socket };
+      waitingSockets[socket.id+"_spo2"] = {  type:"spo2", socket };
       const requestData = {
-        type: "get_spo2",
+        type: "spo2",
         socketId: socket.id // Pass socket.id to ESP32
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
@@ -51,12 +51,12 @@ const spoInfo = (io) => {
 
     socket.on("stop", () => {
       device.publish("patientcare/control", "stop");
-      delete waitingSockets[socket.id+"_get_spo2"];
+      delete waitingSockets[socket.id+"_spo2"];
     });
 
     socket.on("disconnect", () => {
       console.log("🔴 Heart namespace disconnected");
-      delete waitingSockets[socket.id+"_get_spo2"];
+      delete waitingSockets[socket.id+"_spo2"];
     });
   });
 };
@@ -70,9 +70,9 @@ const tempInfo = (io) => {
     console.log("🌡️ Patient connected for temperature data");
 
     socket.on("start", () => {
-      waitingSockets[socket.id+"_get_temp"] = {  type:"get_temp", socket };
+      waitingSockets[socket.id+"_temp"] = {  type:"temp", socket };
       const requestData = {
-        type: "get_temp",
+        type: "temp",
         socketId: socket.id // Pass socket.id to ESP32
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
@@ -80,12 +80,12 @@ const tempInfo = (io) => {
 
     socket.on("stop", () => {
       device.publish("patientcare/control", "stop");
-      delete waitingSockets[socket.id+"_get_temp"];
+      delete waitingSockets[socket.id+"_temp"];
     });
 
     socket.on("disconnect", () => {
       console.log("🔴 Heart namespace disconnected");
-      delete waitingSockets[socket.id+"_get_temp"];
+      delete waitingSockets[socket.id+"_temp"];
     });
   });
 };

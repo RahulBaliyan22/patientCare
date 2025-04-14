@@ -1,7 +1,7 @@
 const  awsIot = require('aws-iot-device-sdk');
 const {value} = require('./sharedVitals')
 const path = require('path');
-
+const { waitingSockets } = require("./waitingSockets");
 const device = awsIot.device({
     keyPath: "/etc/secrets/private.key",
     certPath: "/etc/secrets/cert.pem",
