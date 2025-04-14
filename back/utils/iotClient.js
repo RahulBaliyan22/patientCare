@@ -19,20 +19,30 @@ device
         device.subscribe("patientcare/data"); 
         device.subscribe("patientcare/message");
     });
-device.on("message", (topic, payload) => {
-  console.log("📥 Message received from ESP:", topic, payload.toString());
-  if(topic==="patientcare/data"){
-      const data = JSON.parse(payload.toString());
 
-      // Store to shared value object
-      if (data.type === "heart") {
-        value.heart = data.value;
-      } else if (data.type === "spo2") {
-        value.spo2 = data.value;
-      } else if (data.type === "temp") {
-        value.temp = data.value;
-      }
+device.on("message", (topic, message) => {
+  const data = JSON.parse(message.toString());
+if(topic === "patientcare/data"){
+    const { type, socketId, value } = data;
+
+  // Check if the socketId exists in the waitingSockets
+  if (waitingSockets[`${socketId}_${type}`]) {
+    const socketData = waitingSockets[`${socketId}_${type}`];
+
+    // If the requested type matches the waiting socket's type
+    if (socketData.type === type) {
+      // Emit the data to the correct socket
+      socketData.socket.emit(type + "Data", value);
+
+      // Clean up the socket from the list after emitting the data
+      delete waitingSockets[`${socketId}_${type}`];
+    } else {
+      console.log(`Error: Socket requested ${socketData.type}, but received ${type}.`);
+    }
+  } else {
+    console.log(`Error: Socket ${socketId} not found or already disconnected.`);
   }
+}
 });
 device
     .on('close', function() {

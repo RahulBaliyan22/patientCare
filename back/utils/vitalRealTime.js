@@ -1,6 +1,7 @@
 const { authorizeRole } = require("../middleware");
 const { value } = require('./sharedVitals');
 const { device } = require('./iotClient');
+const { waitingSockets } = require("./waitingSockets");
 
 const heartInfo = (io) => {
   const vitalsNamespace = io.of("/vital-heart-rate");
@@ -10,25 +11,22 @@ const heartInfo = (io) => {
     console.log("🫀 Patient connected for heart data");
 
     socket.on("start", () => {
-      device.publish("patientcare/control", "get_hr");
-
-      // Wait a moment and send once
-      setTimeout(() => {
-        if (value.heart) {
-          socket.emit("heartData", value.heart);
-          value.heart = null;
-        } else {
-          socket.emit("heartData", { error: "No heart data received." });
-        }
-      }, 1000); // Wait 1 sec to allow sensor to respond
+      waitingSockets[socket.id+"_get_hr"] = {  type:"get_hr", socket };
+      const requestData = {
+        type: "get_hr&",
+        socketId: socket.id // Pass socket.id to ESP32
+      };
+      device.publish("patientcare/control", JSON.stringify(requestData));
     });
 
     socket.on("stop", () => {
       device.publish("patientcare/control", "stop");
+      delete waitingSockets[socket.id+"_get_hr"];
     });
 
     socket.on("disconnect", () => {
       console.log("🔴 Heart namespace disconnected");
+      delete waitingSockets[socket.id+"_get_hr"];
     });
   });
 };
@@ -41,24 +39,22 @@ const spoInfo = (io) => {
     console.log("🩸 Patient connected for SpO2 data");
 
     socket.on("start", () => {
-      device.publish("patientcare/control", "get_spo2");
-
-      setTimeout(() => {
-        if (value.spo2) {
-          socket.emit("spo2Data", value.spo2);
-          value.spo2 = null;
-        } else {
-          socket.emit("spo2Data", { error: "No SpO2 data received." });
-        }
-      }, 1000);
+      waitingSockets[socket.id+"_get_spo2"] = {  type:"get_spo2", socket };
+      const requestData = {
+        type: "get_spo2&",
+        socketId: socket.id // Pass socket.id to ESP32
+      };
+      device.publish("patientcare/control", JSON.stringify(requestData));
     });
 
     socket.on("stop", () => {
-      device.publish("patientcare/control","stop");
+      device.publish("patientcare/control", "stop");
+      delete waitingSockets[socket.id+"_get_spo2"];
     });
 
     socket.on("disconnect", () => {
-      console.log("🔴 SpO2 namespace disconnected");
+      console.log("🔴 Heart namespace disconnected");
+      delete waitingSockets[socket.id+"_get_spo2"];
     });
   });
 };
@@ -71,24 +67,22 @@ const tempInfo = (io) => {
     console.log("🌡️ Patient connected for temperature data");
 
     socket.on("start", () => {
-      device.publish("patientcare/control", "get_temp");
-
-      setTimeout(() => {
-        if (value.temp) {
-          socket.emit("tempData", value.temp);
-          value.temp = null;
-        } else {
-          socket.emit("tempData", { error: "No temperature data received." });
-        }
-      }, 1000);
+      waitingSockets[socket.id+"_get_temp"] = {  type:"get_temp", socket };
+      const requestData = {
+        type: "get_temp&",
+        socketId: socket.id // Pass socket.id to ESP32
+      };
+      device.publish("patientcare/control", JSON.stringify(requestData));
     });
 
     socket.on("stop", () => {
       device.publish("patientcare/control", "stop");
+      delete waitingSockets[socket.id+"_get_temp"];
     });
 
     socket.on("disconnect", () => {
-      console.log("🔴 Temp namespace disconnected");
+      console.log("🔴 Heart namespace disconnected");
+      delete waitingSockets[socket.id+"_get_temp"];
     });
   });
 };
