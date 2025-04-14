@@ -4,8 +4,8 @@ const path = require('path');
 
 const  clientEndpoint = "a29saz9pof92to-ats.iot.ap-south-1.amazonaws.com";
 const  clientId = "device-01";
-const  certificateFile = path.resolve(__dirname,"./certs/5881e00c1a20b48e63e0861fcf02f09d219da05dc8def45dbfcafa9a7209ce01-certificate.pem");  // X.509 based certificate file
-const  privateKeyFile = path.resolve(__dirname,"./certs/5881e00c1a20b48e63e0861fcf02f09d219da05dc8def45dbfcafa9a7209ce01-private.pem");   // PEM encoded private key file
+const  certificateFile = path.resolve(__dirname,"./certs/5881e00c1a20b48e63e0861fcf02f09d219da05dc8def45dbfcafa9a7209ce01-certificate.pem.crt");  // X.509 based certificate file
+const  privateKeyFile = path.resolve(__dirname,"./certs/5881e00c1a20b48e63e0861fcf02f09d219da05dc8def45dbfcafa9a7209ce01-private.pem.key");   // PEM encoded private key file
 const  caRootFile = path.resolve(__dirname,"./certs/AmazonRootCA1.pem");
 
 
