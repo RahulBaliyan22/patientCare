@@ -19,7 +19,7 @@ const heartInfo = (io) => {
       };
       device.publish("patientcare/control", JSON.stringify(requestData));
     });
-
+    
     socket.on("stop", () => {
       device.publish("patientcare/control", "stop");
       delete waitingSockets[socket.id+"_heart"];

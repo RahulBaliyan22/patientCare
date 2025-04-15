@@ -3,7 +3,8 @@ import "./LiveCss.css";
 import Data from "../HealthRecord/Data";
 import CurrentData from "../CurrentData/CurrentData";
 import { CircularProgress, Typography, Box } from "@mui/material";
-import { bodyTemp, heartSocket, spo2Socket,connectTOBack } from "../../util/vitalScoket";
+import { bodyTemp, heartSocket, spo2Socket} from "../../util/vitalScoket";
+import { toast } from 'react-toastify';
 import axios from "axios";
 
 function CircularProgressWithLabel({ value }) {
@@ -125,14 +126,19 @@ function Live() {
         heartSocket.emit("start", "start process");
 
         const handleHeartData = async (data) => {
-          
           setHeartRate({ value: data, loading: false, active: false });
           await handleSubmitData("heartData", data);
           setResultValues((prev) => ({ ...prev, heart: data }));
           setMessageIndex(6);
           heartSocket.off("heartData", handleHeartData);
         };
-
+        const  handleStop = (data)=>{
+          toast.error(data);
+          heartSocket.emit("stop","stop process")
+          heartSocket.off("errorData",handleStop);
+          heartSocket.off("heartData", handleHeartData);
+        }
+        heartSocket.on("errorData",handleStop);
         heartSocket.on("heartData", handleHeartData);
       } else if (type === "heartRate") {
         heartSocket.disconnect();
@@ -151,7 +157,13 @@ function Live() {
           setMessageIndex(6);
           spo2Socket.off("spo2Data", handleSpo2Data);
         };
-
+        const  handleStop = (data)=>{
+          toast.error(data);
+          spo2Socket.emit("stop","stop process")
+          spo2Socket.off("errorData",handleStop);
+          spo2Socket.off("spo2Data", handleSpo2Data);
+        }
+        spo2Socket.on("errorData",handleStop);
         spo2Socket.on("spo2Data", handleSpo2Data);
       } else if (type === "spo2") {
         spo2Socket.disconnect();
@@ -170,7 +182,13 @@ function Live() {
           setMessageIndex(6);
           bodyTemp.off("tempData", handleTempData);
         };
-
+        const  handleStop = (data)=>{
+          toast.error(data);
+          bodyTemp.emit("stop","stop process")
+          bodyTemp.off("errorData",handleStop);
+          bodyTemp.off("tempData", handleTempData);
+        }
+        bodyTemp.on("errorData",handleStop);
         bodyTemp.on("tempData", handleTempData);
       } else if (type === "temperature") {
         bodyTemp.disconnect();

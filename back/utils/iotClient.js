@@ -15,13 +15,33 @@ const device = awsIot.device({
 device
     .on('connect', function() {
         console.log('connect');
-        
+        device.subscribe("patientcare/ErrorMes")
+        device.subscribe("patientcare/Error")
         device.subscribe("patientcare/data"); 
         device.subscribe("patientcare/message");
     });
 
 device.on("message", (topic, message) => {
+  if(topic === "patientcare/Error"){
+    const data = JSON.parse(message.toString());
+    const {type,socketId,error} = data;
+    if (waitingSockets[`${socketId}_${type}`]) {
+      const socketData = waitingSockets[`${socketId}_${type}`];
   
+      // If the requested type matches the waiting socket's type
+      if (socketData.type === type) {
+        // Emit the data to the correct socket
+        socketData.socket.emit("errorData",error);
+  
+        // Clean up the socket from the list after emitting the data
+        delete waitingSockets[`${socketId}_${type}`];
+      } else {
+        console.log(`Error: Socket requested ${socketData.type}, but received ${type}.`);
+      }
+    } else {
+      console.log(`Error: Socket ${socketId} not found or already disconnected.`);
+    }
+  }
 if(topic === "patientcare/data"){
     const data = JSON.parse(message.toString());
     const { type, socketId, value } = data;
