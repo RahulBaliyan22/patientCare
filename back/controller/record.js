@@ -40,42 +40,53 @@ const addRecord = async (req, res) => {
     });
 
     if(isScript){
-      const preprocessImage = async (input) => {
+      const preprocessImage = async (imageInput) => {
         let imageBuffer;
       
-        if (input.startsWith('http')) {
-          // Download image from URL
-          const response = await axios.get(input, { responseType: 'arraybuffer' });
-          imageBuffer = Buffer.from(response.data, 'binary');
+        // Load image from local path or remote URL
+        if (imageInput.startsWith('http')) {
+          const res = await axios.get(imageInput, { responseType: 'arraybuffer' });
+          imageBuffer = Buffer.from(res.data);
         } else {
-          // Local file path
-          imageBuffer = await sharp(input).toBuffer();
+          imageBuffer = await sharp(imageInput).toBuffer();
         }
       
-        // Apply processing
-        const processedBuffer = await sharp(imageBuffer)
-          .resize({ width: 1000 })
+        // Apply preprocessing
+        const processedImage = await sharp(imageBuffer)
+          .rotate() // Auto-orientation based on EXIF
+          .resize({ width: 1600 }) // Upscale for better clarity
           .grayscale()
-          .normalize()
-          .threshold(180)
+          .normalize() // Stretch contrast (useful for faded text)
+          .threshold(160) // Binarize the image (good for OCR)
           .toBuffer();
       
-        return processedBuffer;
+        return processedImage;
       };
       
       const imgToText = async (files) => {
-        const worker = await createWorker('eng+hin');
+        const worker = await createWorker('eng+hin', {
+          logger: m => console.log(m), // Optional: for debug logs
+        });
       
-        const textResults = await Promise.all(
+        await worker.loadLanguage('eng+hin');
+        await worker.initialize('eng+hin');
+      
+        const results = await Promise.all(
           files.map(async (file) => {
-            const buffer = await preprocessImage(file.location || file.path);
-            const { data: { text } } = await worker.recognize(buffer);
-            return text;
+            try {
+              const input = file.location || file.path;
+              const processedImage = await preprocessImage(input);
+              const { data: { text } } = await worker.recognize(processedImage);
+              return text;
+            } catch (err) {
+              console.error('OCR failed for:', file, err.message);
+              return '';
+            }
           })
         );
       
         await worker.terminate();
-        return textResults;
+        return results;
       };
       
       const texts = req.files?await imgToText(req.files):[];
