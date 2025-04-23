@@ -7,6 +7,7 @@ const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { diagnosisResponses } = require("../utils/grok");
 const { createWorker }  = require('tesseract.js')
 const sharp = require('sharp');
+const axios = require('axios');
 const s3 = initializeS3();
 const addRecord = async (req, res) => {
   try {
@@ -39,15 +40,27 @@ const addRecord = async (req, res) => {
     });
 
     if(isScript){
-      const preprocessImage = async (inputPath) => {
-        const outputBuffer = await sharp(inputPath)
-          .resize({ width: 1000 })     // Upscale (try 800–1500)
+      const preprocessImage = async (input) => {
+        let imageBuffer;
+      
+        if (input.startsWith('http')) {
+          // Download image from URL
+          const response = await axios.get(input, { responseType: 'arraybuffer' });
+          imageBuffer = Buffer.from(response.data, 'binary');
+        } else {
+          // Local file path
+          imageBuffer = await sharp(input).toBuffer();
+        }
+      
+        // Apply processing
+        const processedBuffer = await sharp(imageBuffer)
+          .resize({ width: 1000 })
           .grayscale()
           .normalize()
           .threshold(180)
           .toBuffer();
       
-        return outputBuffer;
+        return processedBuffer;
       };
       
       const imgToText = async (files) => {
