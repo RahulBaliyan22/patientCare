@@ -9,7 +9,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const patientResponses = async (message, patient, context) => {
   try {
     const completion = await groq.chat.completions.create({
-      model: "meta-llama/llama-4-scout-17b-16e-instruct",
+      model: "deepseek-r1-distill-llama-70b",
       messages: [
         {
           role: "system",
