@@ -41,9 +41,10 @@ const addRecord = async (req, res) => {
     if(isScript){
       const preprocessImage = async (inputPath) => {
         const outputBuffer = await sharp(inputPath)
-          .grayscale()            // Convert to grayscale
-          .normalize()            // Enhance contrast
-          .threshold(180)         // Binarize (tune this value if needed)
+          .resize({ width: 1000 })     // Upscale (try 800–1500)
+          .grayscale()
+          .normalize()
+          .threshold(180)
           .toBuffer();
       
         return outputBuffer;
