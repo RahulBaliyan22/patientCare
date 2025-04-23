@@ -64,12 +64,7 @@ const addRecord = async (req, res) => {
       };
       
       const imgToText = async (files) => {
-        const worker = await createWorker('eng+hin', {
-          logger: m => console.log(m), // Optional: for debug logs
-        });
-      
-        await worker.loadLanguage('eng+hin');
-        await worker.initialize('eng+hin');
+        const worker = await createWorker('eng+hin');
       
         const results = await Promise.all(
           files.map(async (file) => {
