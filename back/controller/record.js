@@ -6,7 +6,7 @@ const initializeS3 = require("../config/s3");
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { diagnosisResponses } = require("../utils/grok");
 const { createWorker }  = require('tesseract.js')
-
+const sharp = require('sharp');
 const s3 = initializeS3();
 const addRecord = async (req, res) => {
   try {
@@ -39,12 +39,23 @@ const addRecord = async (req, res) => {
     });
 
     if(isScript){
+      const preprocessImage = async (inputPath) => {
+        const outputBuffer = await sharp(inputPath)
+          .grayscale()            // Convert to grayscale
+          .normalize()            // Enhance contrast
+          .threshold(180)         // Binarize (tune this value if needed)
+          .toBuffer();
+      
+        return outputBuffer;
+      };
+      
       const imgToText = async (files) => {
         const worker = await createWorker('eng+hin');
       
         const textResults = await Promise.all(
           files.map(async (file) => {
-            const { data: { text } } = await worker.recognize(file.location || file.path);;
+            const buffer = await preprocessImage(file.location || file.path);
+            const { data: { text } } = await worker.recognize(buffer);
             return text;
           })
         );
