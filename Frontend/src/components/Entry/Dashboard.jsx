@@ -33,6 +33,7 @@ const Dashboard = () => {
         localStorage.removeItem("user");
         }
         setError("Error fetching patient data. Please try again.");
+        navigate("/login");
       } finally {
         setLoading(false);
       }
