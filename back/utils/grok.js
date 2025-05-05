@@ -47,7 +47,9 @@ ${context}`
       ],
     });
 
-    return completion.choices[0].message.content;
+    let response = completion.choices[0].message.content;
+response = response.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+return response;
   } catch (err) {
     console.error("Patient response error:", err);
     return "Sorry, I couldn't generate a response at the moment.";
@@ -87,7 +89,9 @@ Be concise, data-focused, and professional.`,
       ],
     });
 
-    return completion.choices[0].message.content;
+    let response = completion.choices[0].message.content;
+    response = response.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+    return response;
   } catch (err) {
     console.error("Admin response error:", err);
     return "Sorry, I couldn't generate an admin response at the moment.";
@@ -122,7 +126,9 @@ Be friendly and informative.`,
       ],
     });
 
-    return completion.choices[0].message.content;
+    let response = completion.choices[0].message.content;
+response = response.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+return response;
   } catch (err) {
     console.error("Guest response error:", err);
     return "Sorry, I couldn't generate a guest response at the moment.";
@@ -166,7 +172,9 @@ Respond with only the medical analysis, no explanations or instructions.
       ],
     });
 
-    return completion.choices[0].message.content;
+    let response = completion.choices[0].message.content;
+    response = response.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+    return response;
   } catch (err) {
     console.error("Diagnosis response error:", err);
     return "Sorry, we couldn't analyze the diagnosis right now.";
