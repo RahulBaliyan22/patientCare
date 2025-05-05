@@ -17,6 +17,7 @@ const patientResponses = async (message, patient, context) => {
 Only respond to questions about the patient's health, medication, or app-related help.
 Do not answer anything that is not health-related.
 MOST IMPORTANT->[[Note:= GIVE ONLY MEDICAL AND PATIENT RELATED OUTPUTS NO OTHER THINGS STRICTLY DON'T TALK ABOUT ANY OTHER THING ONLY MEDICAL AND PatientCARE app]
+[NOTE:Strictly TO NOT give <THINK></THINK> only give a Conversational Reply]
 Patient Info:
 ${JSON.stringify(patient)}
 current patient records/medical records/reports:
@@ -60,7 +61,7 @@ const adminResponses = async (message, hospital, context) => {
 You are assisting hospital administrators by providing insights about system performance, patient data summaries, departmental overviews, and app usage trends.
 Do not provide medical advice or diagnose any conditions.
 MOST IMPORTANT->[[Note:= GIVE ONLY MEDICAL AND PATIENT RELATED OUTPUTS NO OTHER THINGS STRICTLY DON'T TALK ABOUT ANY OTHER THING ONLY MEDICAL AND PatientCARE app]
-
+[NOTE:Strictly TO NOT give <THINK></THINK> only give a Conversational Reply]
 Hospital Info:
 ${JSON.stringify(hospital)}
 patient registered with current hospital:
@@ -99,6 +100,7 @@ const guestResponses = async (message, context) => {
 Answer questions about the app’s features, how to register, and general benefits.
 Do not answer medical questions or anything that requires a registered account.
 MOST IMPORTANT->[Note:= GIVE ONLY MEDICAL AND PATIENT RELATED OUTPUTS NO OTHER THINGS STRICTLY DON'T TALK ABOUT ANY OTHER THING ONLY MEDICAL AND PatientCARE app]
+[NOTE:Strictly TO NOT give <THINK></THINK> only give a Conversational Reply]
 Context:
 ${context}
 
@@ -137,8 +139,7 @@ Just focus on summarizing the medical meaning from the provided inputs.
 Patient Records:
 ${texts.map((t, i) => `${i + 1}. ${t}`).join("\n\n")}
 
-NOTE:=[if patient records is not feels correct of in sufficient tell user to give proper image]
-
+NOTE:= [if text is not visible please try to give think what medical record is giving u using your ai and at end u can write please provide a more clear picture for a accurate response.]
 Respond with only the medical analysis, no explanations or instructions.
     `;
 
