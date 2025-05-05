@@ -29,6 +29,9 @@ const Dashboard = () => {
         setUser(response.data.patient);
         setMedicalHistory(response.data.records);
       } catch (error) {
+        if(localStorage.getItem("user")){
+        localStorage.removeItem("user");
+        }
         setError("Error fetching patient data. Please try again.");
       } finally {
         setLoading(false);
