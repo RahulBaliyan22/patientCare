@@ -16,7 +16,7 @@ const Login = () => {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const {chatUser,setChatUser}  = useContext(ChatContext)
-  
+  const [loading,setLoading] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn || localStorage.getItem("user")) {
@@ -58,7 +58,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (!form.email || !form.password) {
       toast.info("Both fields are required!");
       return;
@@ -72,6 +72,7 @@ const Login = () => {
       );
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      setLoading(false);
       setIsLoggedIn(true);
       const currentRole = chatUser?.role;
       const currentSocket = chatUser?.socket;
@@ -88,6 +89,7 @@ const Login = () => {
       navigate("/dashboard");
       toast.success("Login successful!");
     } catch (error) {
+      setLoading(false)
       console.error("Login error:", error);
       toast.error(error.response?.data?.message || "Incorrect email or password");
     }
@@ -151,7 +153,7 @@ const Login = () => {
             </div>
           </div>
 
-          <button type="submit" className="submit-button">Login</button>
+          <button type="submit" className="submit-button">{loading?`Login in Please wait...`:`Login`}</button>
         </form>
         <div className="extra-links">
           <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
