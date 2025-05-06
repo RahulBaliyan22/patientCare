@@ -35,6 +35,7 @@ const Dashboard = () => {
         setError("Error fetching patient data. Please try again.");
         setIsLoggedIn(false);
         navigate("/login");
+        toast.info("session expired");
       } finally {
         setLoading(false);
       }
